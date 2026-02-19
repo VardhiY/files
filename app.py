@@ -1,8 +1,10 @@
 import streamlit as st
-import anthropic
+import google.generativeai as genai
 import json
 import re
-from urllib.parse import urlparse
+import urllib.request
+import urllib.parse
+from html.parser import HTMLParser
 
 # ── Page Config ──────────────────────────────────────────────────────
 st.set_page_config(
@@ -11,14 +13,13 @@ st.set_page_config(
     layout="centered"
 )
 
-# ── Load API Key from Streamlit Secrets ONLY ─────────────────────────
-# Add your key in: Streamlit Cloud → App Settings → Secrets
-# ANTHROPIC_API_KEY = "sk-ant-..."
+# ── Load API Key from Streamlit Secrets ───────────────────────────────
 try:
-    API_KEY = st.secrets["ANTHROPIC_API_KEY"]
+    API_KEY = st.secrets["GEMINI_API_KEY"]
+    genai.configure(api_key=API_KEY)
 except Exception:
-    st.error("⚠️ API key not configured. Please add ANTHROPIC_API_KEY to your Streamlit Secrets.")
-    st.info("Go to: Streamlit Cloud → Your App → ⋮ Menu → Settings → Secrets → paste:\n\n`ANTHROPIC_API_KEY = \"sk-ant-YOUR_KEY_HERE\"`")
+    st.error("⚠️ API key not configured.")
+    st.info("Go to: Streamlit Cloud → Your App → ⋮ → Settings → Secrets → paste:\n\n`GEMINI_API_KEY = \"your-key-here\"`")
     st.stop()
 
 # ── Custom CSS ───────────────────────────────────────────────────────
@@ -77,7 +78,7 @@ div[data-testid="stSelectbox"] > div {
     color: white !important; font-family: 'Syne', sans-serif !important;
     font-weight: 700 !important; font-size: 1rem !important;
     border: none !important; border-radius: 12px !important;
-    padding: 0.75rem !important; letter-spacing: 0.02em !important;
+    padding: 0.75rem !important;
 }
 .stButton > button:hover { box-shadow: 0 8px 30px rgba(108,99,255,0.4) !important; }
 .stTabs [data-baseweb="tab-list"] {
@@ -94,86 +95,109 @@ section[data-testid="stSidebar"] { background: #12121a !important; border-right:
 """, unsafe_allow_html=True)
 
 # ── Header ───────────────────────────────────────────────────────────
-st.markdown('<div class="badge"><span>⚡ Powered by Claude AI · Semantic Engine</span></div>', unsafe_allow_html=True)
+st.markdown('<div class="badge"><span>⚡ Powered by Gemini AI · Semantic Engine</span></div>', unsafe_allow_html=True)
 st.markdown('<div class="main-title">AI Keyword Finder</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Extract high-relevance keywords from any text or URL — instantly.</div>', unsafe_allow_html=True)
 
-# ── Settings Sidebar ─────────────────────────────────────────────────
+# ── Settings Sidebar ──────────────────────────────────────────────────
 st.sidebar.markdown("## ⚙️ Settings")
-top_n = st.sidebar.selectbox("Top N Keywords", [5, 10, 15, 20], index=1)
+top_n     = st.sidebar.selectbox("Top N Keywords", [5, 10, 15, 20], index=1)
 ngram_max = st.sidebar.selectbox(
     "Keyphrase Length", [1, 2, 3],
-    format_func=lambda x: {1: "Single words", 2: "1–2 word phrases", 3: "1–3 word phrases"}[x],
+    format_func=lambda x: {1:"Single words", 2:"1–2 word phrases", 3:"1–3 word phrases"}[x],
     index=1
 )
 diversity = st.sidebar.selectbox(
     "Diversity Mode", ["none", "mmr", "maxsum"],
-    format_func=lambda x: {"none": "None (raw scores)", "mmr": "MMR (balanced)", "maxsum": "Max Sum (diverse)"}[x],
+    format_func=lambda x: {"none":"None (raw scores)","mmr":"MMR (balanced)","maxsum":"Max Sum (diverse)"}[x],
     index=1
 )
 st.sidebar.markdown("---")
-st.sidebar.markdown("<small style='color:#6b6b8a'>AI Keyword Finder · v1.0<br>Built for startup use</small>", unsafe_allow_html=True)
+st.sidebar.markdown("<small style='color:#6b6b8a'>AI Keyword Finder · v1.0</small>", unsafe_allow_html=True)
 
-# ── Claude API Helpers ───────────────────────────────────────────────
-client = anthropic.Anthropic(api_key=API_KEY)
-
+# ── Gemini Keyword Extraction ─────────────────────────────────────────
 def extract_keywords(text, top_n, ngram_max, diversity):
     diversity_rule = {
         "mmr":    "Apply MMR diversity — avoid repeating similar root concepts.",
         "maxsum": "Maximize diversity — make keywords as distinct as possible.",
         "none":   "Return purely by relevance score, no diversity constraint."
     }[diversity]
-    length_rule = {1: "1 word only", 2: "1 to 2 words max", 3: "1 to 3 words max"}[ngram_max]
+    length_rule = {1:"1 word only", 2:"1 to 2 words max", 3:"1 to 3 words max"}[ngram_max]
 
-    response = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1000,
-        messages=[{
-            "role": "user",
-            "content": f"""You are a semantic keyword extraction engine (like KeyBERT). Extract the top {top_n} keywords from the text below.
+    prompt = f"""You are a semantic keyword extraction engine (like KeyBERT). Extract the top {top_n} keywords from the text below.
 
 Rules:
 - Keyphrase length: {length_rule}
 - {diversity_rule}
 - Score each from 0.00 to 1.00 by semantic importance to the text.
-- Return ONLY a JSON array. No markdown, no explanation.
+- Return ONLY a valid JSON array. No markdown fences, no explanation, nothing else.
 - Format: [{{"keyword":"...","score":0.00}},...] 
 
 TEXT:
 {text[:7000]}"""
-        }]
-    )
-    raw = response.content[0].text
-    cleaned = re.sub(r'```json|```', '', raw).strip()
+
+    model    = genai.GenerativeModel("gemini-1.5-flash")
+    response = model.generate_content(prompt)
+    raw      = response.text.strip()
+    cleaned  = re.sub(r'```json|```', '', raw).strip()
     return json.loads(cleaned)
 
-def fetch_url_content(url):
-    response = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=2000,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
-        messages=[{
-            "role": "user",
-            "content": f"""Use web search to visit this URL and extract its main content: {url}
+# ── URL Text Extractor (no API needed — plain HTTP fetch) ─────────────
+class TextExtractor(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.text_parts = []
+        self.skip_tags  = {'script','style','nav','footer','header','aside','noscript','form'}
+        self.skip       = 0
 
-Return ONLY the raw article/page body text (no HTML, no nav, no footer, no ads).
-At least 150 words. If unable to access, start reply with: FETCH_ERROR:"""
-        }]
-    )
-    text = " ".join(b.text for b in response.content if hasattr(b, "text"))
-    if text.strip().startswith("FETCH_ERROR:"):
-        raise ValueError(text.replace("FETCH_ERROR:", "").strip())
+    def handle_starttag(self, tag, attrs):
+        if tag in self.skip_tags:
+            self.skip += 1
+
+    def handle_endtag(self, tag):
+        if tag in self.skip_tags and self.skip > 0:
+            self.skip -= 1
+
+    def handle_data(self, data):
+        if self.skip == 0:
+            stripped = data.strip()
+            if stripped:
+                self.text_parts.append(stripped)
+
+    def get_text(self):
+        return ' '.join(self.text_parts)
+
+def fetch_url_content(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+    }
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html = resp.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        raise ValueError(f"Could not reach the URL: {e}")
+
+    parser = TextExtractor()
+    parser.feed(html)
+    text = parser.get_text()
+
+    # Clean up excess whitespace
+    text = re.sub(r'\s+', ' ', text).strip()
+
     if len(text.split()) < 30:
-        raise ValueError("Not enough content found at that URL.")
+        raise ValueError("Not enough readable text found at that URL.")
     return text
 
-# ── Chip Helper ──────────────────────────────────────────────────────
+# ── Chip Helper ───────────────────────────────────────────────────────
 def chip(keyword, score):
-    s = float(score)
+    s   = float(score)
     cls = "keyword-chip-high" if s >= 0.75 else "keyword-chip-mid" if s >= 0.55 else "keyword-chip-low"
     return f'<span class="{cls}">{keyword} <small style="opacity:0.65">{s:.2f}</small></span>'
 
-# ── Input Tabs ───────────────────────────────────────────────────────
+# ── Input Tabs ────────────────────────────────────────────────────────
 tab1, tab2 = st.tabs(["📄 Text Input", "🌐 URL Input"])
 
 with tab1:
@@ -189,26 +213,26 @@ with tab2:
         "url", placeholder="https://example.com/article",
         label_visibility="collapsed"
     )
-    st.caption("✅ Paste any public URL — article, blog, Wikipedia, product page — keywords extracted live with AI.")
+    st.caption("✅ Paste any public URL — article, blog, Wikipedia, product page.")
     run_url = st.button("🔍 Extract Keywords", key="btn_url", use_container_width=True)
 
-# ── Run: Text ────────────────────────────────────────────────────────
+# ── Run: Text ─────────────────────────────────────────────────────────
 if run_text:
     if not text_input.strip():
         st.error("Please paste some text first.")
     elif len(text_input.split()) < 20:
         st.error("Please provide at least 20 words.")
     else:
-        with st.spinner("🧠 Analyzing and extracting keywords..."):
+        with st.spinner("🧠 Extracting keywords with AI..."):
             try:
                 kws = extract_keywords(text_input, top_n, ngram_max, diversity)
-                st.session_state.keywords = kws
+                st.session_state.keywords   = kws
                 st.session_state.word_count = len(text_input.split())
-                st.session_state.source = None
+                st.session_state.source     = None
             except Exception as e:
                 st.error(f"Extraction failed: {e}")
 
-# ── Run: URL ─────────────────────────────────────────────────────────
+# ── Run: URL ──────────────────────────────────────────────────────────
 if run_url:
     if not url_input.strip():
         st.error("Please enter a URL.")
@@ -216,7 +240,7 @@ if run_url:
         st.error("URL must start with https://")
     else:
         content = None
-        with st.spinner("🌐 Fetching URL content..."):
+        with st.spinner("🌐 Fetching page content..."):
             try:
                 content = fetch_url_content(url_input)
             except Exception as e:
@@ -226,10 +250,10 @@ if run_url:
             with st.spinner("🧠 Extracting keywords with AI..."):
                 try:
                     kws = extract_keywords(content, top_n, ngram_max, diversity)
-                    st.session_state.keywords = kws
+                    st.session_state.keywords   = kws
                     st.session_state.word_count = len(content.split())
                     try:
-                        st.session_state.source = urlparse(url_input).hostname
+                        st.session_state.source = urllib.parse.urlparse(url_input).hostname
                     except:
                         st.session_state.source = url_input
                 except Exception as e:
@@ -243,7 +267,6 @@ if "keywords" in st.session_state:
 
     st.markdown("---")
 
-    # Meta
     meta = f"**{len(kws)} keywords** · {wc:,} words analyzed"
     if source:
         meta += f" · `{source}`"
@@ -278,5 +301,5 @@ if "keywords" in st.session_state:
     col_a, col_b = st.columns(2)
     col_a.download_button("⬇️ Export CSV", csv, "keywords.csv", "text/csv", use_container_width=True)
     with col_b:
-        if st.button("⎘ Copy to Clipboard", use_container_width=True):
+        if st.button("⎘ Copy Keywords", use_container_width=True):
             st.code(plain, language=None)
