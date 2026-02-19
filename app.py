@@ -136,7 +136,7 @@ Rules:
 TEXT:
 {text[:7000]}"""
 
-    model    = genai.GenerativeModel("gemini-1.5-flash")
+    model    = genai.GenerativeModel("gemini-2.0-flash")
     response = model.generate_content(prompt)
     raw      = response.text.strip()
     cleaned  = re.sub(r'```json|```', '', raw).strip()
