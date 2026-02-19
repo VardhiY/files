@@ -604,8 +604,10 @@ st.markdown(f"""
 # ─────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### ◈ &nbsp;Settings")
-    st.markdown('<span class="sb-label">Top N Keywords</span>', unsafe_allow_html=True)
-    top_n = st.selectbox("top_n", [5,10,15,20], index=1, label_visibility="collapsed")
+    st.markdown('<span class="sb-label">How Many Keywords?</span>', unsafe_allow_html=True)
+    top_n = st.selectbox("top_n", [5, 10, 15, 20], index=1, label_visibility="collapsed",
+                         help="Choose how many keywords to extract. Default is 10.")
+    st.caption(f"Will extract exactly {top_n} keywords.")
     st.markdown('<span class="sb-label">Keyphrase Length</span>', unsafe_allow_html=True)
     ngram_max = st.selectbox("ngram", [1,2,3],
         format_func=lambda x:{1:"Single words",2:"1–2 word phrases",3:"1–3 word phrases"}[x],
@@ -615,6 +617,7 @@ with st.sidebar:
         format_func=lambda x:{"none":"None — raw scores","mmr":"MMR — balanced","maxsum":"Max Sum — diverse"}[x],
         index=1, label_visibility="collapsed")
     st.markdown("---")
+    st.info(f"Extracting **{top_n} keywords** per run. Change above to get more or fewer.")
     st.markdown(f"<small style='font-family:JetBrains Mono,monospace;font-size:0.62rem;color:var(--muted)'>Max chars: {MAX_CHARS:,}<br>Max URL: {MAX_URL_LEN}<br><br>LEXIS · AI Keyword Engine</small>", unsafe_allow_html=True)
 
 
@@ -696,25 +699,39 @@ def show_fetch_error(url, reason, tip):
 # GROQ EXTRACTION
 # ─────────────────────────────────────────────────────────────────────
 def extract_keywords(text, top_n, ngram_max, diversity):
-    drule = {"mmr":"Apply MMR — avoid repeating similar root concepts.",
+    drule = {"mmr":"Apply MMR diversity — avoid repeating similar root concepts.",
              "maxsum":"Maximize diversity — make keywords as distinct as possible.",
-             "none":"Return purely by relevance, no diversity constraint."}[diversity]
-    lrule = {1:"1 word only",2:"1 to 2 words max",3:"1 to 3 words max"}[ngram_max]
-    prompt = f"""You are a semantic keyword extraction engine. Extract the top {top_n} keywords.
-Rules:
-- Keyphrase length: {lrule}
-- {drule}
-- Score each 0.00–1.00 by semantic importance.
-- Return ONLY valid JSON array. No markdown, no explanation.
-- Format: [{{"keyword":"...","score":0.00}},...]\n\nTEXT:\n{text[:MAX_CHARS]}"""
-    resp    = client.chat.completions.create(
+             "none":"Return purely by relevance score, no diversity constraint."}[diversity]
+    lrule = {1:"single words only (1 word each)",
+             2:"1 to 2 words per keyphrase",
+             3:"1 to 3 words per keyphrase"}[ngram_max]
+    prompt = (
+        f"You are a semantic keyword extraction engine (like KeyBERT).\n\n"
+        f"TASK: Extract EXACTLY {top_n} keywords from the text below. "
+        f"You MUST return exactly {top_n} items — no more, no fewer.\n\n"
+        f"RULES:\n"
+        f"- Keyphrase length: {lrule}\n"
+        f"- {drule}\n"
+        f"- Score each keyword 0.00 to 1.00 based on semantic importance\n"
+        f"- Do NOT repeat similar keywords\n"
+        f"- CRITICAL: Return ONLY a raw JSON array. No markdown, no backticks, no explanation\n"
+        f"- The array MUST have EXACTLY {top_n} objects\n\n"
+        f"OUTPUT FORMAT:\n"
+        f'[{{"keyword":"example","score":0.85}},{{"keyword":"another","score":0.72}}]\n\n'
+        f"TEXT TO ANALYSE:\n{text[:MAX_CHARS]}"
+    )
+    resp = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[{"role":"user","content":prompt}],
-        temperature=0.2, max_tokens=1000
+        temperature=0.1,
+        max_tokens=2000
     )
     raw     = resp.choices[0].message.content.strip()
-    cleaned = re.sub(r'```json|```','',raw).strip()
-    return json.loads(cleaned)
+    cleaned = re.sub(r'```json|```', '', raw).strip()
+    match   = re.search(r'\[.*\]', cleaned, re.DOTALL)
+    if match:
+        cleaned = match.group(0)
+    return json.loads(cleaned)[:top_n]
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -838,6 +855,12 @@ with tab1:
     </div>""", unsafe_allow_html=True)
     if cur > MAX_CHARS:
         st.markdown(f'<div class="limit-banner">⚠ Exceeds {MAX_CHARS:,} chars — only the first {MAX_CHARS:,} will be analysed.</div>', unsafe_allow_html=True)
+    st.markdown(f'''<div style="font-family:JetBrains Mono,monospace;font-size:0.7rem;
+    color:var(--blue-light);margin-top:0.6rem;padding:0.5rem 0.9rem;
+    background:rgba(67,97,238,0.07);border:1px solid rgba(67,97,238,0.2);
+    border-radius:8px;display:inline-block">
+    ◈ &nbsp;Will extract <b style="color:var(--gold)">{top_n} keywords</b>
+    &nbsp;— change in sidebar ☰</div>''', unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
     run_text = st.button("◈  Extract Keywords", key="btn_text")
 
@@ -867,6 +890,12 @@ with tab2:
         if restr:
             d, w = restr
             st.markdown(f'<div class="warn-banner">⚠ &nbsp;<b>{d}</b> is restricted — {w}</div>', unsafe_allow_html=True)
+    st.markdown(f'''<div style="font-family:JetBrains Mono,monospace;font-size:0.7rem;
+    color:var(--blue-light);margin-top:0.6rem;padding:0.5rem 0.9rem;
+    background:rgba(67,97,238,0.07);border:1px solid rgba(67,97,238,0.2);
+    border-radius:8px;display:inline-block">
+    ◈ &nbsp;Will extract <b style="color:var(--gold)">{top_n} keywords</b>
+    &nbsp;— change in sidebar ☰</div>''', unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
     run_url = st.button("◈  Extract from URL", key="btn_url")
 
