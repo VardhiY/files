@@ -1,5 +1,5 @@
 import streamlit as st
-import google.generativeai as genai
+from groq import Groq
 import json
 import re
 import urllib.request
@@ -15,11 +15,11 @@ st.set_page_config(
 
 # ── Load API Key from Streamlit Secrets ───────────────────────────────
 try:
-    API_KEY = st.secrets["GEMINI_API_KEY"]
-    genai.configure(api_key=API_KEY)
+    API_KEY = st.secrets["GROQ_API_KEY"]
+    client = Groq(api_key=API_KEY)
 except Exception:
     st.error("⚠️ API key not configured.")
-    st.info("Go to: Streamlit Cloud → Your App → ⋮ → Settings → Secrets → paste:\n\n`GEMINI_API_KEY = \"your-key-here\"`")
+    st.info("Go to: Streamlit Cloud → Your App → ⋮ → Settings → Secrets → paste:\n\n`GROQ_API_KEY = \"your-key-here\"`")
     st.stop()
 
 # ── Custom CSS ───────────────────────────────────────────────────────
@@ -95,7 +95,7 @@ section[data-testid="stSidebar"] { background: #12121a !important; border-right:
 """, unsafe_allow_html=True)
 
 # ── Header ───────────────────────────────────────────────────────────
-st.markdown('<div class="badge"><span>⚡ Powered by Gemini AI · Semantic Engine</span></div>', unsafe_allow_html=True)
+st.markdown('<div class="badge"><span>⚡ Powered by Groq AI · Semantic Engine</span></div>', unsafe_allow_html=True)
 st.markdown('<div class="main-title">AI Keyword Finder</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Extract high-relevance keywords from any text or URL — instantly.</div>', unsafe_allow_html=True)
 
@@ -115,7 +115,7 @@ diversity = st.sidebar.selectbox(
 st.sidebar.markdown("---")
 st.sidebar.markdown("<small style='color:#6b6b8a'>AI Keyword Finder · v1.0</small>", unsafe_allow_html=True)
 
-# ── Gemini Keyword Extraction ─────────────────────────────────────────
+# ── Groq Keyword Extraction ───────────────────────────────────────────
 def extract_keywords(text, top_n, ngram_max, diversity):
     diversity_rule = {
         "mmr":    "Apply MMR diversity — avoid repeating similar root concepts.",
@@ -136,10 +136,14 @@ Rules:
 TEXT:
 {text[:7000]}"""
 
-    model    = genai.GenerativeModel("gemini-2.0-flash")
-    response = model.generate_content(prompt)
-    raw      = response.text.strip()
-    cleaned  = re.sub(r'```json|```', '', raw).strip()
+    response = client.chat.completions.create(
+        model="llama3-8b-8192",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.2,
+        max_tokens=1000
+    )
+    raw     = response.choices[0].message.content.strip()
+    cleaned = re.sub(r'```json|```', '', raw).strip()
     return json.loads(cleaned)
 
 # ── URL Text Extractor (no API needed — plain HTTP fetch) ─────────────
