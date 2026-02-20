@@ -19,137 +19,146 @@ except:
     st.error("⚠️ GROQ_API_KEY missing in Streamlit secrets.")
     st.stop()
 
-# ── MONOCHROME PREMIUM UI ──────────────────────────────────
+# ── ULTRA PREMIUM UI ───────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --primary: #6366f1;
-    --primary-soft: #818cf8;
-    --bg-dark: #0f172a;
-    --glass: rgba(99,102,241,0.08);
+    --primary: #1e3a8a;
+    --primary-soft: #3b82f6;
+    --bg: #0b1120;
+    --panel: #111827;
+    --border: rgba(255,255,255,0.06);
 }
 
 .stApp {
-    font-family: 'Outfit', sans-serif;
-    background: var(--bg-dark);
-    color: white;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: #e5e7eb;
 }
 
-/* Container */
+/* Remove Streamlit padding */
 .block-container {
-    max-width: 1000px;
-    margin: 4rem auto;
-    padding: 3rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 28px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Main Floating Panel */
+.main-panel {
+    max-width: 1100px;
+    margin: 80px auto;
+    background: var(--panel);
+    border-radius: 32px;
+    padding: 60px;
+    box-shadow:
+        0 40px 100px rgba(0,0,0,0.6),
+        inset 0 0 0 1px var(--border);
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
 }
 
 /* Header */
 .main-title {
-    text-align: center;
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 800;
-    letter-spacing: 3px;
-    color: var(--primary);
+    letter-spacing: 1px;
+    text-align: center;
+    color: white;
 }
 
 .subtitle {
     text-align: center;
-    font-size: 1rem;
-    opacity: 0.7;
-    margin-bottom: 3rem;
+    opacity: 0.6;
+    margin-top: 10px;
+    margin-bottom: 50px;
 }
 
 /* Tabs */
 div[role="radiogroup"] {
     justify-content: center;
-    gap: 1.2rem;
+    gap: 14px;
+    margin-bottom: 40px;
 }
 
 div[role="radiogroup"] > label {
-    background: rgba(255,255,255,0.05);
-    padding: 0.6rem 1.4rem;
-    border-radius: 999px;
-    transition: 0.3s ease;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    padding: 10px 22px;
+    border-radius: 14px;
     font-weight: 500;
-    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
 }
 
 div[role="radiogroup"] > label:hover {
     background: var(--primary);
-    color: white !important;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(99,102,241,0.4);
+    box-shadow: 0 12px 30px rgba(30,58,138,0.4);
 }
 
 /* Inputs */
 textarea, input {
-    background: rgba(255,255,255,0.05) !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    border-radius: 18px !important;
-    padding: 1rem !important;
-    color: white !important;
-    transition: 0.3s ease;
+    background: #0f172a !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    font-size: 16px !important;
+    transition: all 0.25s ease !important;
 }
 
 textarea:focus, input:focus {
-    border: 1px solid var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+    border: 1px solid var(--primary-soft) !important;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
 }
 
 /* Button */
 .stButton > button {
     background: var(--primary);
     border-radius: 18px !important;
-    border: none !important;
-    padding: 1rem !important;
+    padding: 16px !important;
+    font-size: 16px !important;
     font-weight: 600 !important;
-    font-size: 1rem !important;
-    letter-spacing: 1px;
     transition: 0.3s ease;
-    box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+    box-shadow: 0 10px 25px rgba(30,58,138,0.4);
 }
 
 .stButton > button:hover {
     background: var(--primary-soft);
     transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(99,102,241,0.5);
+    box-shadow: 0 20px 40px rgba(59,130,246,0.5);
 }
 
 /* Keywords */
 .keyword-chip {
     display: inline-block;
-    padding: 0.6rem 1.4rem;
+    padding: 12px 24px;
     border-radius: 999px;
-    margin: 0.5rem;
-    font-size: 0.9rem;
-    background: var(--glass);
-    border: 1px solid rgba(99,102,241,0.3);
-    transition: 0.3s ease;
-    letter-spacing: 0.5px;
+    margin: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    transition: 0.25s ease;
 }
 
 .keyword-chip:hover {
     background: var(--primary);
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(99,102,241,0.5);
-}
-
-/* Divider */
-hr {
-    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 12px 30px rgba(30,58,138,0.4);
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Header ─────────────────────────────────────────────────
+# Floating wrapper
+st.markdown('<div class="main-panel">', unsafe_allow_html=True)
+
+# Header
 st.markdown('<div class="main-title">LEXIS</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">AI-powered semantic keyword extraction for text and web content.</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Advanced AI-powered semantic keyword extraction.</div>', unsafe_allow_html=True)
 
 # ── Keyword Extraction ─────────────────────────────────────
 def extract_keywords(text):
@@ -170,28 +179,21 @@ TEXT:
     cleaned = re.sub(r'```json|```', '', response.choices[0].message.content.strip())
     return json.loads(cleaned)
 
-# ── URL Extractor ──────────────────────────────────────────
+# URL extractor (unchanged)
 class TextExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
         self.text_parts = []
         self.skip_tags = {'script','style','nav','footer','header'}
         self.skip = 0
-
     def handle_starttag(self, tag, attrs):
-        if tag in self.skip_tags:
-            self.skip += 1
-
+        if tag in self.skip_tags: self.skip += 1
     def handle_endtag(self, tag):
-        if tag in self.skip_tags and self.skip > 0:
-            self.skip -= 1
-
+        if tag in self.skip_tags and self.skip > 0: self.skip -= 1
     def handle_data(self, data):
         if self.skip == 0:
             stripped = data.strip()
-            if stripped:
-                self.text_parts.append(stripped)
-
+            if stripped: self.text_parts.append(stripped)
     def get_text(self):
         return ' '.join(self.text_parts)
 
@@ -203,7 +205,7 @@ def fetch_url_content(url):
     parser.feed(html)
     return parser.get_text()
 
-# ── Navigation ─────────────────────────────────────────────
+# Navigation
 mode = st.radio("", ["📄 Text Input", "🌐 URL Input", "📘 URL Guidelines"], horizontal=True)
 
 if mode == "📄 Text Input":
@@ -226,13 +228,12 @@ elif mode == "📘 URL Guidelines":
     st.error("✖ PDF, Word, Excel, images, paywalled content.")
     st.warning("🔒 Login-required pages & private dashboards.")
 
-# ── Results ────────────────────────────────────────────────
 if "kws" in st.session_state:
     st.markdown("---")
-    st.markdown("### 🔎 Extracted Keywords")
-
+    st.markdown("### Extracted Keywords")
     chips = ""
     for k in st.session_state.kws:
         chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
-
     st.markdown(chips, unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
