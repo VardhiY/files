@@ -19,7 +19,7 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── FUTURISTIC AI CSS ───────────────────────
+# ── PREMIUM AI CSS ──────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Inter:wght@400;600;700&display=swap');
@@ -48,22 +48,21 @@ st.markdown("""
     animation: shine 4s linear infinite;
 }
 
-/* Shine animation */
 @keyframes shine {
     to { background-position: 200% center; }
 }
 
-/* Decorative title line */
+/* Decorative Line Under Title */
 .title-line {
-    width: 200px;
+    width: 220px;
     height: 4px;
     margin: 0 auto 2rem auto;
     border-radius: 5px;
     background: linear-gradient(90deg,#00ffff,#8a2be2);
-    box-shadow: 0 0 15px rgba(0,255,255,0.6);
+    box-shadow: 0 0 20px rgba(0,255,255,0.8);
 }
 
-/* Subtitle */
+/* SUBTITLE */
 .subtitle {
     text-align: center;
     font-size: 1.4rem;
@@ -72,32 +71,64 @@ st.markdown("""
     font-weight: 700;
 }
 
-/* Navigation */
+/* NAVIGATION LABELS */
+div[role="radiogroup"] label {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800 !important;
+    font-size: 1.3rem !important;
+    background: linear-gradient(90deg,#00ffff,#8a2be2,#00ffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 4s linear infinite;
+}
+
+/* NAV CONTAINER */
 div[role="radiogroup"] {
     display: flex;
     justify-content: center;
     gap: 4rem;
     margin-bottom: 2.5rem;
-    font-size: 1.2rem;
-    font-weight: 700;
     position: relative;
 }
 
-/* Decorative slash under nav */
+/* Decorative Line Under NAV */
 div[role="radiogroup"]::after {
     content: "";
     position: absolute;
-    bottom: -10px;
+    bottom: -12px;
     left: 50%;
     transform: translateX(-50%);
-    width: 260px;
+    width: 300px;
     height: 4px;
     border-radius: 5px;
     background: linear-gradient(90deg,#00ffff,#8a2be2);
-    box-shadow: 0 0 20px rgba(0,255,255,0.7);
+    box-shadow: 0 0 25px rgba(0,255,255,0.8);
 }
 
-/* Premium Text Area */
+/* SECTION HEADINGS */
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg,#00ffff,#8a2be2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Decorative Line Under Section */
+.section-line {
+    width: 180px;
+    height: 4px;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+    background: linear-gradient(90deg,#00ffff,#8a2be2);
+    box-shadow: 0 0 20px rgba(0,255,255,0.6);
+}
+
+/* TEXT AREA */
 textarea {
     background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)) !important;
     border: 2px solid rgba(0,255,255,0.6) !important;
@@ -109,7 +140,6 @@ textarea {
     box-shadow:
         inset 0 0 20px rgba(0,255,255,0.1),
         0 0 25px rgba(0,255,255,0.15);
-    transition: all 0.3s ease;
 }
 
 textarea:focus {
@@ -119,7 +149,7 @@ textarea:focus {
         0 0 35px rgba(0,255,255,0.5);
 }
 
-/* Buttons */
+/* BUTTON */
 .stButton > button {
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     border-radius: 40px !important;
@@ -128,16 +158,9 @@ textarea:focus {
     font-size: 1.1rem !important;
     border: none !important;
     color: black !important;
-    letter-spacing: 2px;
-    transition: 0.3s ease;
 }
 
-.stButton > button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 30px rgba(0,255,255,0.8);
-}
-
-/* Keyword Chips */
+/* KEYWORD CHIPS */
 .keyword-chip {
     display: inline-block;
     padding: 0.8rem 1.8rem;
@@ -146,26 +169,6 @@ textarea:focus {
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     color: black;
     font-weight: 800;
-    font-size: 1rem;
-    transition: 0.2s ease;
-}
-
-.keyword-chip:hover {
-    transform: scale(1.1);
-}
-
-/* Section Title */
-.section-title {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: 2px;
-}
-
-.block-container {
-    padding-top: 2rem;
-    max-width: 1100px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -217,14 +220,18 @@ elif mode == "🌐 URL INPUT":
 
 # ── GUIDELINES ───────────────────────────
 elif mode == "📘 GUIDELINES":
-    st.markdown("### ✔ Supported")
+    st.markdown('<div class="section-title">SUPPORTED</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-line"></div>', unsafe_allow_html=True)
     st.write("Public blogs, Wikipedia, company pages.")
-    st.markdown("### ✖ Not Supported")
+
+    st.markdown('<div class="section-title">NOT SUPPORTED</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-line"></div>', unsafe_allow_html=True)
     st.write("PDF, images, paywalled content.")
 
 # ── RESULTS ──────────────────────────────
 if "kws" in st.session_state:
-    st.markdown('<div class="section-title">🚀 EXTRACTED KEYWORDS</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">EXTRACTED KEYWORDS</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-line"></div>', unsafe_allow_html=True)
     chips = ""
     for k in st.session_state.kws:
         chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
