@@ -7,96 +7,86 @@ from html.parser import HTMLParser
 
 # ── Page Config ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="AI Keyword Finder",
+    page_title="LEXIS - AI Keyword Finder",
     page_icon="🔍",
     layout="centered"
 )
 
-# ── API Key ─────────────────────────────────────────────────
+# ── Load API Key ────────────────────────────────────────────
 try:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 except:
-    st.error("API key missing.")
+    st.error("⚠️ GROQ_API_KEY missing in Streamlit secrets.")
     st.stop()
 
-# ── CSS ─────────────────────────────────────────────────────
+# ── Premium CSS ─────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap');
 
-html, body, [class*="css"] { font-family: 'DM Mono', monospace; }
-.stApp { background: #0a0a0f; color: #e8e8f0; }
+.stApp {
+    background: #0b0b12;
+    color: #e8e8f0;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+}
 
 .main-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 2.6rem;
-    font-weight: 800;
+    font-size: 3rem;
+    font-weight: 700;
     text-align: center;
-    background: linear-gradient(135deg, #e8e8f0 30%, #6c63ff 70%, #ff6584 100%);
+    background: linear-gradient(180deg,#f5d97b,#c9a227);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
 }
 
 .subtitle {
     text-align: center;
-    color: #6b6b8a;
-    font-size: 0.85rem;
+    color: #a0a0c0;
     margin-bottom: 2rem;
 }
 
-/* Buttons */
+.stat-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.stat-box {
+    background: linear-gradient(145deg,#14141d,#101018);
+    border: 1px solid #2a2a3d;
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    text-align: center;
+    min-width: 90px;
+}
+
+.stat-number {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f5d97b;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    color: #8b8ba7;
+}
+
 .stButton > button {
     width: 100%;
-    background: linear-gradient(135deg, #6c63ff, #9b59f7) !important;
-    color: white !important;
-    font-family: 'Syne', sans-serif !important;
-    font-weight: 700 !important;
+    background: linear-gradient(135deg,#c9a227,#f5d97b);
+    color: black !important;
+    font-weight: 600 !important;
     border-radius: 12px !important;
-    padding: 0.75rem !important;
     border: none !important;
 }
 
-/* Tabs */
-.stTabs [data-baseweb="tab-list"] {
-    background: #12121a;
-    border-radius: 14px;
-    padding: 5px;
-    border: 1px solid #2a2a3d;
-}
-.stTabs [aria-selected="true"] {
-    background: #6c63ff !important;
-    color: white !important;
-}
-
-/* URL Guidelines Cards */
-.guidelines-container {
-    margin-top: 2rem;
-}
-
-.guideline-card {
-    background: linear-gradient(145deg, #12121a, #0f0f16);
-    border: 1px solid #2a2a3d;
-    border-radius: 14px;
-    padding: 1.2rem;
-    margin-bottom: 1rem;
-    transition: 0.3s ease;
-}
-
-.guideline-card:hover {
-    border: 1px solid #c9a227;
-    box-shadow: 0 0 15px rgba(201,162,39,0.15);
-}
-
-.guideline-title {
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #c9a227;
-}
-
-.guideline-text {
-    font-size: 0.8rem;
-    color: #a0a0c0;
+.stButton > button:hover {
+    box-shadow: 0 0 20px rgba(201,162,39,0.3);
 }
 
 .keyword-chip {
@@ -105,16 +95,42 @@ html, body, [class*="css"] { font-family: 'DM Mono', monospace; }
     border-radius: 999px;
     font-size: 0.82rem;
     margin: 0.25rem;
-    background: rgba(108,99,255,0.15);
-    border: 1px solid rgba(108,99,255,0.4);
-    color: #a099ff;
+    background: rgba(201,162,39,0.15);
+    border: 1px solid rgba(201,162,39,0.4);
+    color: #f5d97b;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Header ─────────────────────────────────────────────────
-st.markdown('<div class="main-title">AI Keyword Finder</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Extract high-relevance keywords from text or URLs instantly.</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">LEXIS</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Extract high-signal keywords from text or URLs using Groq AI.</div>', unsafe_allow_html=True)
+
+# ── Stats Cards ─────────────────────────────────────────────
+st.markdown("""
+<div class="stat-container">
+    <div class="stat-box">
+        <div class="stat-number">5,000</div>
+        <div class="stat-label">MAX CHARS</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number">2048</div>
+        <div class="stat-label">MAX URL LEN</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number">20</div>
+        <div class="stat-label">MAX KEYWORDS</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number">&lt;1s</div>
+        <div class="stat-label">AVG RESPONSE</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number">40+</div>
+        <div class="stat-label">BLOCKED SITES</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ── Keyword Extraction ─────────────────────────────────────
 def extract_keywords(text):
@@ -168,51 +184,55 @@ def fetch_url_content(url):
     parser.feed(html)
     return parser.get_text()
 
-# ── Tabs (3 Tabs Now) ──────────────────────────────────────
-tab1, tab2, tab3 = st.tabs(["📄 Text Input", "🌐 URL Input", "📘 URL Guidelines"])
+# ── Horizontal Menu ────────────────────────────────────────
+mode = st.radio(
+    "",
+    ["📄 Text Input", "🌐 URL Input", "📘 URL Guidelines"],
+    horizontal=True
+)
 
-# ── Text Tab ───────────────────────────────────────────────
-with tab1:
-    text_input = st.text_area("Text", height=200, label_visibility="collapsed")
-    if st.button("🔍 Extract Keywords"):
+# ── TEXT INPUT ─────────────────────────────────────────────
+if mode == "📄 Text Input":
+    text_input = st.text_area("", height=200, placeholder="Paste article, blog, or content here...")
+    if st.button("Extract Keywords"):
         if text_input.strip():
             with st.spinner("Extracting..."):
                 st.session_state.kws = extract_keywords(text_input)
 
-# ── URL Tab ────────────────────────────────────────────────
-with tab2:
-    url_input = st.text_input("URL", label_visibility="collapsed")
-    if st.button("🔍 Extract from URL"):
+# ── URL INPUT ──────────────────────────────────────────────
+elif mode == "🌐 URL Input":
+    url_input = st.text_input("", placeholder="https://example.com/article")
+    if st.button("Extract from URL"):
         if url_input.startswith("http"):
             with st.spinner("Fetching..."):
                 content = fetch_url_content(url_input)
             with st.spinner("Extracting..."):
                 st.session_state.kws = extract_keywords(content)
 
-# ── URL Guidelines Tab ─────────────────────────────────────
-with tab3:
+# ── URL GUIDELINES ─────────────────────────────────────────
+elif mode == "📘 URL Guidelines":
     st.markdown("""
-    <div class="guidelines-container">
+    <div style="margin-top:2rem">
 
-        <div class="guideline-card">
-            <div class="guideline-title">✔ Supported</div>
-            <div class="guideline-text">
+        <div class="stat-box" style="margin-bottom:1rem">
+            <div class="stat-number">✔ Supported</div>
+            <div class="stat-label">
                 Public blogs, news (no paywall), Wikipedia, company pages,
                 documentation sites.
             </div>
         </div>
 
-        <div class="guideline-card">
-            <div class="guideline-title">✖ Not Supported</div>
-            <div class="guideline-text">
-                PDF, Word, Excel, PowerPoint files, image links (.jpg, .png),
+        <div class="stat-box" style="margin-bottom:1rem">
+            <div class="stat-number">✖ Not Supported</div>
+            <div class="stat-label">
+                PDF, Word, Excel, PowerPoint files, image links,
                 paywalled content.
             </div>
         </div>
 
-        <div class="guideline-card">
-            <div class="guideline-title">🔒 Restricted</div>
-            <div class="guideline-text">
+        <div class="stat-box">
+            <div class="stat-number">🔒 Restricted</div>
+            <div class="stat-label">
                 Login-required pages, Google Docs, Drive links,
                 private dashboards.
             </div>
@@ -221,7 +241,7 @@ with tab3:
     </div>
     """, unsafe_allow_html=True)
 
-# ── Results ─────────────────────────────────────────────────
+# ── Results ────────────────────────────────────────────────
 if "kws" in st.session_state:
     st.markdown("---")
     for k in st.session_state.kws:
