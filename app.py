@@ -3,6 +3,7 @@ from groq import Groq
 import json
 import re
 import urllib.request
+from urllib.error import HTTPError, URLError
 
 # ── PAGE CONFIG ─────────────────────────
 st.set_page_config(
@@ -123,11 +124,12 @@ TEXT:
 
         if st.button("EXTRACT FROM URL"):
             if url_input.startswith("http"):
-                req = urllib.request.Request(url_input, headers={'User-Agent': 'Mozilla/5.0'})
-                with urllib.request.urlopen(req, timeout=15) as resp:
-                    html = resp.read().decode('utf-8', errors='ignore')
+                try:
+                    req = urllib.request.Request(url_input, headers={'User-Agent': 'Mozilla/5.0'})
+                    with urllib.request.urlopen(req, timeout=15) as resp:
+                        html = resp.read().decode('utf-8', errors='ignore')
 
-                prompt = f"""
+                    prompt = f"""
 Extract top 10 important keywords from the text.
 Return ONLY JSON:
 [{{"keyword":"...","score":0.00}},...]
@@ -135,14 +137,21 @@ Return ONLY JSON:
 TEXT:
 {html[:6000]}
 """
-                response = client.chat.completions.create(
-                    model="llama-3.1-8b-instant",
-                    messages=[{"role": "user", "content": prompt}],
-                    temperature=0.2,
-                    max_tokens=800
-                )
-                cleaned = re.sub(r'```json|```', '', response.choices[0].message.content.strip())
-                st.session_state.kws = json.loads(cleaned)
+                    response = client.chat.completions.create(
+                        model="llama-3.1-8b-instant",
+                        messages=[{"role": "user", "content": prompt}],
+                        temperature=0.2,
+                        max_tokens=800
+                    )
+                    cleaned = re.sub(r'```json|```', '', response.choices[0].message.content.strip())
+                    st.session_state.kws = json.loads(cleaned)
+
+                except HTTPError as e:
+                    st.error(f"🚫 Access Restricted (HTTP {e.code}) — This page may require login or block bots.")
+                except URLError:
+                    st.error("🚫 Unable to reach the website.")
+                except Exception as e:
+                    st.error(f"Unexpected error: {e}")
 
     if "kws" in st.session_state:
         st.markdown("### 🚀 Extracted Keywords")
@@ -151,7 +160,7 @@ TEXT:
             chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
         st.markdown(chips, unsafe_allow_html=True)
 
-# ── RIGHT SIDE (ONLY GUIDELINES — NO INPUTS HERE) ─────────
+# ── RIGHT SIDE (UPDATED GUIDELINES) ─────────
 with right:
 
     st.markdown("""
@@ -178,16 +187,17 @@ with right:
     </h2>
     """, unsafe_allow_html=True)
 
-    st.write("✔ Public blogs")
+    st.write("✔ Public blogs & articles")
     st.write("✔ Wikipedia pages")
-    st.write("✔ Company sites")
-    st.write("✔ Documentation sites")
+    st.write("✔ Public company websites")
+    st.write("✔ Public documentation portals")
 
     st.markdown("---")
 
-    st.write("✖ PDF files")
-    st.write("✖ Image links")
+    st.write("✖ Login-required company portals")
+    st.write("✖ Internal corporate dashboards")
     st.write("✖ Paywalled content")
-    st.write("✖ Login required pages")
+    st.write("✖ Sites blocking automated access")
+    st.write("✖ PDF / image-only pages")
 
     st.markdown("</div>", unsafe_allow_html=True)
