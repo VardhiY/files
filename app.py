@@ -18,7 +18,7 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── STYLING (YOUR PREVIOUS AI BACKGROUND) ─────────────────
+# ── STYLING ─────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap');
@@ -32,7 +32,6 @@ st.markdown("""
     color: white;
 }
 
-/* Remove extra top padding */
 .block-container {
     padding-top: 1.5rem;
 }
@@ -92,16 +91,17 @@ textarea, input {
 st.markdown('<div class="main-title">LEXIS AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Next-Generation Intelligent Keyword Engine</div>', unsafe_allow_html=True)
 
-# ── LAYOUT ─────────────────────────
+# ── TWO COLUMN LAYOUT ──────────────
 left, right = st.columns([2.5, 1])
 
-# ── LEFT SIDE ──────────────────────
+# ── LEFT COLUMN (WORK AREA ONLY) ───
 with left:
 
     mode = st.radio("", ["📄 TEXT INPUT", "🌐 URL INPUT"], horizontal=True)
 
     if mode == "📄 TEXT INPUT":
         text_input = st.text_area("", height=320, placeholder="Paste your content here...")
+
         if st.button("EXTRACT KEYWORDS"):
             if text_input.strip():
                 with st.spinner("AI analyzing..."):
@@ -124,6 +124,7 @@ TEXT:
 
     elif mode == "🌐 URL INPUT":
         url_input = st.text_input("", placeholder="https://example.com/article")
+
         if st.button("EXTRACT FROM URL"):
             if url_input.startswith("http"):
                 req = urllib.request.Request(url_input, headers={'User-Agent': 'Mozilla/5.0'})
@@ -154,7 +155,7 @@ TEXT:
             chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
         st.markdown(chips, unsafe_allow_html=True)
 
-# ── RIGHT SIDE (GUIDELINES – NO EXTRA BOX) ─────────────────
+# ── RIGHT COLUMN (GUIDELINES ONLY — NO INPUTS HERE) ───────
 with right:
 
     st.markdown("""
