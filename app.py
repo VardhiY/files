@@ -29,11 +29,8 @@ st.markdown("""
     color: #e8e8f0;
 }
 
-h1 {
-    font-family: 'Playfair Display', serif;
-}
-
 .main-title {
+    font-family: 'Playfair Display', serif;
     font-size: 3rem;
     font-weight: 700;
     text-align: center;
@@ -211,31 +208,43 @@ elif mode == "🌐 URL Input":
 
 # ── URL GUIDELINES ─────────────────────────────────────────
 elif mode == "📘 URL Guidelines":
+
     st.markdown("""
     <div style="margin-top:2rem">
 
-        <div class="stat-box" style="margin-bottom:1rem">
-            <div class="stat-number">✔ Supported</div>
-            <div class="stat-label">
+        <div style="background:linear-gradient(145deg,#14141d,#101018);
+                    border:1px solid #2a2a3d;
+                    border-radius:16px;
+                    padding:1.5rem;
+                    margin-bottom:1rem;">
+            <h4 style="color:#f5d97b;">✔ Supported</h4>
+            <p style="color:#a0a0c0;">
                 Public blogs, news (no paywall), Wikipedia, company pages,
                 documentation sites.
-            </div>
+            </p>
         </div>
 
-        <div class="stat-box" style="margin-bottom:1rem">
-            <div class="stat-number">✖ Not Supported</div>
-            <div class="stat-label">
+        <div style="background:linear-gradient(145deg,#14141d,#101018);
+                    border:1px solid #2a2a3d;
+                    border-radius:16px;
+                    padding:1.5rem;
+                    margin-bottom:1rem;">
+            <h4 style="color:#ff6b6b;">✖ Not Supported</h4>
+            <p style="color:#a0a0c0;">
                 PDF, Word, Excel, PowerPoint files, image links,
                 paywalled content.
-            </div>
+            </p>
         </div>
 
-        <div class="stat-box">
-            <div class="stat-number">🔒 Restricted</div>
-            <div class="stat-label">
+        <div style="background:linear-gradient(145deg,#14141d,#101018);
+                    border:1px solid #2a2a3d;
+                    border-radius:16px;
+                    padding:1.5rem;">
+            <h4 style="color:#ffa94d;">🔒 Restricted</h4>
+            <p style="color:#a0a0c0;">
                 Login-required pages, Google Docs, Drive links,
                 private dashboards.
-            </div>
+            </p>
         </div>
 
     </div>
