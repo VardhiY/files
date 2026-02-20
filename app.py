@@ -14,14 +14,14 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── Black + Gold Luxury UI ──────────────────────────────────
+# ── Black & Gold Premium UI ─────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
 
 .stApp {
-    background: #0b0b0f;
-    color: #f5f5f5;
+    background: #0a0a0f;
+    color: #f8f8f8;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -29,58 +29,66 @@ st.markdown("""
 .block-container {
     max-width: 1200px;
     margin: auto;
-    padding-top: 70px;
+    padding-top: 80px;
 }
 
-/* Header */
+/* Hero */
 .hero-title {
-    font-size: 4.5rem;
+    font-size: 4.8rem;
     font-weight: 800;
     letter-spacing: -2px;
+    text-align: center;
     background: linear-gradient(90deg,#f5d97b,#c9a227,#f5d97b);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .hero-sub {
+    text-align: center;
     font-size: 1.1rem;
-    margin-top: 12px;
-    margin-bottom: 45px;
-    color: #c9a227;
-    letter-spacing: 1px;
+    color: #d4af37;
+    margin-top: 15px;
+    margin-bottom: 60px;
+    letter-spacing: 2px;
 }
 
-/* Navigation */
+/* Navigation Pills */
 div[role="radiogroup"] {
     justify-content: center;
     gap: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 div[role="radiogroup"] > label {
     background: #111117;
-    padding: 12px 30px;
+    padding: 14px 32px;
     border-radius: 999px;
     font-weight: 600;
     color: #f5d97b !important;
-    border: 1px solid #c9a227;
+    border: 2px solid #c9a227;
+    transition: 0.3s ease;
+}
+
+div[role="radiogroup"] > label:hover {
+    box-shadow: 0 0 15px #c9a227;
 }
 
 /* Section Card */
 .section-card {
     background: #121218;
-    padding: 40px;
-    border-radius: 20px;
-    border: 1px solid #2a2a35;
-    margin-bottom: 40px;
+    padding: 45px;
+    border-radius: 22px;
+    border: 2px solid #c9a227;
+    margin-bottom: 50px;
+    box-shadow: 0 0 30px rgba(201,162,39,0.15);
 }
 
 /* Inputs */
 textarea, input {
     background: #0f0f14 !important;
-    border: 1px solid #c9a227 !important;
-    border-radius: 14px !important;
-    padding: 18px !important;
+    border: 2px solid #c9a227 !important;
+    border-radius: 18px !important;
+    padding: 20px !important;
     color: #ffffff !important;
     font-size: 15px !important;
 }
@@ -89,35 +97,48 @@ textarea, input {
 .stButton > button {
     background: linear-gradient(90deg,#f5d97b,#c9a227);
     color: #000 !important;
-    border-radius: 14px !important;
-    padding: 14px !important;
+    border-radius: 18px !important;
+    padding: 16px !important;
     font-weight: 700 !important;
     border: none !important;
+    transition: 0.3s ease;
 }
 
-/* Section Headings */
+.stButton > button:hover {
+    box-shadow: 0 0 25px #c9a227;
+    transform: translateY(-2px);
+}
+
+/* Headings */
 h3, h4 {
     color: #f5d97b !important;
+    margin-bottom: 20px;
 }
 
-/* Keywords */
+/* Keyword Chips */
 .keyword-chip {
     display: inline-block;
-    padding: 10px 22px;
+    padding: 12px 26px;
     border-radius: 999px;
-    margin: 10px;
+    margin: 12px;
     font-size: 14px;
     font-weight: 600;
     background: #111117;
     color: #f5d97b;
-    border: 1px solid #c9a227;
+    border: 2px solid #c9a227;
+    transition: 0.3s ease;
+}
+
+.keyword-chip:hover {
+    box-shadow: 0 0 15px #c9a227;
+    transform: translateY(-3px);
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Header ─────────────────────────────────────────
 st.markdown('<div class="hero-title">LEXIS</div>', unsafe_allow_html=True)
-st.markdown('<div class="hero-sub">LUXURY AI KEYWORD EXTRACTION</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-sub">PREMIUM AI KEYWORD ENGINE</div>', unsafe_allow_html=True)
 
 # ── Keyword Extraction ─────────────────────────────
 def extract_keywords(text):
