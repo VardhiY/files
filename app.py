@@ -5,7 +5,7 @@ import re
 import urllib.request
 from html.parser import HTMLParser
 
-st.set_page_config(page_title="LEXIS", page_icon="💜", layout="wide")
+st.set_page_config(page_title="LEXIS", page_icon="🖤", layout="wide")
 
 # ── Load API Key ────────────────────────────────────────────
 try:
@@ -14,19 +14,20 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── Purple + Pink UI ───────────────────────────────────────
+# ── Black + Gold Luxury UI ──────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
 
 .stApp {
-    background: #160f2e;  /* Deep purple */
-    font-family: 'Space Grotesk', sans-serif;
+    background: #0b0b0f;
+    color: #f5f5f5;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Layout */
 .block-container {
-    max-width: 1150px;
+    max-width: 1200px;
     margin: auto;
     padding-top: 70px;
 }
@@ -35,84 +36,88 @@ st.markdown("""
 .hero-title {
     font-size: 4.5rem;
     font-weight: 800;
-    color: #ff4fd8;   /* Pink headline */
-    letter-spacing: -1px;
+    letter-spacing: -2px;
+    background: linear-gradient(90deg,#f5d97b,#c9a227,#f5d97b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero-sub {
     font-size: 1.1rem;
-    color: #ff9cf3;   /* Soft pink subtitle */
+    margin-top: 12px;
     margin-bottom: 45px;
+    color: #c9a227;
+    letter-spacing: 1px;
 }
 
 /* Navigation */
 div[role="radiogroup"] {
     justify-content: center;
-    gap: 18px;
-    margin-bottom: 35px;
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
 div[role="radiogroup"] > label {
-    background: #2a1f4f;
-    padding: 12px 28px;
+    background: #111117;
+    padding: 12px 30px;
     border-radius: 999px;
     font-weight: 600;
-    color: #ff9cf3 !important;
-    border: 1px solid #ff4fd8;
+    color: #f5d97b !important;
+    border: 1px solid #c9a227;
 }
 
 /* Section Card */
 .section-card {
-    background: #211542;
-    padding: 35px;
+    background: #121218;
+    padding: 40px;
     border-radius: 20px;
-    border: 1px solid #3b2c6b;
-    margin-bottom: 35px;
+    border: 1px solid #2a2a35;
+    margin-bottom: 40px;
 }
 
 /* Inputs */
 textarea, input {
-    background: #2a1f4f !important;
-    border: 1px solid #ff4fd8 !important;
+    background: #0f0f14 !important;
+    border: 1px solid #c9a227 !important;
     border-radius: 14px !important;
-    padding: 16px !important;
+    padding: 18px !important;
     color: #ffffff !important;
     font-size: 15px !important;
 }
 
 /* Button */
 .stButton > button {
-    background: #ff4fd8;
-    color: #160f2e !important;
+    background: linear-gradient(90deg,#f5d97b,#c9a227);
+    color: #000 !important;
     border-radius: 14px !important;
-    padding: 12px !important;
+    padding: 14px !important;
     font-weight: 700 !important;
     border: none !important;
 }
 
 /* Section Headings */
 h3, h4 {
-    color: #ff4fd8 !important;
+    color: #f5d97b !important;
 }
 
 /* Keywords */
 .keyword-chip {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 10px 22px;
     border-radius: 999px;
-    margin: 8px;
+    margin: 10px;
     font-size: 14px;
     font-weight: 600;
-    background: #2a1f4f;
-    color: #ff9cf3;
-    border: 1px solid #ff4fd8;
+    background: #111117;
+    color: #f5d97b;
+    border: 1px solid #c9a227;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Header ─────────────────────────────────────────
 st.markdown('<div class="hero-title">LEXIS</div>', unsafe_allow_html=True)
-st.markdown('<div class="hero-sub">AI-powered keyword extraction for modern web content.</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-sub">LUXURY AI KEYWORD EXTRACTION</div>', unsafe_allow_html=True)
 
 # ── Keyword Extraction ─────────────────────────────
 def extract_keywords(text):
@@ -165,14 +170,14 @@ st.markdown('<div class="section-card">', unsafe_allow_html=True)
 
 if mode=="📄 Text Input":
     text_input=st.text_area("",height=220,placeholder="Paste your content here...")
-    if st.button("Extract Keywords"):
+    if st.button("EXTRACT KEYWORDS"):
         if text_input.strip():
             with st.spinner("Analyzing..."):
                 st.session_state.kws=extract_keywords(text_input)
 
 elif mode=="🌐 URL Input":
     url_input=st.text_input("",placeholder="https://example.com/article")
-    if st.button("Extract from URL"):
+    if st.button("EXTRACT FROM URL"):
         if url_input.startswith("http"):
             with st.spinner("Fetching..."):
                 content=fetch_url_content(url_input)
@@ -190,7 +195,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 if "kws" in st.session_state:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown("### Extracted Keywords")
+    st.markdown("### EXTRACTED KEYWORDS")
     chips=""
     for k in st.session_state.kws:
         chips+=f'<span class="keyword-chip">{k["keyword"]}</span>'
