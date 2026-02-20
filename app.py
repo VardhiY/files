@@ -19,7 +19,7 @@ except:
     st.error("⚠️ GROQ_API_KEY missing in Streamlit secrets.")
     st.stop()
 
-# ── Premium CSS ─────────────────────────────────────────────
+# ── Premium CSS (Safe — no HTML rendering issues) ──────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap');
@@ -44,33 +44,6 @@ st.markdown("""
     text-align: center;
     color: #a0a0c0;
     margin-bottom: 2rem;
-}
-
-.stat-container {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    margin-bottom: 2rem;
-}
-
-.stat-box {
-    background: linear-gradient(145deg,#14141d,#101018);
-    border: 1px solid #2a2a3d;
-    border-radius: 16px;
-    padding: 1rem 1.2rem;
-    text-align: center;
-    min-width: 90px;
-}
-
-.stat-number {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #f5d97b;
-}
-
-.stat-label {
-    font-size: 0.65rem;
-    color: #8b8ba7;
 }
 
 .stButton > button {
@@ -102,32 +75,6 @@ st.markdown("""
 # ── Header ─────────────────────────────────────────────────
 st.markdown('<div class="main-title">LEXIS</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Extract high-signal keywords from text or URLs using Groq AI.</div>', unsafe_allow_html=True)
-
-# ── Stats Cards ─────────────────────────────────────────────
-st.markdown("""
-<div class="stat-container">
-    <div class="stat-box">
-        <div class="stat-number">5,000</div>
-        <div class="stat-label">MAX CHARS</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-number">2048</div>
-        <div class="stat-label">MAX URL LEN</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-number">20</div>
-        <div class="stat-label">MAX KEYWORDS</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-number">&lt;1s</div>
-        <div class="stat-label">AVG RESPONSE</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-number">40+</div>
-        <div class="stat-label">BLOCKED SITES</div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
 
 # ── Keyword Extraction ─────────────────────────────────────
 def extract_keywords(text):
@@ -206,49 +153,44 @@ elif mode == "🌐 URL Input":
             with st.spinner("Extracting..."):
                 st.session_state.kws = extract_keywords(content)
 
-# ── URL GUIDELINES ─────────────────────────────────────────
+# ── URL GUIDELINES (SAFE VERSION) ─────────────────────────
 elif mode == "📘 URL Guidelines":
 
-    st.markdown("""
-    <div style="margin-top:2rem">
+    st.markdown("## 📘 URL Guidelines")
+    st.markdown("This tool extracts visible text from publicly accessible HTML pages only.")
+    st.markdown("---")
 
-        <div style="background:linear-gradient(145deg,#14141d,#101018);
-                    border:1px solid #2a2a3d;
-                    border-radius:16px;
-                    padding:1.5rem;
-                    margin-bottom:1rem;">
-            <h4 style="color:#f5d97b;">✔ Supported</h4>
-            <p style="color:#a0a0c0;">
-                Public blogs, news (no paywall), Wikipedia, company pages,
-                documentation sites.
-            </p>
-        </div>
+    col1, col2 = st.columns(2)
 
-        <div style="background:linear-gradient(145deg,#14141d,#101018);
-                    border:1px solid #2a2a3d;
-                    border-radius:16px;
-                    padding:1.5rem;
-                    margin-bottom:1rem;">
-            <h4 style="color:#ff6b6b;">✖ Not Supported</h4>
-            <p style="color:#a0a0c0;">
-                PDF, Word, Excel, PowerPoint files, image links,
-                paywalled content.
-            </p>
-        </div>
+    with col1:
+        st.markdown("### ✔ Supported")
+        st.success("""
+• Public blog posts  
+• News articles (no paywall)  
+• Wikipedia pages  
+• Company & product pages  
+• Documentation sites  
+• Government & NGO pages  
+        """)
 
-        <div style="background:linear-gradient(145deg,#14141d,#101018);
-                    border:1px solid #2a2a3d;
-                    border-radius:16px;
-                    padding:1.5rem;">
-            <h4 style="color:#ffa94d;">🔒 Restricted</h4>
-            <p style="color:#a0a0c0;">
-                Login-required pages, Google Docs, Drive links,
-                private dashboards.
-            </p>
-        </div>
+    with col2:
+        st.markdown("### ✖ Not Supported")
+        st.error("""
+• PDF files  
+• Word / Excel / PowerPoint files  
+• Image links (.jpg, .png, .svg)  
+• Paywalled content  
+        """)
 
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("---")
+
+    st.markdown("### 🔒 Restricted Pages")
+    st.warning("""
+• Login-required pages  
+• Google Docs / Drive links  
+• Private dashboards  
+• Social media requiring authentication  
+    """)
 
 # ── Results ────────────────────────────────────────────────
 if "kws" in st.session_state:
