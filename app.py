@@ -22,7 +22,7 @@ except:
 # ── FUTURISTIC AI CSS ───────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Inter:wght@400;600;700&display=swap');
 
 .stApp {
     background:
@@ -48,12 +48,12 @@ st.markdown("""
     animation: shine 4s linear infinite;
 }
 
-/* SHINE ANIMATION */
+/* Shine animation */
 @keyframes shine {
     to { background-position: 200% center; }
 }
 
-/* DECORATIVE LINE */
+/* Decorative title line */
 .title-line {
     width: 200px;
     height: 4px;
@@ -63,7 +63,7 @@ st.markdown("""
     box-shadow: 0 0 15px rgba(0,255,255,0.6);
 }
 
-/* SUBTITLE */
+/* Subtitle */
 .subtitle {
     text-align: center;
     font-size: 1.4rem;
@@ -72,45 +72,54 @@ st.markdown("""
     font-weight: 700;
 }
 
-/* NAVIGATION */
+/* Navigation */
 div[role="radiogroup"] {
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: 4rem;
     margin-bottom: 2.5rem;
     font-size: 1.2rem;
     font-weight: 700;
+    position: relative;
 }
 
-/* GLASS PANEL */
-.glass {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(0,255,255,0.3);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0,255,255,0.15);
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-/* INPUTS */
-textarea, input {
-    background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(0,255,255,0.5) !important;
-    border-radius: 18px !important;
-    color: white !important;
-    padding: 1.2rem !important;
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-}
-
-textarea:focus, input:focus {
-    border: 1px solid #00ffff !important;
+/* Decorative slash under nav */
+div[role="radiogroup"]::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 4px;
+    border-radius: 5px;
+    background: linear-gradient(90deg,#00ffff,#8a2be2);
     box-shadow: 0 0 20px rgba(0,255,255,0.7);
 }
 
-/* BUTTON */
+/* Premium Text Area */
+textarea {
+    background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)) !important;
+    border: 2px solid rgba(0,255,255,0.6) !important;
+    border-radius: 22px !important;
+    color: white !important;
+    padding: 1.4rem !important;
+    font-size: 1.15rem !important;
+    font-weight: 600 !important;
+    box-shadow:
+        inset 0 0 20px rgba(0,255,255,0.1),
+        0 0 25px rgba(0,255,255,0.15);
+    transition: all 0.3s ease;
+}
+
+textarea:focus {
+    border: 2px solid #00ffff !important;
+    box-shadow:
+        inset 0 0 25px rgba(0,255,255,0.2),
+        0 0 35px rgba(0,255,255,0.5);
+}
+
+/* Buttons */
 .stButton > button {
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     border-radius: 40px !important;
@@ -128,7 +137,7 @@ textarea:focus, input:focus {
     box-shadow: 0 0 30px rgba(0,255,255,0.8);
 }
 
-/* KEYWORD CHIPS */
+/* Keyword Chips */
 .keyword-chip {
     display: inline-block;
     padding: 0.8rem 1.8rem;
@@ -145,13 +154,18 @@ textarea:focus, input:focus {
     transform: scale(1.1);
 }
 
-/* SECTION TITLE */
+/* Section Title */
 .section-title {
     font-size: 2rem;
     font-weight: 800;
     margin-top: 3rem;
     margin-bottom: 1.5rem;
     letter-spacing: 2px;
+}
+
+.block-container {
+    padding-top: 2rem;
+    max-width: 1100px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -203,8 +217,10 @@ elif mode == "🌐 URL INPUT":
 
 # ── GUIDELINES ───────────────────────────
 elif mode == "📘 GUIDELINES":
-    st.markdown('<div class="glass">✔ Supported: Public blogs, Wikipedia, company pages.</div>', unsafe_allow_html=True)
-    st.markdown('<div class="glass">✖ Not Supported: PDF, images, paywalled content.</div>', unsafe_allow_html=True)
+    st.markdown("### ✔ Supported")
+    st.write("Public blogs, Wikipedia, company pages.")
+    st.markdown("### ✖ Not Supported")
+    st.write("PDF, images, paywalled content.")
 
 # ── RESULTS ──────────────────────────────
 if "kws" in st.session_state:
