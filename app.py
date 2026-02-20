@@ -5,137 +5,138 @@ import re
 import urllib.request
 from html.parser import HTMLParser
 
-# ─────────────────────────────────────────
-# PAGE CONFIG
-# ─────────────────────────────────────────
+# ── Page Config ─────────────────────────────────────────────
 st.set_page_config(
     page_title="LEXIS - AI Keyword Finder",
     page_icon="🔍",
     layout="wide"
 )
 
-# ─────────────────────────────────────────
-# LOAD API KEY
-# ─────────────────────────────────────────
+# ── Load API Key ────────────────────────────────────────────
 try:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 except:
     st.error("⚠️ GROQ_API_KEY missing in Streamlit secrets.")
     st.stop()
 
-# ─────────────────────────────────────────
-# ADVANCED PROFESSIONAL UI
-# ─────────────────────────────────────────
+# ── Advanced Mobile-App Style UI ───────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 .stApp {
-    background: radial-gradient(circle at 15% 20%, #141b2d 0%, #0b0f1a 60%);
-    color: #e8eaf2;
-    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #5f6bff, #b06ab3);
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Main White Container */
 .block-container {
-    padding-top: 3rem;
-    max-width: 1200px;
+    max-width: 950px;
+    margin: 3rem auto;
+    padding: 2.5rem 3rem;
+    background: #ffffff;
+    border-radius: 28px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.25);
 }
 
-/* HEADER */
+/* Header */
 .main-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 700;
     text-align: center;
-    background: linear-gradient(180deg,#f5d97b,#c9a227);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.6rem;
+    color: #5f6bff;
+    margin-bottom: 0.3rem;
 }
 
 .subtitle {
     text-align: center;
-    color: #aab2c5;
-    font-size: 1.1rem;
-    margin-bottom: 3rem;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
 }
 
-/* NAVIGATION */
+/* Navigation Pills */
 div[role="radiogroup"] {
     justify-content: center;
-    gap: 3rem;
-    background: rgba(255,255,255,0.03);
-    padding: 1rem 2rem;
-    border-radius: 18px;
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.05);
+    gap: 1.5rem;
 }
 
-/* INPUTS */
+div[role="radiogroup"] > label {
+    background: #f3f4ff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+div[role="radiogroup"] > label:hover {
+    background: #5f6bff;
+    color: white;
+}
+
+/* Inputs */
 textarea, input {
-    background-color: #121826 !important;
-    border: 1px solid #2a3244 !important;
+    background: #f6f7ff !important;
+    border: none !important;
     border-radius: 14px !important;
-    color: #e8eaf2 !important;
     padding: 0.9rem !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
 }
 
-textarea:focus, input:focus {
-    border-color: #c9a227 !important;
-    box-shadow: 0 0 0 2px rgba(201,162,39,0.25);
-}
-
-/* BUTTON */
+/* Buttons */
 .stButton > button {
-    width: 100%;
-    background: linear-gradient(135deg,#c9a227,#f5d97b);
-    color: #000 !important;
-    font-weight: 600 !important;
-    border-radius: 14px !important;
+    background: linear-gradient(135deg,#ff8a00,#e52e71);
+    color: white !important;
+    border-radius: 16px !important;
+    border: none !important;
     padding: 0.9rem !important;
+    font-weight: 600 !important;
     font-size: 1rem !important;
-    transition: 0.25s ease;
+    box-shadow: 0 8px 20px rgba(229,46,113,0.3);
+    transition: 0.2s;
 }
 
 .stButton > button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(201,162,39,0.35);
+    box-shadow: 0 12px 25px rgba(229,46,113,0.4);
 }
 
-/* KEYWORD CHIPS */
+/* Keyword Chips */
 .keyword-chip {
     display: inline-block;
-    padding: 0.6rem 1.3rem;
+    padding: 0.5rem 1.2rem;
     border-radius: 999px;
-    font-size: 0.95rem;
-    margin: 0.5rem;
-    background: rgba(201,162,39,0.15);
-    border: 1px solid rgba(201,162,39,0.5);
-    color: #f5d97b;
+    font-size: 0.9rem;
+    margin: 0.4rem;
+    background: linear-gradient(135deg,#5f6bff,#b06ab3);
+    color: white;
     font-weight: 500;
-    transition: 0.25s ease;
+    box-shadow: 0 6px 15px rgba(95,107,255,0.3);
+    transition: 0.2s;
 }
 
 .keyword-chip:hover {
-    background: rgba(201,162,39,0.25);
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(95,107,255,0.4);
+}
+
+/* Alert Boxes */
+.stSuccess, .stError, .stWarning {
+    border-radius: 18px !important;
+    padding: 1.2rem !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────
-# HEADER
-# ─────────────────────────────────────────
+# ── Header ─────────────────────────────────────────────────
 st.markdown('<div class="main-title">LEXIS</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="subtitle">AI-powered semantic keyword extraction for text and web content.</div>',
     unsafe_allow_html=True
 )
 
-# ─────────────────────────────────────────
-# KEYWORD EXTRACTION
-# ─────────────────────────────────────────
+# ── Keyword Extraction ─────────────────────────────────────
 def extract_keywords(text):
     prompt = f"""
 Extract top 10 important keywords from the text.
@@ -154,9 +155,7 @@ TEXT:
     cleaned = re.sub(r'```json|```', '', response.choices[0].message.content.strip())
     return json.loads(cleaned)
 
-# ─────────────────────────────────────────
-# URL EXTRACTOR
-# ─────────────────────────────────────────
+# ── URL Extractor ──────────────────────────────────────────
 class TextExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -189,18 +188,14 @@ def fetch_url_content(url):
     parser.feed(html)
     return parser.get_text()
 
-# ─────────────────────────────────────────
-# NAVIGATION
-# ─────────────────────────────────────────
+# ── Navigation ─────────────────────────────────────────────
 mode = st.radio(
     "",
     ["📄 Text Input", "🌐 URL Input", "📘 URL Guidelines"],
     horizontal=True
 )
 
-# ─────────────────────────────────────────
-# TEXT INPUT
-# ─────────────────────────────────────────
+# ── TEXT INPUT ─────────────────────────────────────────────
 if mode == "📄 Text Input":
     text_input = st.text_area("", height=220, placeholder="Paste article, blog, or content here...")
     if st.button("Extract Keywords"):
@@ -208,9 +203,7 @@ if mode == "📄 Text Input":
             with st.spinner("Analyzing content..."):
                 st.session_state.kws = extract_keywords(text_input)
 
-# ─────────────────────────────────────────
-# URL INPUT
-# ─────────────────────────────────────────
+# ── URL INPUT ──────────────────────────────────────────────
 elif mode == "🌐 URL Input":
     url_input = st.text_input("", placeholder="https://example.com/article")
     if st.button("Extract from URL"):
@@ -219,9 +212,7 @@ elif mode == "🌐 URL Input":
                 content = fetch_url_content(url_input)
                 st.session_state.kws = extract_keywords(content)
 
-# ─────────────────────────────────────────
-# URL GUIDELINES
-# ─────────────────────────────────────────
+# ── URL GUIDELINES ─────────────────────────────────────────
 elif mode == "📘 URL Guidelines":
 
     st.markdown("## 📘 URL Guidelines")
@@ -232,20 +223,20 @@ elif mode == "📘 URL Guidelines":
 
     with col1:
         st.success("""
-✔ Public blog posts  
-✔ News articles (no paywall)  
-✔ Wikipedia pages  
-✔ Company & product pages  
-✔ Documentation sites  
-✔ Government & NGO pages  
+• Public blog posts  
+• News articles (no paywall)  
+• Wikipedia pages  
+• Company & product pages  
+• Documentation sites  
+• Government & NGO pages  
         """)
 
     with col2:
         st.error("""
-✖ PDF files  
-✖ Word / Excel / PowerPoint files  
-✖ Image links (.jpg, .png, .svg)  
-✖ Paywalled content  
+• PDF files  
+• Word / Excel / PowerPoint files  
+• Image links (.jpg, .png, .svg)  
+• Paywalled content  
         """)
 
     st.warning("""
@@ -256,9 +247,7 @@ elif mode == "📘 URL Guidelines":
 • Social media requiring authentication  
     """)
 
-# ─────────────────────────────────────────
-# RESULTS
-# ─────────────────────────────────────────
+# ── Results ────────────────────────────────────────────────
 if "kws" in st.session_state:
     st.markdown("---")
     st.markdown("### 🔎 Extracted Keywords")
