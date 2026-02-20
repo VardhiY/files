@@ -19,7 +19,7 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── PREMIUM AI CSS ──────────────────────────
+# ── STYLING ─────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Inter:wght@400;600;700&display=swap');
@@ -33,6 +33,7 @@ st.markdown("""
     color: white;
 }
 
+/* Title */
 .main-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 4rem;
@@ -41,17 +42,17 @@ st.markdown("""
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
 }
 
 .subtitle {
     text-align: center;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: #b0c4ff;
     margin-bottom: 3rem;
     font-weight: 600;
 }
 
+/* Inputs */
 textarea, input {
     background: rgba(255,255,255,0.08) !important;
     border: 2px solid rgba(0,255,255,0.6) !important;
@@ -62,6 +63,7 @@ textarea, input {
     font-weight: 600 !important;
 }
 
+/* Button */
 .stButton > button {
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     border-radius: 40px !important;
@@ -72,32 +74,15 @@ textarea, input {
     color: black !important;
 }
 
+/* Keyword Chips */
 .keyword-chip {
     display: inline-block;
-    padding: 0.8rem 1.8rem;
-    margin: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    margin: 0.4rem;
     border-radius: 50px;
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     color: black;
     font-weight: 800;
-}
-
-.guideline-box {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(0,255,255,0.3);
-    padding: 1.5rem;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-}
-
-.guideline-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    background: linear-gradient(90deg,#00ffff,#8a2be2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -106,10 +91,10 @@ textarea, input {
 st.markdown('<div class="main-title">LEXIS AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Next-Generation Intelligent Keyword Engine</div>', unsafe_allow_html=True)
 
-# ── LAYOUT (LEFT = WORK AREA, RIGHT = GUIDELINES) ─────────
+# ── LAYOUT ─────────────────────────────
 left, right = st.columns([2.5, 1])
 
-# ── LEFT SIDE ────────────────────────────
+# ── LEFT SIDE (WORK AREA) ─────────────────
 with left:
 
     mode = st.radio("",["📄 TEXT INPUT","🌐 URL INPUT"],horizontal=True)
@@ -169,17 +154,43 @@ TEXT:
             chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
         st.markdown(chips, unsafe_allow_html=True)
 
-# ── RIGHT SIDE (ALWAYS VISIBLE GUIDELINES) ─────────────
+# ── RIGHT SIDE (GUIDELINES PANEL) ─────────
 with right:
-    st.markdown('<div class="guideline-box">', unsafe_allow_html=True)
-    st.markdown('<div class="guideline-title">📘 GUIDELINES</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(0,255,255,0.3);
+        padding: 1.8rem;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+    ">
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <h2 style="
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        background: linear-gradient(90deg,#00ffff,#8a2be2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1.2rem;
+    ">
+    📘 GUIDELINES
+    </h2>
+    """, unsafe_allow_html=True)
+
     st.write("✔ Public blogs")
     st.write("✔ Wikipedia pages")
     st.write("✔ Company sites")
     st.write("✔ Documentation sites")
-    st.write("---")
+
+    st.markdown("---")
+
     st.write("✖ PDF files")
     st.write("✖ Image links")
     st.write("✖ Paywalled content")
     st.write("✖ Login required pages")
-    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
