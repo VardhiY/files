@@ -22,7 +22,7 @@ except:
 # ── FUTURISTIC AI CSS ───────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;600;700&display=swap');
 
 .stApp {
     background:
@@ -33,104 +33,133 @@ st.markdown("""
     color: white;
 }
 
-/* HEADER */
+/* MAIN TITLE */
 .main-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 3.8rem;
-    font-weight: 800;
+    font-size: 4.5rem;
+    font-weight: 900;
     text-align: center;
-    background: linear-gradient(90deg,#00ffff,#8a2be2);
+    background: linear-gradient(90deg,#00ffff,#8a2be2,#00ffff);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     margin-bottom: 0.5rem;
+    animation: shine 4s linear infinite;
 }
 
+/* SHINE ANIMATION */
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+/* DECORATIVE LINE */
+.title-line {
+    width: 200px;
+    height: 4px;
+    margin: 0 auto 2rem auto;
+    border-radius: 5px;
+    background: linear-gradient(90deg,#00ffff,#8a2be2);
+    box-shadow: 0 0 15px rgba(0,255,255,0.6);
+}
+
+/* SUBTITLE */
 .subtitle {
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     color: #b0c4ff;
-    margin-bottom: 2.5rem;
-    font-weight: 600;
+    margin-bottom: 3rem;
+    font-weight: 700;
 }
 
-/* CENTER NAV */
+/* NAVIGATION */
 div[role="radiogroup"] {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
-/* GLASS PANELS */
+/* GLASS PANEL */
 .glass {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0,255,255,0.2);
-    padding: 1.5rem;
-    border-radius: 18px;
-    box-shadow: 0 0 20px rgba(0,255,255,0.1);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(0,255,255,0.3);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0,255,255,0.15);
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 /* INPUTS */
 textarea, input {
-    background: rgba(255,255,255,0.06) !important;
-    border: 1px solid rgba(0,255,255,0.4) !important;
-    border-radius: 16px !important;
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(0,255,255,0.5) !important;
+    border-radius: 18px !important;
     color: white !important;
-    padding: 1rem !important;
-    font-weight: 500 !important;
+    padding: 1.2rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
 }
 
 textarea:focus, input:focus {
     border: 1px solid #00ffff !important;
-    box-shadow: 0 0 18px rgba(0,255,255,0.6);
+    box-shadow: 0 0 20px rgba(0,255,255,0.7);
 }
 
 /* BUTTON */
 .stButton > button {
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     border-radius: 40px !important;
-    padding: 0.8rem 2.5rem !important;
-    font-weight: 700 !important;
+    padding: 1rem 3rem !important;
+    font-weight: 800 !important;
+    font-size: 1.1rem !important;
     border: none !important;
     color: black !important;
+    letter-spacing: 2px;
     transition: 0.3s ease;
-    letter-spacing: 1px;
 }
 
 .stButton > button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 25px rgba(0,255,255,0.7);
+    transform: translateY(-4px);
+    box-shadow: 0 0 30px rgba(0,255,255,0.8);
 }
 
 /* KEYWORD CHIPS */
 .keyword-chip {
     display: inline-block;
-    padding: 0.6rem 1.4rem;
-    margin: 0.4rem;
-    border-radius: 40px;
+    padding: 0.8rem 1.8rem;
+    margin: 0.5rem;
+    border-radius: 50px;
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     color: black;
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1rem;
     transition: 0.2s ease;
 }
 
 .keyword-chip:hover {
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
 
-/* REMOVE EXTRA GAPS */
-.block-container {
-    padding-top: 2rem;
-    max-width: 1100px;
+/* SECTION TITLE */
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ── HEADER ─────────────────────────────
 st.markdown('<div class="main-title">LEXIS AI</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Next-Gen Intelligent Keyword Engine</div>', unsafe_allow_html=True)
+st.markdown('<div class="title-line"></div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Next-Generation Intelligent Keyword Engine</div>', unsafe_allow_html=True)
 
 # ── KEYWORD FUNCTION ─────────────────────
 def extract_keywords(text):
@@ -156,7 +185,7 @@ mode = st.radio("",["📄 TEXT INPUT","🌐 URL INPUT","📘 GUIDELINES"],horizo
 
 # ── TEXT MODE ────────────────────────────
 if mode == "📄 TEXT INPUT":
-    text_input = st.text_area("", height=220, placeholder="Paste your content here...")
+    text_input = st.text_area("", height=250, placeholder="Paste your content here...")
     if st.button("EXTRACT KEYWORDS"):
         if text_input.strip():
             with st.spinner("AI analyzing..."):
@@ -174,12 +203,12 @@ elif mode == "🌐 URL INPUT":
 
 # ── GUIDELINES ───────────────────────────
 elif mode == "📘 GUIDELINES":
-    st.markdown('<div class="glass"><b>✔ Supported:</b><br>Public blogs, Wikipedia, company pages.</div>', unsafe_allow_html=True)
-    st.markdown('<div class="glass"><b>✖ Not Supported:</b><br>PDF, images, paywalled content.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="glass">✔ Supported: Public blogs, Wikipedia, company pages.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="glass">✖ Not Supported: PDF, images, paywalled content.</div>', unsafe_allow_html=True)
 
 # ── RESULTS ──────────────────────────────
 if "kws" in st.session_state:
-    st.markdown("### 🚀 Extracted Keywords")
+    st.markdown('<div class="section-title">🚀 EXTRACTED KEYWORDS</div>', unsafe_allow_html=True)
     chips = ""
     for k in st.session_state.kws:
         chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
