@@ -36,7 +36,6 @@ st.markdown("""
     padding-top: 1.5rem;
 }
 
-/* Title */
 .main-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 4rem;
@@ -54,7 +53,6 @@ st.markdown("""
     color: #b0c4ff;
 }
 
-/* Inputs */
 textarea, input {
     background: rgba(255,255,255,0.08) !important;
     border: 2px solid rgba(0,255,255,0.6) !important;
@@ -64,7 +62,6 @@ textarea, input {
     font-size: 1.1rem !important;
 }
 
-/* Button */
 .stButton > button {
     background: linear-gradient(90deg,#00ffff,#8a2be2);
     border-radius: 40px !important;
@@ -74,7 +71,6 @@ textarea, input {
     color: black !important;
 }
 
-/* Keyword Chips */
 .keyword-chip {
     display: inline-block;
     padding: 0.6rem 1.3rem;
@@ -91,10 +87,10 @@ textarea, input {
 st.markdown('<div class="main-title">LEXIS AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Next-Generation Intelligent Keyword Engine</div>', unsafe_allow_html=True)
 
-# ── TWO COLUMN LAYOUT ──────────────
+# ── LAYOUT ─────────────────────────
 left, right = st.columns([2.5, 1])
 
-# ── LEFT COLUMN (WORK AREA ONLY) ───
+# ── LEFT SIDE ──────────────────────
 with left:
 
     mode = st.radio("", ["📄 TEXT INPUT", "🌐 URL INPUT"], horizontal=True)
@@ -155,7 +151,7 @@ TEXT:
             chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
         st.markdown(chips, unsafe_allow_html=True)
 
-# ── RIGHT COLUMN (GUIDELINES ONLY — NO INPUTS HERE) ───────
+# ── RIGHT SIDE (ONLY GUIDELINES — NO INPUTS HERE) ─────────
 with right:
 
     st.markdown("""
