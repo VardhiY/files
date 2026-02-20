@@ -20,14 +20,18 @@ except:
     st.stop()
 
 # ─────────────────────────────────────────
-# Premium Black + Gold CSS
+# Premium Black + Gold CSS (UPDATED BACKGROUND)
 # ─────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Montserrat:wght@400;600;700;800&display=swap');
 
+/* 🌟 NEW LUXURY BACKGROUND */
 .stApp {
-    background: #070708;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(201,162,39,0.08), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(201,162,39,0.06), transparent 40%),
+        linear-gradient(135deg, #0a0a0f, #050507 60%);
     color: #ffffff;
     font-family: 'Montserrat', sans-serif;
 }
