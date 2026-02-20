@@ -62,7 +62,7 @@ st.markdown("""
     box-shadow: 0 0 20px rgba(0,255,255,0.8);
 }
 
-/* SUBTITLE */
+/* Subtitle */
 .subtitle {
     text-align: center;
     font-size: 1.4rem;
@@ -71,15 +71,16 @@ st.markdown("""
     font-weight: 700;
 }
 
-/* NAVIGATION LABELS */
+/* NAVIGATION TEXT (VISIBLE FIXED VERSION) */
 div[role="radiogroup"] label {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Orbitron', sans-serif !important;
     font-weight: 800 !important;
     font-size: 1.3rem !important;
     background: linear-gradient(90deg,#00ffff,#8a2be2,#00ffff);
     background-size: 200% auto;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: initial !important; /* FIX */
+    color: #00ffff !important;
     animation: shine 4s linear infinite;
 }
 
