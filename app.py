@@ -5,162 +5,148 @@ import re
 import urllib.request
 from html.parser import HTMLParser
 
-# ── Page Config ─────────────────────────────────────────────
+# ── Page Config ─────────────────────────────
 st.set_page_config(
     page_title="LEXIS - AI Keyword Finder",
     page_icon="🔍",
     layout="wide"
 )
 
-# ── Load API Key ────────────────────────────────────────────
+# ── Load API Key ────────────────────────────
 try:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 except:
     st.error("⚠️ GROQ_API_KEY missing in Streamlit secrets.")
     st.stop()
 
-# ── ULTRA PREMIUM UI ───────────────────────────────────────
+# ── CREATIVE WEB DESIGN STYLE UI ───────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-:root {
-    --primary: #1e3a8a;
-    --primary-soft: #3b82f6;
-    --bg: #0b1120;
-    --panel: #111827;
-    --border: rgba(255,255,255,0.06);
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600&display=swap');
 
 .stApp {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg);
-    color: #e5e7eb;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg,#ff6a88,#ff8a00,#6a5af9,#00c9ff);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    color: white;
 }
 
-/* Remove Streamlit padding */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Remove default spacing */
 .block-container {
-    padding: 0 !important;
-    max-width: 100% !important;
+    padding-top: 2rem;
+    max-width: 1100px;
 }
 
-/* Main Floating Panel */
-.main-panel {
-    max-width: 1100px;
-    margin: 80px auto;
-    background: var(--panel);
-    border-radius: 32px;
+/* Floating Card */
+.main-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(25px);
+    border-radius: 30px;
     padding: 60px;
-    box-shadow:
-        0 40px 100px rgba(0,0,0,0.6),
-        inset 0 0 0 1px var(--border);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.3);
     animation: fadeIn 0.8s ease;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px);}
-    to { opacity: 1; transform: translateY(0);}
+    from { opacity:0; transform:translateY(30px);}
+    to { opacity:1; transform:translateY(0);}
 }
 
 /* Header */
 .main-title {
-    font-size: 3rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 4rem;
     font-weight: 800;
-    letter-spacing: 1px;
-    text-align: center;
-    color: white;
+    letter-spacing: 2px;
 }
 
 .subtitle {
-    text-align: center;
-    opacity: 0.6;
+    font-size: 1.1rem;
     margin-top: 10px;
-    margin-bottom: 50px;
+    opacity: 0.9;
 }
 
 /* Tabs */
 div[role="radiogroup"] {
-    justify-content: center;
-    gap: 14px;
-    margin-bottom: 40px;
+    margin-top: 40px;
+    gap: 20px;
 }
 
 div[role="radiogroup"] > label {
-    background: #0f172a;
-    border: 1px solid var(--border);
-    padding: 10px 22px;
-    border-radius: 14px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 25px;
+    border-radius: 999px;
     font-weight: 500;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 div[role="radiogroup"] > label:hover {
-    background: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(30,58,138,0.4);
+    background: white;
+    color: #6a5af9 !important;
+    transform: scale(1.05);
 }
 
 /* Inputs */
 textarea, input {
-    background: #0f172a !important;
-    border: 1px solid var(--border) !important;
+    background: rgba(255,255,255,0.2) !important;
+    border: none !important;
     border-radius: 20px !important;
     padding: 20px !important;
     font-size: 16px !important;
-    transition: all 0.25s ease !important;
-}
-
-textarea:focus, input:focus {
-    border: 1px solid var(--primary-soft) !important;
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+    color: white !important;
+    backdrop-filter: blur(10px);
 }
 
 /* Button */
 .stButton > button {
-    background: var(--primary);
-    border-radius: 18px !important;
-    padding: 16px !important;
-    font-size: 16px !important;
+    background: linear-gradient(90deg,#6a5af9,#00c9ff);
+    border-radius: 20px !important;
+    border: none !important;
+    padding: 15px !important;
     font-weight: 600 !important;
-    transition: 0.3s ease;
-    box-shadow: 0 10px 25px rgba(30,58,138,0.4);
+    font-size: 16px !important;
+    transition: all 0.3s ease;
 }
 
 .stButton > button:hover {
-    background: var(--primary-soft);
-    transform: translateY(-3px);
-    box-shadow: 0 20px 40px rgba(59,130,246,0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 /* Keywords */
 .keyword-chip {
     display: inline-block;
-    padding: 12px 24px;
+    padding: 12px 28px;
     border-radius: 999px;
-    margin: 8px;
+    margin: 10px;
     font-size: 14px;
     font-weight: 500;
-    background: #0f172a;
-    border: 1px solid var(--border);
-    transition: 0.25s ease;
+    background: rgba(255,255,255,0.25);
+    transition: all 0.3s ease;
 }
 
 .keyword-chip:hover {
-    background: var(--primary);
+    background: white;
+    color: #6a5af9 !important;
     transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(30,58,138,0.4);
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Floating wrapper
-st.markdown('<div class="main-panel">', unsafe_allow_html=True)
+st.markdown('<div class="main-card">', unsafe_allow_html=True)
 
 # Header
 st.markdown('<div class="main-title">LEXIS</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Advanced AI-powered semantic keyword extraction.</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Creative AI-powered keyword extraction for modern web content.</div>', unsafe_allow_html=True)
 
-# ── Keyword Extraction ─────────────────────────────────────
+# ── Keyword Extraction Logic (UNCHANGED) ─────────────
 def extract_keywords(text):
     prompt = f"""
 Extract top 10 important keywords from the text.
@@ -179,7 +165,7 @@ TEXT:
     cleaned = re.sub(r'```json|```', '', response.choices[0].message.content.strip())
     return json.loads(cleaned)
 
-# URL extractor (unchanged)
+# URL Extractor (unchanged)
 class TextExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -209,7 +195,7 @@ def fetch_url_content(url):
 mode = st.radio("", ["📄 Text Input", "🌐 URL Input", "📘 URL Guidelines"], horizontal=True)
 
 if mode == "📄 Text Input":
-    text_input = st.text_area("", height=220, placeholder="Paste content here...")
+    text_input = st.text_area("", height=220, placeholder="Paste article or content here...")
     if st.button("Extract Keywords"):
         if text_input.strip():
             with st.spinner("Analyzing..."):
