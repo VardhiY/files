@@ -5,7 +5,7 @@ import re
 import urllib.request
 from html.parser import HTMLParser
 
-st.set_page_config(page_title="LEXIS", page_icon="🔮", layout="wide")
+st.set_page_config(page_title="LEXIS", page_icon="💜", layout="wide")
 
 # ── Load API Key ────────────────────────────────────────────
 try:
@@ -14,101 +14,105 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── Elegant Muted Purple UI ─────────────────────────────────
+# ── Purple + Pink UI ───────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&display=swap');
 
 .stApp {
-    background: #1e1b2e;   /* Soft deep violet */
-    color: #f3f4f6;
-    font-family: 'Manrope', sans-serif;
+    background: #160f2e;  /* Deep purple */
+    font-family: 'Space Grotesk', sans-serif;
 }
 
+/* Layout */
 .block-container {
-    max-width: 1050px;
+    max-width: 1150px;
     margin: auto;
-    padding-top: 60px;
+    padding-top: 70px;
 }
 
 /* Header */
 .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.8rem;
-    font-weight: 700;
+    font-size: 4.5rem;
+    font-weight: 800;
+    color: #ff4fd8;   /* Pink headline */
     letter-spacing: -1px;
-    color: #e9d5ff;
 }
 
 .hero-sub {
-    font-size: 1.05rem;
-    margin-top: 8px;
-    margin-bottom: 40px;
-    color: #c4b5fd;
+    font-size: 1.1rem;
+    color: #ff9cf3;   /* Soft pink subtitle */
+    margin-bottom: 45px;
 }
 
 /* Navigation */
 div[role="radiogroup"] {
     justify-content: center;
-    gap: 16px;
-    margin-bottom: 30px;
+    gap: 18px;
+    margin-bottom: 35px;
 }
 
 div[role="radiogroup"] > label {
-    background: #2a2542;
-    padding: 10px 22px;
+    background: #2a1f4f;
+    padding: 12px 28px;
     border-radius: 999px;
-    font-weight: 500;
-    font-size: 14px;
-    color: #e9d5ff !important;
+    font-weight: 600;
+    color: #ff9cf3 !important;
+    border: 1px solid #ff4fd8;
 }
 
 /* Section Card */
 .section-card {
-    background: #2a2542;
-    padding: 30px;
-    border-radius: 16px;
-    margin-bottom: 30px;
-    border: 1px solid #3f3a60;
+    background: #211542;
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid #3b2c6b;
+    margin-bottom: 35px;
 }
 
 /* Inputs */
 textarea, input {
-    background: #1f1a34 !important;
-    border: 1px solid #3f3a60 !important;
-    border-radius: 12px !important;
+    background: #2a1f4f !important;
+    border: 1px solid #ff4fd8 !important;
+    border-radius: 14px !important;
     padding: 16px !important;
     color: #ffffff !important;
-    font-size: 14px !important;
+    font-size: 15px !important;
 }
 
 /* Button */
 .stButton > button {
-    background: #7c3aed;
-    color: white !important;
-    border-radius: 12px !important;
+    background: #ff4fd8;
+    color: #160f2e !important;
+    border-radius: 14px !important;
     padding: 12px !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     border: none !important;
+}
+
+/* Section Headings */
+h3, h4 {
+    color: #ff4fd8 !important;
 }
 
 /* Keywords */
 .keyword-chip {
     display: inline-block;
-    padding: 8px 18px;
+    padding: 10px 20px;
     border-radius: 999px;
     margin: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    background: #3f3a60;
-    color: #e9d5ff;
+    font-size: 14px;
+    font-weight: 600;
+    background: #2a1f4f;
+    color: #ff9cf3;
+    border: 1px solid #ff4fd8;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Header ─────────────────────────────────────────
 st.markdown('<div class="hero-title">LEXIS</div>', unsafe_allow_html=True)
-st.markdown('<div class="hero-sub">Refined AI-powered keyword extraction for modern web content.</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-sub">AI-powered keyword extraction for modern web content.</div>', unsafe_allow_html=True)
 
 # ── Keyword Extraction ─────────────────────────────
 def extract_keywords(text):
