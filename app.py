@@ -3,73 +3,76 @@ from groq import Groq
 import json
 import re
 import urllib.request
-from html.parser import HTMLParser
 
-# ── PAGE CONFIG ─────────────────────────────
+# ── CONFIG ─────────────────────────
 st.set_page_config(
     page_title="LEXIS AI",
     page_icon="🤖",
     layout="wide"
 )
 
-# ── LOAD API KEY ────────────────────────────
+# ── LOAD KEY ───────────────────────
 try:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 except:
-    st.error("⚠️ GROQ_API_KEY missing.")
+    st.error("GROQ_API_KEY missing.")
     st.stop()
 
-# ── STYLING ─────────────────────────────────
+# ── CSS ────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap');
 
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Background */
 .stApp {
-    background:
-        radial-gradient(circle at 20% 20%, rgba(0,255,255,0.25), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(138,43,226,0.3), transparent 45%),
-        linear-gradient(135deg, #0a0f1f 0%, #050816 50%, #000000 100%);
-    background-attachment: fixed;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color: white;
+}
+
+/* Remove top spacing */
+.block-container {
+    padding-top: 1rem;
 }
 
 /* Title */
 .main-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 4rem;
-    font-weight: 900;
     text-align: center;
-    background: linear-gradient(90deg,#00ffff,#8a2be2);
+    font-weight: 900;
+    background: linear-gradient(90deg,#00ffff,#ff00ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
 }
 
 .subtitle {
     text-align: center;
     font-size: 1.2rem;
-    color: #b0c4ff;
-    margin-bottom: 3rem;
-    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #cfd8ff;
 }
 
-/* Inputs */
+/* Big Inputs */
 textarea, input {
-    background: rgba(255,255,255,0.08) !important;
-    border: 2px solid rgba(0,255,255,0.6) !important;
-    border-radius: 18px !important;
+    background: rgba(255,255,255,0.1) !important;
+    border: 2px solid rgba(0,255,255,0.5) !important;
+    border-radius: 15px !important;
     color: white !important;
-    padding: 1.5rem !important;
-    font-size: 1.2rem !important;
-    font-weight: 600 !important;
+    padding: 1.2rem !important;
+    font-size: 1.1rem !important;
 }
 
 /* Button */
 .stButton > button {
-    background: linear-gradient(90deg,#00ffff,#8a2be2);
+    background: linear-gradient(90deg,#00ffff,#ff00ff);
     border-radius: 40px !important;
-    padding: 1rem 3rem !important;
-    font-weight: 800 !important;
-    font-size: 1.1rem !important;
+    padding: 0.9rem 2.5rem !important;
+    font-weight: 700 !important;
     border: none !important;
     color: black !important;
 }
@@ -77,30 +80,46 @@ textarea, input {
 /* Keyword Chips */
 .keyword-chip {
     display: inline-block;
-    padding: 0.7rem 1.5rem;
+    padding: 0.6rem 1.3rem;
     margin: 0.4rem;
     border-radius: 50px;
-    background: linear-gradient(90deg,#00ffff,#8a2be2);
+    background: linear-gradient(90deg,#00ffff,#ff00ff);
     color: black;
-    font-weight: 800;
+    font-weight: 700;
+}
+
+/* Guidelines Panel */
+.guidelines {
+    background: rgba(0,0,0,0.3);
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.guidelines h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ── HEADER ─────────────────────────────
+# ── HEADER ─────────────────────────
 st.markdown('<div class="main-title">LEXIS AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Next-Generation Intelligent Keyword Engine</div>', unsafe_allow_html=True)
 
-# ── LAYOUT ─────────────────────────────
-left, right = st.columns([2.5, 1])
+# ── TWO COLUMN DASHBOARD ───────────
+left, right = st.columns([3,1])
 
-# ── LEFT SIDE (WORK AREA) ─────────────────
+# ── LEFT SIDE (CENTER WORK AREA) ───
 with left:
 
-    mode = st.radio("",["📄 TEXT INPUT","🌐 URL INPUT"],horizontal=True)
+    st.markdown("### Choose Mode")
+
+    mode = st.radio("", ["📄 TEXT INPUT", "🌐 URL INPUT"], horizontal=True)
 
     if mode == "📄 TEXT INPUT":
-        text_input = st.text_area("", height=350, placeholder="Paste your content here...")
+        text_input = st.text_area("", height=320, placeholder="Paste your content here...")
         if st.button("EXTRACT KEYWORDS"):
             if text_input.strip():
                 with st.spinner("AI analyzing..."):
@@ -146,7 +165,7 @@ TEXT:
                 cleaned = re.sub(r'```json|```', '', response.choices[0].message.content.strip())
                 st.session_state.kws = json.loads(cleaned)
 
-    # Results
+    # Output
     if "kws" in st.session_state:
         st.markdown("### 🚀 Extracted Keywords")
         chips = ""
@@ -154,43 +173,17 @@ TEXT:
             chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
         st.markdown(chips, unsafe_allow_html=True)
 
-# ── RIGHT SIDE (GUIDELINES PANEL) ─────────
+# ── RIGHT SIDE (PERMANENT GUIDELINES) ──────
 with right:
-
-    st.markdown("""
-    <div style="
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(0,255,255,0.3);
-        padding: 1.8rem;
-        border-radius: 20px;
-        backdrop-filter: blur(10px);
-    ">
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <h2 style="
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.6rem;
-        font-weight: 800;
-        background: linear-gradient(90deg,#00ffff,#8a2be2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 1.2rem;
-    ">
-    📘 GUIDELINES
-    </h2>
-    """, unsafe_allow_html=True)
-
+    st.markdown('<div class="guidelines">', unsafe_allow_html=True)
+    st.markdown("<h2>📘 Guidelines</h2>", unsafe_allow_html=True)
     st.write("✔ Public blogs")
     st.write("✔ Wikipedia pages")
     st.write("✔ Company sites")
     st.write("✔ Documentation sites")
-
     st.markdown("---")
-
     st.write("✖ PDF files")
     st.write("✖ Image links")
     st.write("✖ Paywalled content")
     st.write("✖ Login required pages")
-
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
