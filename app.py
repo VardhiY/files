@@ -14,10 +14,10 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── Ultra Bold Gold UI ─────────────────────────────────────
+# ── Compact Black & Gold UI ─────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Montserrat:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Montserrat:wght@400;600;700;800&display=swap');
 
 .stApp {
     background: #070708;
@@ -25,39 +25,46 @@ st.markdown("""
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Layout */
+/* Remove extra streamlit padding */
 .block-container {
-    max-width: 1250px;
+    max-width: 1200px;
     margin: auto;
-    padding-top: 90px;
+    padding-top: 40px;
+    padding-bottom: 20px;
 }
 
-/* Logo + Title */
+/* Remove unnecessary vertical gaps */
+.element-container {
+    margin-bottom: 0.5rem !important;
+}
+
+/* Hero */
 .hero-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 18px;
+    gap: 15px;
+    margin-bottom: 10px;
 }
 
 .logo-icon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background: radial-gradient(circle,#f5d97b,#c9a227);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: 26px;
     color: black;
     font-weight: 800;
-    box-shadow: 0 0 25px rgba(201,162,39,0.7);
+    box-shadow: 0 0 15px rgba(201,162,39,0.6);
 }
 
 .hero-title {
     font-family: 'Oswald', sans-serif;
-    font-size: 5rem;
-    letter-spacing: 4px;
+    font-size: 4rem;
+    letter-spacing: 3px;
     background: linear-gradient(90deg,#f5d97b,#c9a227,#f5d97b);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -65,99 +72,81 @@ st.markdown("""
 
 .hero-sub {
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #d4af37;
-    margin-top: 20px;
-    margin-bottom: 70px;
+    margin-top: 5px;
+    margin-bottom: 25px;
     letter-spacing: 2px;
 }
 
 /* Navigation Pills */
 div[role="radiogroup"] {
     justify-content: center;
-    gap: 25px;
-    margin-bottom: 60px;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
 div[role="radiogroup"] > label {
     background: #101014;
-    padding: 16px 40px;
+    padding: 12px 28px;
     border-radius: 999px;
     font-weight: 700;
     color: #f5d97b !important;
     border: 2px solid #c9a227;
-    box-shadow: inset 0 0 8px rgba(201,162,39,0.4);
-    transition: 0.3s ease;
-}
-
-div[role="radiogroup"] > label:hover {
-    box-shadow: 0 0 20px #c9a227;
+    box-shadow: inset 0 0 6px rgba(201,162,39,0.3);
 }
 
 /* Section Card */
 .section-card {
     background: #0f0f12;
-    padding: 50px;
-    border-radius: 28px;
+    padding: 30px;
+    border-radius: 22px;
     border: 2px solid #c9a227;
-    margin-bottom: 60px;
+    margin-top: 15px;
+    margin-bottom: 25px;
     box-shadow:
-        0 0 40px rgba(201,162,39,0.15),
-        inset 0 0 30px rgba(201,162,39,0.1);
+        0 0 25px rgba(201,162,39,0.15),
+        inset 0 0 20px rgba(201,162,39,0.1);
 }
 
 /* Inputs */
 textarea, input {
     background: #0c0c10 !important;
     border: 2px solid #c9a227 !important;
-    border-radius: 20px !important;
-    padding: 22px !important;
+    border-radius: 16px !important;
+    padding: 18px !important;
     color: #ffffff !important;
-    font-size: 16px !important;
+    font-size: 15px !important;
 }
 
 /* Button */
 .stButton > button {
     background: linear-gradient(90deg,#f5d97b,#c9a227);
     color: #000 !important;
-    border-radius: 20px !important;
-    padding: 18px !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
     font-weight: 800 !important;
-    letter-spacing: 1px;
     border: none !important;
-    box-shadow: 0 0 20px rgba(201,162,39,0.6);
-}
-
-.stButton > button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 30px rgba(201,162,39,0.9);
+    margin-top: 10px;
 }
 
 /* Headings */
 h3, h4 {
     color: #f5d97b !important;
-    margin-bottom: 25px;
-    font-weight: 700;
+    margin-bottom: 15px;
 }
 
 /* Keyword Chips */
 .keyword-chip {
     display: inline-block;
-    padding: 14px 30px;
+    padding: 10px 20px;
     border-radius: 999px;
-    margin: 15px;
-    font-size: 15px;
+    margin: 8px;
+    font-size: 14px;
     font-weight: 700;
     background: #111115;
     color: #f5d97b;
     border: 2px solid #c9a227;
-    box-shadow: inset 0 0 10px rgba(201,162,39,0.3);
-    transition: 0.3s ease;
-}
-
-.keyword-chip:hover {
-    box-shadow: 0 0 25px #c9a227;
-    transform: translateY(-3px);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -222,7 +211,7 @@ mode = st.radio("",["📄 TEXT INPUT","🌐 URL INPUT","📘 GUIDELINES"],horizo
 st.markdown('<div class="section-card">', unsafe_allow_html=True)
 
 if mode=="📄 TEXT INPUT":
-    text_input=st.text_area("",height=240,placeholder="PASTE YOUR CONTENT HERE...")
+    text_input=st.text_area("",height=220,placeholder="PASTE YOUR CONTENT HERE...")
     if st.button("EXTRACT KEYWORDS"):
         if text_input.strip():
             with st.spinner("Analyzing..."):
