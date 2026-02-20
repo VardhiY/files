@@ -14,77 +14,79 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── Static Purple Clean UI ──────────────────────────────────
+# ── Elegant Muted Purple UI ─────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600&display=swap');
 
 .stApp {
-    font-family: 'Inter', sans-serif;
-    background: #2e1065;   /* Deep purple */
-    color: #ffffff;
+    background: #1e1b2e;   /* Soft deep violet */
+    color: #f3f4f6;
+    font-family: 'Manrope', sans-serif;
 }
 
 .block-container {
-    max-width: 1100px;
+    max-width: 1050px;
     margin: auto;
     padding-top: 60px;
 }
 
 /* Header */
 .hero-title {
-    font-size: 4rem;
-    font-weight: 800;
-    color: #ffffff;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #e9d5ff;
 }
 
 .hero-sub {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     margin-top: 8px;
     margin-bottom: 40px;
-    color: #e9d5ff;
+    color: #c4b5fd;
 }
 
 /* Navigation */
 div[role="radiogroup"] {
     justify-content: center;
-    gap: 18px;
+    gap: 16px;
     margin-bottom: 30px;
 }
 
 div[role="radiogroup"] > label {
-    background: #4c1d95;
+    background: #2a2542;
     padding: 10px 22px;
     border-radius: 999px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
-    color: white !important;
+    color: #e9d5ff !important;
 }
 
 /* Section Card */
 .section-card {
-    background: #3b0764;
-    padding: 35px;
-    border-radius: 18px;
-    margin-bottom: 35px;
-    border: 1px solid #6d28d9;
+    background: #2a2542;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #3f3a60;
 }
 
 /* Inputs */
 textarea, input {
-    background: #4c1d95 !important;
-    border: 1px solid #7c3aed !important;
-    border-radius: 14px !important;
+    background: #1f1a34 !important;
+    border: 1px solid #3f3a60 !important;
+    border-radius: 12px !important;
     padding: 16px !important;
-    color: white !important;
-    font-size: 15px !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
 }
 
 /* Button */
 .stButton > button {
-    background: #a855f7;
+    background: #7c3aed;
     color: white !important;
-    border-radius: 14px !important;
+    border-radius: 12px !important;
     padding: 12px !important;
     font-weight: 600 !important;
     border: none !important;
@@ -96,17 +98,17 @@ textarea, input {
     padding: 8px 18px;
     border-radius: 999px;
     margin: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    background: #6d28d9;
-    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    background: #3f3a60;
+    color: #e9d5ff;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Header ─────────────────────────────────────────
 st.markdown('<div class="hero-title">LEXIS</div>', unsafe_allow_html=True)
-st.markdown('<div class="hero-sub">Static AI-powered keyword extraction for modern web content.</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-sub">Refined AI-powered keyword extraction for modern web content.</div>', unsafe_allow_html=True)
 
 # ── Keyword Extraction ─────────────────────────────
 def extract_keywords(text):
@@ -155,7 +157,6 @@ def fetch_url_content(url):
 # ── Navigation ─────────────────────────────────────
 mode = st.radio("",["📄 Text Input","🌐 URL Input","📘 URL Guidelines"],horizontal=True)
 
-# ── Section Wrapper ───────────────────────────────
 st.markdown('<div class="section-card">', unsafe_allow_html=True)
 
 if mode=="📄 Text Input":
@@ -183,7 +184,6 @@ elif mode=="📘 URL Guidelines":
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ── Results ───────────────────────────────────────
 if "kws" in st.session_state:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown("### Extracted Keywords")
