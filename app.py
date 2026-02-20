@@ -14,7 +14,7 @@ except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
-# ── Compact Black & Gold UI ─────────────────────────────────
+# ── Premium Black + Gold UI ─────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Montserrat:wght@400;600;700;800&display=swap');
@@ -25,17 +25,20 @@ st.markdown("""
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Remove extra streamlit padding */
+/* Remove default spacing */
 .block-container {
-    max-width: 1200px;
+    max-width: 1150px;
     margin: auto;
-    padding-top: 40px;
-    padding-bottom: 20px;
+    padding-top: 30px;
+    padding-bottom: 10px;
 }
 
-/* Remove unnecessary vertical gaps */
 .element-container {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0rem !important;
+}
+
+.stMarkdown {
+    margin-bottom: 0rem !important;
 }
 
 /* Hero */
@@ -43,19 +46,19 @@ st.markdown("""
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 10px;
+    gap: 14px;
+    margin-bottom: 4px;
 }
 
 .logo-icon {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: radial-gradient(circle,#f5d97b,#c9a227);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
+    font-size: 24px;
     color: black;
     font-weight: 800;
     box-shadow: 0 0 15px rgba(201,162,39,0.6);
@@ -72,23 +75,24 @@ st.markdown("""
 
 .hero-sub {
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #d4af37;
-    margin-top: 5px;
-    margin-bottom: 25px;
+    margin-top: 0px;
+    margin-bottom: 12px;
     letter-spacing: 2px;
 }
 
-/* Navigation Pills */
+/* Navigation */
 div[role="radiogroup"] {
-    justify-content: center;
+    justify-content: center !important;
+    align-items: center;
     gap: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 div[role="radiogroup"] > label {
     background: #101014;
-    padding: 12px 28px;
+    padding: 10px 26px;
     border-radius: 999px;
     font-weight: 700;
     color: #f5d97b !important;
@@ -99,11 +103,11 @@ div[role="radiogroup"] > label {
 /* Section Card */
 .section-card {
     background: #0f0f12;
-    padding: 30px;
+    padding: 25px;
     border-radius: 22px;
     border: 2px solid #c9a227;
-    margin-top: 15px;
-    margin-bottom: 25px;
+    margin-top: 10px;
+    margin-bottom: 18px;
     box-shadow:
         0 0 25px rgba(201,162,39,0.15),
         inset 0 0 20px rgba(201,162,39,0.1);
@@ -114,7 +118,7 @@ textarea, input {
     background: #0c0c10 !important;
     border: 2px solid #c9a227 !important;
     border-radius: 16px !important;
-    padding: 18px !important;
+    padding: 16px !important;
     color: #ffffff !important;
     font-size: 15px !important;
 }
@@ -124,25 +128,25 @@ textarea, input {
     background: linear-gradient(90deg,#f5d97b,#c9a227);
     color: #000 !important;
     border-radius: 16px !important;
-    padding: 14px !important;
+    padding: 12px !important;
     font-weight: 800 !important;
     border: none !important;
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 /* Headings */
 h3, h4 {
     color: #f5d97b !important;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 /* Keyword Chips */
 .keyword-chip {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 8px 18px;
     border-radius: 999px;
-    margin: 8px;
-    font-size: 14px;
+    margin: 6px;
+    font-size: 13px;
     font-weight: 700;
     background: #111115;
     color: #f5d97b;
