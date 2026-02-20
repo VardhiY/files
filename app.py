@@ -20,18 +20,19 @@ except:
     st.stop()
 
 # ─────────────────────────────────────────
-# Premium Black + Gold CSS (UPDATED BACKGROUND)
+# Premium Royal Black + Gold CSS
 # ─────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Montserrat:wght@400;600;700;800&display=swap');
 
-/* 🌟 NEW LUXURY BACKGROUND */
+/* 🌟 STRONG VISIBLE BACKGROUND */
 .stApp {
     background:
-        radial-gradient(circle at 20% 20%, rgba(201,162,39,0.08), transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(201,162,39,0.06), transparent 40%),
-        linear-gradient(135deg, #0a0a0f, #050507 60%);
+        radial-gradient(circle at 15% 25%, rgba(255,215,120,0.25), transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(201,162,39,0.20), transparent 45%),
+        linear-gradient(135deg, #1a1a1f 0%, #0b0b10 60%, #050507 100%);
+    background-attachment: fixed;
     color: #ffffff;
     font-family: 'Montserrat', sans-serif;
 }
@@ -39,7 +40,7 @@ st.markdown("""
 .block-container {
     max-width: 1100px;
     margin: auto;
-    padding-top: 40px;
+    padding-top: 50px;
 }
 
 .element-container {
@@ -52,26 +53,26 @@ st.markdown("""
     align-items: center;
     justify-content: center;
     gap: 14px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 .logo-icon {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background: radial-gradient(circle,#f5d97b,#c9a227);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 26px;
     color: black;
     font-weight: 800;
-    box-shadow: 0 0 15px rgba(201,162,39,0.6);
+    box-shadow: 0 0 20px rgba(201,162,39,0.7);
 }
 
 .hero-title {
     font-family: 'Oswald', sans-serif;
-    font-size: 4rem;
+    font-size: 4.2rem;
     letter-spacing: 3px;
     background: linear-gradient(90deg,#f5d97b,#c9a227,#f5d97b);
     -webkit-background-clip: text;
@@ -80,67 +81,86 @@ st.markdown("""
 
 .hero-sub {
     text-align: center;
-    font-size: 0.9rem;
-    color: #d4af37;
-    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #f5d97b;
+    margin-bottom: 30px;
     letter-spacing: 2px;
 }
 
 /* NAVIGATION */
 div[role="radiogroup"] {
     justify-content: center !important;
-    gap: 20px;
-    margin-bottom: 25px;
+    gap: 22px;
+    margin-bottom: 30px;
 }
 
 div[role="radiogroup"] > label {
-    background: #101014;
-    padding: 10px 26px;
+    background: #141418;
+    padding: 12px 28px;
     border-radius: 999px;
     font-weight: 700;
     color: #f5d97b !important;
     border: 2px solid #c9a227;
+    transition: 0.3s ease;
+}
+
+div[role="radiogroup"] > label:hover {
+    box-shadow: 0 0 20px rgba(201,162,39,0.6);
 }
 
 /* INPUTS */
 textarea, input {
-    background: #0c0c10 !important;
+    background: #111116 !important;
     border: 2px solid #c9a227 !important;
-    border-radius: 14px !important;
-    padding: 14px !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
     color: #ffffff !important;
+    font-size: 15px !important;
 }
 
 /* BUTTON */
 .stButton > button {
     background: linear-gradient(90deg,#f5d97b,#c9a227);
     color: #000 !important;
-    border-radius: 14px !important;
-    padding: 10px !important;
+    border-radius: 16px !important;
+    padding: 12px !important;
     font-weight: 800 !important;
     border: none !important;
+    box-shadow: 0 0 15px rgba(201,162,39,0.6);
+    transition: 0.3s ease;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(201,162,39,0.9);
 }
 
 /* RESULT TITLE */
 .result-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: #f5d97b;
-    margin-top: 25px;
-    margin-bottom: 10px;
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
 /* KEYWORD CHIPS */
 .keyword-chip {
     display: inline-block;
-    padding: 8px 18px;
+    padding: 10px 22px;
     border-radius: 999px;
-    margin: 6px;
-    font-size: 13px;
+    margin: 8px;
+    font-size: 14px;
     font-weight: 700;
-    background: #111115;
+    background: #141418;
     color: #f5d97b;
     border: 2px solid #c9a227;
+    transition: 0.3s ease;
+}
+
+.keyword-chip:hover {
+    box-shadow: 0 0 20px rgba(201,162,39,0.8);
+    transform: translateY(-2px);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -155,7 +175,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="hero-sub">ELITE AI KEYWORD ENGINE</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-sub">ROYAL AI KEYWORD ENGINE</div>', unsafe_allow_html=True)
 
 # ─────────────────────────────────────────
 # Keyword Extraction Function
