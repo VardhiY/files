@@ -19,134 +19,130 @@ except:
     st.error("⚠️ GROQ_API_KEY missing in Streamlit secrets.")
     st.stop()
 
-# ── Ultra Aesthetic Animated UI ────────────────────────────
+# ── MONOCHROME PREMIUM UI ──────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 
+:root {
+    --primary: #6366f1;
+    --primary-soft: #818cf8;
+    --bg-dark: #0f172a;
+    --glass: rgba(99,102,241,0.08);
+}
+
 .stApp {
     font-family: 'Outfit', sans-serif;
-    background: linear-gradient(-45deg, #5f6bff, #b06ab3, #ff6a88, #ff8a00);
-    background-size: 400% 400%;
-    animation: gradientMove 12s ease infinite;
+    background: var(--bg-dark);
+    color: white;
 }
 
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Glass Container */
+/* Container */
 .block-container {
-    max-width: 1100px;
+    max-width: 1000px;
     margin: 4rem auto;
     padding: 3rem;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(30px);
-    border-radius: 30px;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.35);
-    color: white !important;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 28px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
 }
 
 /* Header */
 .main-title {
     text-align: center;
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     font-weight: 800;
-    letter-spacing: 2px;
-    animation: floatText 4s ease-in-out infinite;
-}
-
-@keyframes floatText {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
+    letter-spacing: 3px;
+    color: var(--primary);
 }
 
 .subtitle {
     text-align: center;
     font-size: 1rem;
-    opacity: 0.85;
-    margin-bottom: 2.5rem;
+    opacity: 0.7;
+    margin-bottom: 3rem;
 }
 
-/* Navigation */
+/* Tabs */
 div[role="radiogroup"] {
     justify-content: center;
-    gap: 1.5rem;
+    gap: 1.2rem;
 }
 
 div[role="radiogroup"] > label {
-    background: rgba(255,255,255,0.15);
-    padding: 0.6rem 1.3rem;
+    background: rgba(255,255,255,0.05);
+    padding: 0.6rem 1.4rem;
     border-radius: 999px;
+    transition: 0.3s ease;
     font-weight: 500;
-    transition: all 0.3s ease;
-    color: white !important;
+    letter-spacing: 0.5px;
 }
 
 div[role="radiogroup"] > label:hover {
-    background: white;
-    color: #5f6bff !important;
-    transform: scale(1.05);
+    background: var(--primary);
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(99,102,241,0.4);
 }
 
 /* Inputs */
 textarea, input {
-    background: rgba(255,255,255,0.2) !important;
-    border: none !important;
-    border-radius: 16px !important;
+    background: rgba(255,255,255,0.05) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 18px !important;
     padding: 1rem !important;
     color: white !important;
-    backdrop-filter: blur(10px);
+    transition: 0.3s ease;
+}
+
+textarea:focus, input:focus {
+    border: 1px solid var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
 }
 
 /* Button */
 .stButton > button {
-    background: linear-gradient(135deg,#ff8a00,#ff3cac);
-    border-radius: 20px !important;
+    background: var(--primary);
+    border-radius: 18px !important;
     border: none !important;
     padding: 1rem !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
-    color: white !important;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 25px rgba(99,102,241,0.3);
 }
 
 .stButton > button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    background: var(--primary-soft);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(99,102,241,0.5);
 }
 
-/* Keyword Chips */
+/* Keywords */
 .keyword-chip {
     display: inline-block;
-    padding: 0.5rem 1.2rem;
+    padding: 0.6rem 1.4rem;
     border-radius: 999px;
-    margin: 0.4rem;
+    margin: 0.5rem;
     font-size: 0.9rem;
-    font-weight: 500;
-    background: rgba(255,255,255,0.25);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.6s ease forwards;
+    background: var(--glass);
+    border: 1px solid rgba(99,102,241,0.3);
+    transition: 0.3s ease;
+    letter-spacing: 0.5px;
 }
 
 .keyword-chip:hover {
-    transform: translateY(-5px) scale(1.07);
-    background: white;
-    color: #5f6bff !important;
+    background: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(99,102,241,0.5);
 }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+/* Divider */
 hr {
-    border-color: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.08);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -210,37 +206,33 @@ def fetch_url_content(url):
 # ── Navigation ─────────────────────────────────────────────
 mode = st.radio("", ["📄 Text Input", "🌐 URL Input", "📘 URL Guidelines"], horizontal=True)
 
-# ── TEXT INPUT ─────────────────────────────────────────────
 if mode == "📄 Text Input":
-    text_input = st.text_area("", height=220, placeholder="Paste article, blog, or content here...")
+    text_input = st.text_area("", height=220, placeholder="Paste content here...")
     if st.button("Extract Keywords"):
         if text_input.strip():
-            with st.spinner("Analyzing content..."):
+            with st.spinner("Analyzing..."):
                 st.session_state.kws = extract_keywords(text_input)
 
-# ── URL INPUT ──────────────────────────────────────────────
 elif mode == "🌐 URL Input":
-    url_input = st.text_input("", placeholder="https://example.com/article")
+    url_input = st.text_input("", placeholder="https://example.com")
     if st.button("Extract from URL"):
         if url_input.startswith("http"):
-            with st.spinner("Fetching and analyzing webpage..."):
+            with st.spinner("Fetching content..."):
                 content = fetch_url_content(url_input)
                 st.session_state.kws = extract_keywords(content)
 
-# ── URL GUIDELINES ─────────────────────────────────────────
 elif mode == "📘 URL Guidelines":
-    st.markdown("### ✔ Supported")
-    st.success("Public blogs, news, Wikipedia, company pages, documentation sites.")
-    st.markdown("### ✖ Not Supported")
-    st.error("PDF, Word, Excel, image links, paywalled content.")
-    st.markdown("### 🔒 Restricted")
-    st.warning("Login-required pages, Google Docs, private dashboards.")
+    st.success("✔ Public blogs, news, Wikipedia, company pages.")
+    st.error("✖ PDF, Word, Excel, images, paywalled content.")
+    st.warning("🔒 Login-required pages & private dashboards.")
 
 # ── Results ────────────────────────────────────────────────
 if "kws" in st.session_state:
     st.markdown("---")
     st.markdown("### 🔎 Extracted Keywords")
+
     chips = ""
     for k in st.session_state.kws:
         chips += f'<span class="keyword-chip">{k["keyword"]}</span>'
+
     st.markdown(chips, unsafe_allow_html=True)
