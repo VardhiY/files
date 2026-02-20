@@ -5,129 +5,110 @@ import re
 import urllib.request
 from html.parser import HTMLParser
 
-st.set_page_config(page_title="LEXIS", page_icon="🔍", layout="wide")
+st.set_page_config(page_title="LEXIS", page_icon="🔮", layout="wide")
 
+# ── Load API Key ────────────────────────────────────────────
 try:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 except:
     st.error("⚠️ GROQ_API_KEY missing.")
     st.stop()
 
+# ── Static Purple Clean UI ──────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
 .stApp {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg,#ff7a18,#ff3d77,#4c6ef5);
-    background-size: 400% 400%;
-    animation: bgmove 12s ease infinite;
-    color: white;
-}
-
-@keyframes bgmove {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
+    background: #2e1065;   /* Deep purple */
+    color: #ffffff;
 }
 
 .block-container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: auto;
     padding-top: 60px;
 }
 
-/* Hero */
+/* Header */
 .hero-title {
-    font-size: 5rem;
-    font-weight: 900;
-    letter-spacing: -2px;
-    line-height: 1;
+    font-size: 4rem;
+    font-weight: 800;
+    color: #ffffff;
 }
 
-.hero-title span {
-    color: rgba(255,255,255,0.6);
+.hero-sub {
+    font-size: 1.1rem;
+    margin-top: 8px;
+    margin-bottom: 40px;
+    color: #e9d5ff;
 }
 
-.subtitle {
-    font-size: 1.2rem;
-    margin-top: 20px;
-    max-width: 600px;
-    font-weight: 500;
-    opacity: 0.9;
-}
-
-/* Tabs */
+/* Navigation */
 div[role="radiogroup"] {
-    margin-top: 40px;
+    justify-content: center;
     gap: 18px;
+    margin-bottom: 30px;
 }
 
 div[role="radiogroup"] > label {
-    background: rgba(255,255,255,0.15);
-    padding: 12px 28px;
+    background: #4c1d95;
+    padding: 10px 22px;
     border-radius: 999px;
     font-weight: 600;
-    font-size: 15px;
-    transition: 0.3s ease;
+    font-size: 14px;
+    color: white !important;
 }
 
-div[role="radiogroup"] > label:hover {
-    background: white;
-    color: #ff3d77 !important;
-    transform: translateY(-3px);
+/* Section Card */
+.section-card {
+    background: #3b0764;
+    padding: 35px;
+    border-radius: 18px;
+    margin-bottom: 35px;
+    border: 1px solid #6d28d9;
 }
 
 /* Inputs */
 textarea, input {
-    background: rgba(255,255,255,0.18) !important;
-    border: none !important;
-    border-radius: 22px !important;
-    padding: 22px !important;
-    font-size: 16px !important;
-    font-weight: 500;
-    backdrop-filter: blur(10px);
+    background: #4c1d95 !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 14px !important;
+    padding: 16px !important;
+    color: white !important;
+    font-size: 15px !important;
 }
 
 /* Button */
 .stButton > button {
-    background: white;
-    color: #ff3d77 !important;
-    border-radius: 25px !important;
-    padding: 16px !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    transition: 0.3s ease;
-}
-
-.stButton > button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    background: #a855f7;
+    color: white !important;
+    border-radius: 14px !important;
+    padding: 12px !important;
+    font-weight: 600 !important;
+    border: none !important;
 }
 
 /* Keywords */
 .keyword-chip {
     display: inline-block;
-    padding: 14px 32px;
+    padding: 8px 18px;
     border-radius: 999px;
-    margin: 12px;
-    font-size: 15px;
+    margin: 8px;
+    font-size: 14px;
     font-weight: 600;
-    background: rgba(255,255,255,0.2);
-    transition: 0.3s ease;
-}
-
-.keyword-chip:hover {
-    background: white;
-    color: #4c6ef5 !important;
-    transform: translateY(-5px);
+    background: #6d28d9;
+    color: white;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="hero-title">LEX<span>IS</span></div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Creative AI-powered keyword extraction built for modern web experiences.</div>', unsafe_allow_html=True)
+# ── Header ─────────────────────────────────────────
+st.markdown('<div class="hero-title">LEXIS</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-sub">Static AI-powered keyword extraction for modern web content.</div>', unsafe_allow_html=True)
 
+# ── Keyword Extraction ─────────────────────────────
 def extract_keywords(text):
     prompt = f"""
 Extract top 10 important keywords from the text.
@@ -145,6 +126,7 @@ TEXT:
     cleaned = re.sub(r'```json|```','',response.choices[0].message.content.strip())
     return json.loads(cleaned)
 
+# ── URL Extractor ─────────────────────────────────
 class TextExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -170,7 +152,11 @@ def fetch_url_content(url):
     parser.feed(html)
     return parser.get_text()
 
-mode=st.radio("",["📄 Text Input","🌐 URL Input","📘 URL Guidelines"],horizontal=True)
+# ── Navigation ─────────────────────────────────────
+mode = st.radio("",["📄 Text Input","🌐 URL Input","📘 URL Guidelines"],horizontal=True)
+
+# ── Section Wrapper ───────────────────────────────
+st.markdown('<div class="section-card">', unsafe_allow_html=True)
 
 if mode=="📄 Text Input":
     text_input=st.text_area("",height=220,placeholder="Paste your content here...")
@@ -180,7 +166,7 @@ if mode=="📄 Text Input":
                 st.session_state.kws=extract_keywords(text_input)
 
 elif mode=="🌐 URL Input":
-    url_input=st.text_input("",placeholder="https://example.com")
+    url_input=st.text_input("",placeholder="https://example.com/article")
     if st.button("Extract from URL"):
         if url_input.startswith("http"):
             with st.spinner("Fetching..."):
@@ -188,13 +174,21 @@ elif mode=="🌐 URL Input":
                 st.session_state.kws=extract_keywords(content)
 
 elif mode=="📘 URL Guidelines":
-    st.success("✔ Public blogs, news, Wikipedia, company pages.")
-    st.error("✖ PDF, Word, Excel, images, paywalled content.")
-    st.warning("🔒 Login-required pages & private dashboards.")
+    st.markdown("### ✔ Supported")
+    st.write("Public blogs, news, Wikipedia, company pages.")
+    st.markdown("### ✖ Not Supported")
+    st.write("PDF, Word, Excel, images, paywalled content.")
+    st.markdown("### 🔒 Restricted")
+    st.write("Login-required pages and private dashboards.")
 
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ── Results ───────────────────────────────────────
 if "kws" in st.session_state:
-    st.markdown("## Extracted Keywords")
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown("### Extracted Keywords")
     chips=""
     for k in st.session_state.kws:
         chips+=f'<span class="keyword-chip">{k["keyword"]}</span>'
     st.markdown(chips,unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
