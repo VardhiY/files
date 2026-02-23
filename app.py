@@ -6,6 +6,7 @@ import urllib.request
 from urllib.error import HTTPError, URLError
 import csv
 import io
+import os
 
 # ── PAGE CONFIG ─────────────────────────
 st.set_page_config(
@@ -14,12 +15,19 @@ st.set_page_config(
     layout="wide"
 )
 
-# ── LOAD API KEY ───────────────────────
-try:
-    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
-except:
-    st.error("⚠️ GROQ_API_KEY missing.")
+# ── LOAD API KEY (works on Render, Railway, and Streamlit Cloud) ───────────────────────
+api_key = os.environ.get("GROQ_API_KEY")
+if not api_key:
+    try:
+        api_key = st.secrets["GROQ_API_KEY"]
+    except:
+        pass
+
+if not api_key:
+    st.error("⚠️ GROQ_API_KEY missing. Add it in Render → Environment Variables.")
     st.stop()
+
+client = Groq(api_key=api_key)
 
 # ── BOLD COLORFUL STYLING ─────────────────────────────
 st.markdown("""
