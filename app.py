@@ -427,7 +427,7 @@ left, right = st.columns([2.5, 1.1], gap="large")
 with left:
 
     # ── INPUT TABS ──
-    st.markdown('<div class="section-label">01 — Input Source</div>', unsafe_allow_html=True)
+    st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">01 — Input Source</p>', unsafe_allow_html=True)
     tab_text, tab_url = st.tabs(["📄  Text Input", "🌐  URL Input"])
 
     with tab_text:
@@ -466,7 +466,7 @@ with left:
     # ── RESULTS ──
     if st.session_state.kws:
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<div class="section-label">02 — Keyword Results</div>', unsafe_allow_html=True)
+        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">02 — Keyword Results</p>', unsafe_allow_html=True)
 
         # Export buttons row
         col_dl1, col_dl2, col_spacer = st.columns([1, 1, 3])
@@ -490,7 +490,7 @@ with left:
 
         # ── CHAT ──
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<div class="section-label">03 — Ask LEXIS AI</div>', unsafe_allow_html=True)
+        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">03 — Ask LEXIS AI</p>', unsafe_allow_html=True)
 
         # Initial auto-explanation
         if not st.session_state.chat_history:
@@ -504,9 +504,15 @@ with left:
         # Render chat history
         for msg in st.session_state.chat_history:
             if msg["role"] == "user":
-                st.markdown(f'<div class="chat-label" style="text-align:right">You</div><div class="chat-bubble user">{msg["text"]}</div>', unsafe_allow_html=True)
+                st.markdown(f'''
+<div style="text-align:right;margin-bottom:0.2rem;font-size:0.65rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">You</div>
+<div style="background:linear-gradient(90deg,#ff3c78,#a259ff);color:white;font-weight:600;padding:1rem 1.3rem;border-radius:18px;border-bottom-right-radius:4px;margin-bottom:0.8rem;font-size:0.95rem;line-height:1.6;max-width:90%;margin-left:auto;">{msg["text"]}</div>
+''', unsafe_allow_html=True)
             else:
-                st.markdown(f'<div class="chat-label">LEXIS</div><div class="chat-bubble ai">{msg["text"]}</div>', unsafe_allow_html=True)
+                st.markdown(f'''
+<div style="margin-bottom:0.2rem;font-size:0.65rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">LEXIS</div>
+<div style="background:#1e1e1e;border:1px solid #2a2a2a;color:#ddd;padding:1rem 1.3rem;border-radius:18px;border-bottom-left-radius:4px;margin-bottom:0.8rem;font-size:0.95rem;line-height:1.6;max-width:90%;">{msg["text"]}</div>
+''', unsafe_allow_html=True)
 
         # Chat input
         with st.form("chat_form", clear_on_submit=True):
@@ -531,7 +537,7 @@ with right:
 
     # ── SCORE LEGEND ──
     if st.session_state.kws:
-        st.markdown('<div class="section-label">Score Legend</div>', unsafe_allow_html=True)
+        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Score Legend</p>', unsafe_allow_html=True)
         st.markdown("""
         <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.2rem;">
             <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;">
@@ -555,39 +561,27 @@ with right:
         st.markdown("<br>", unsafe_allow_html=True)
 
     # ── GUIDELINES ──
-    st.markdown('<div style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;font-weight:500;">Usage Guidelines</div>', unsafe_allow_html=True)
-
-    guide_item = "display:flex;align-items:center;gap:0.7rem;padding:0.5rem 0;font-size:0.9rem;border-bottom:1px solid #1f1f1f;color:#ccc;"
-    guide_item_last = "display:flex;align-items:center;gap:0.7rem;padding:0.5rem 0;font-size:0.9rem;color:#ccc;"
-    dot_yes = "color:#00e5b0;font-size:1rem;"
-    dot_no  = "color:#ff3c78;font-size:1rem;"
-    label_yes = "font-family:'DM Mono',monospace;font-size:0.68rem;color:#00e5b0;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;"
-    label_no  = "font-family:'DM Mono',monospace;font-size:0.68rem;color:#ff3c78;letter-spacing:2px;text-transform:uppercase;margin-top:1.2rem;margin-bottom:0.8rem;"
-
-    st.markdown(f"""
-    <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.4rem;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff3c78,#ffb700,#00e5ff,#a259ff)"></div>
-
-        <div style="{label_yes}">✔ Works great with</div>
-
-        <div style="{guide_item}"><span style="{dot_yes}">●</span> Public blogs &amp; articles</div>
-        <div style="{guide_item}"><span style="{dot_yes}">●</span> Wikipedia pages</div>
-        <div style="{guide_item}"><span style="{dot_yes}">●</span> Company websites</div>
-        <div style="{guide_item}"><span style="{dot_yes}">●</span> Documentation portals</div>
-
-        <div style="{label_no}">✖ Doesn't support</div>
-
-        <div style="{guide_item}"><span style="{dot_no}">●</span> Login-required portals</div>
-        <div style="{guide_item}"><span style="{dot_no}">●</span> Paywalled content</div>
-        <div style="{guide_item}"><span style="{dot_no}">●</span> Bot-blocking sites</div>
-        <div style="{guide_item_last}"><span style="{dot_no}">●</span> PDF / image-only pages</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("**USAGE GUIDELINES**")
+    st.markdown("""
+<div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.4rem;position:relative;overflow:hidden;">
+<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff3c78,#ffb700,#00e5ff,#a259ff)"></div>
+<p style="font-size:0.68rem;color:#00e5b0;letter-spacing:2px;text-transform:uppercase;margin:0 0 0.6rem 0;">&#10004; Works great with</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Public blogs &amp; articles</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Wikipedia pages</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Company websites</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Documentation portals</p>
+<p style="font-size:0.68rem;color:#ff3c78;letter-spacing:2px;text-transform:uppercase;margin:1rem 0 0.6rem 0;">&#10006; Doesn't support</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Login-required portals</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Paywalled content</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Bot-blocking sites</p>
+<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;"><span style="color:#ff3c78;">&#9679;</span> PDF / image-only pages</p>
+</div>
+""", unsafe_allow_html=True)
 
     # ── STATS ──
     if st.session_state.kws:
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<div class="section-label">Quick Stats</div>', unsafe_allow_html=True)
+        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Quick Stats</p>', unsafe_allow_html=True)
         scores = [float(k.get("score", 0)) for k in st.session_state.kws]
         avg = sum(scores) / len(scores) if scores else 0
         top_kw = st.session_state.kws[0]["keyword"] if st.session_state.kws else "—"
