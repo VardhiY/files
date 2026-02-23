@@ -44,14 +44,17 @@ st.markdown("""
 .hero-wrap { text-align: center; margin-bottom: 1.5rem; }
 .main-title {
     font-family: 'Syne', sans-serif;
-    font-size: 3.5rem;
+    font-size: clamp(1.6rem, 4vw, 3rem);
     font-weight: 800;
-    letter-spacing: -2px;
-    line-height: 1;
+    letter-spacing: -1px;
+    line-height: 1.2;
     display: inline-block;
+    white-space: nowrap;
+    padding-bottom: 0.15em;
     background: linear-gradient(90deg, #ff3c78, #ffb700, #00e5ff, #a259ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
     background-size: 300% auto;
     animation: shimmer 4s linear infinite;
 }
