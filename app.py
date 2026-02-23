@@ -555,24 +555,32 @@ with right:
         st.markdown("<br>", unsafe_allow_html=True)
 
     # ── GUIDELINES ──
-    st.markdown('<div class="section-label">Usage Guidelines</div>', unsafe_allow_html=True)
-    st.markdown("""
+    st.markdown('<div style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;font-weight:500;">Usage Guidelines</div>', unsafe_allow_html=True)
+
+    guide_item = "display:flex;align-items:center;gap:0.7rem;padding:0.5rem 0;font-size:0.9rem;border-bottom:1px solid #1f1f1f;color:#ccc;"
+    guide_item_last = "display:flex;align-items:center;gap:0.7rem;padding:0.5rem 0;font-size:0.9rem;color:#ccc;"
+    dot_yes = "color:#00e5b0;font-size:1rem;"
+    dot_no  = "color:#ff3c78;font-size:1rem;"
+    label_yes = "font-family:'DM Mono',monospace;font-size:0.68rem;color:#00e5b0;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;"
+    label_no  = "font-family:'DM Mono',monospace;font-size:0.68rem;color:#ff3c78;letter-spacing:2px;text-transform:uppercase;margin-top:1.2rem;margin-bottom:0.8rem;"
+
+    st.markdown(f"""
     <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.4rem;position:relative;overflow:hidden;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff3c78,#ffb700,#00e5ff,#a259ff)"></div>
 
-        <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#00e5b0;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;">✔ Works great with</div>
+        <div style="{label_yes}">✔ Works great with</div>
 
-        <div class="guide-item"><span class="guide-yes">●</span> Public blogs & articles</div>
-        <div class="guide-item"><span class="guide-yes">●</span> Wikipedia pages</div>
-        <div class="guide-item"><span class="guide-yes">●</span> Company websites</div>
-        <div class="guide-item"><span class="guide-yes">●</span> Documentation portals</div>
+        <div style="{guide_item}"><span style="{dot_yes}">●</span> Public blogs &amp; articles</div>
+        <div style="{guide_item}"><span style="{dot_yes}">●</span> Wikipedia pages</div>
+        <div style="{guide_item}"><span style="{dot_yes}">●</span> Company websites</div>
+        <div style="{guide_item}"><span style="{dot_yes}">●</span> Documentation portals</div>
 
-        <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#ff3c78;letter-spacing:2px;text-transform:uppercase;margin-top:1.2rem;margin-bottom:0.8rem;">✖ Doesn't support</div>
+        <div style="{label_no}">✖ Doesn't support</div>
 
-        <div class="guide-item"><span class="guide-no">●</span> Login-required portals</div>
-        <div class="guide-item"><span class="guide-no">●</span> Paywalled content</div>
-        <div class="guide-item"><span class="guide-no">●</span> Bot-blocking sites</div>
-        <div class="guide-item" style="border:none"><span class="guide-no">●</span> PDF / image-only pages</div>
+        <div style="{guide_item}"><span style="{dot_no}">●</span> Login-required portals</div>
+        <div style="{guide_item}"><span style="{dot_no}">●</span> Paywalled content</div>
+        <div style="{guide_item}"><span style="{dot_no}">●</span> Bot-blocking sites</div>
+        <div style="{guide_item_last}"><span style="{dot_no}">●</span> PDF / image-only pages</div>
     </div>
     """, unsafe_allow_html=True)
 
