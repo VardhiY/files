@@ -452,6 +452,8 @@ with left:
                 # ── Block PDF / image-only URLs by extension ──
                 blocked_exts = ('.pdf', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp')
                 if url_input.lower().split('?')[0].endswith(blocked_exts):
+                    st.session_state.kws = []
+                    st.session_state.chat_history = []
                     st.error("🚫 PDF & image-only pages are not supported. Please paste the text content manually instead.")
 
                 else:
@@ -462,6 +464,8 @@ with left:
                                 content_type = resp.headers.get('Content-Type', '')
                                 # Block non-HTML responses (PDFs, images served dynamically)
                                 if 'text/html' not in content_type:
+                                    st.session_state.kws = []
+                                    st.session_state.chat_history = []
                                     st.error(f"🚫 Unsupported content type ({content_type.split(';')[0].strip()}). Only HTML pages are supported.")
                                     st.stop()
                                 html = resp.read().decode('utf-8', errors='ignore')
@@ -483,6 +487,8 @@ with left:
                         ]
                         plain_lower = plain.lower()
                         if any(sig in plain_lower for sig in login_signals):
+                            st.session_state.kws = []
+                            st.session_state.chat_history = []
                             st.error("🚫 This page requires login. Only publicly accessible pages are supported.")
 
                         # ── Detect paywalled pages ──
@@ -492,6 +498,8 @@ with left:
                             'get full access', 'premium content', 'paid subscribers only',
                             'buy a subscription', 'already a subscriber'
                         ]):
+                            st.session_state.kws = []
+                            st.session_state.chat_history = []
                             st.error("🚫 This page is behind a paywall. Only free, publicly accessible articles are supported.")
 
                         # ── Detect bot-blocking / CAPTCHA pages ──
@@ -500,10 +508,14 @@ with left:
                             'ddos protection', 'checking your browser', 'enable javascript',
                             'access denied', 'robot check', 'automated access'
                         ]):
+                            st.session_state.kws = []
+                            st.session_state.chat_history = []
                             st.error("🚫 This site is blocking automated access. Try copying the text manually instead.")
 
                         # ── Detect near-empty / no real content ──
                         elif len(plain) < 200:
+                            st.session_state.kws = []
+                            st.session_state.chat_history = []
                             st.error("🚫 Not enough readable text found on this page. It may be JavaScript-rendered or image-only.")
 
                         else:
@@ -511,6 +523,8 @@ with left:
                             st.session_state.chat_history = []
 
                     except HTTPError as e:
+                        st.session_state.kws = []
+                        st.session_state.chat_history = []
                         if e.code in (401, 403):
                             st.error(f"🚫 Access Denied (HTTP {e.code}) — This page requires login or blocks bots.")
                         elif e.code == 402:
@@ -518,8 +532,12 @@ with left:
                         else:
                             st.error(f"🚫 HTTP Error {e.code} — Unable to access this page.")
                     except URLError:
+                        st.session_state.kws = []
+                        st.session_state.chat_history = []
                         st.error("🚫 Unable to reach the website. Check the URL and try again.")
                     except Exception as e:
+                        st.session_state.kws = []
+                        st.session_state.chat_history = []
                         st.error(f"Unexpected error: {e}")
             else:
                 st.warning("Please enter a valid URL starting with http(s)://")
