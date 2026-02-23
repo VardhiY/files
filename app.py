@@ -39,7 +39,7 @@ st.markdown("""
 .stApp {
     background: #0d0d0d;
     color: #f0f0f0;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 1.35rem;
 }
 
