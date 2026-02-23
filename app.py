@@ -32,7 +32,7 @@ st.markdown("""
     background: #0d0d0d;
     color: #f0f0f0;
     font-family: 'Nunito', sans-serif;
-    font-size: 1.15rem;
+    font-size: 1.35rem;
 }
 
 /* ── Animated background stripes ── */
@@ -65,7 +65,7 @@ st.markdown("""
 }
 .main-title {
     font-family: 'Syne', sans-serif;
-    font-size: 5.5rem;
+    font-size: 6rem;
     font-weight: 800;
     letter-spacing: -3px;
     line-height: 1;
@@ -82,7 +82,7 @@ st.markdown("""
 }
 .subtitle {
     font-family: 'DM Mono', monospace;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     color: #888;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -94,7 +94,7 @@ st.markdown("""
     display: inline-block;
     padding: 0.3rem 1rem;
     border-radius: 100px;
-    font-size: 0.78rem;
+    font-size: 1rem;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -124,7 +124,7 @@ st.markdown("""
 /* ── Section label ── */
 .section-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 1rem;
     color: #ff3c78;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -145,8 +145,8 @@ div[data-baseweb="tab"] {
     color: #888 !important;
     font-weight: 700 !important;
     font-family: 'Nunito', sans-serif !important;
-    font-size: 1rem !important;
-    padding: 0.5rem 1.2rem !important;
+    font-size: 1.2rem !important;
+    padding: 0.5rem 1.4rem !important;
 }
 div[aria-selected="true"] {
     background: linear-gradient(90deg,#ff3c78,#a259ff) !important;
@@ -160,7 +160,7 @@ textarea, .stTextInput input {
     border-radius: 14px !important;
     color: #f0f0f0 !important;
     font-family: 'Nunito', sans-serif !important;
-    font-size: 1.15rem !important;
+    font-size: 1.3rem !important;
     padding: 1rem !important;
     transition: border-color 0.2s;
 }
@@ -177,8 +177,8 @@ textarea:focus, .stTextInput input:focus {
     color: #fff !important;
     font-family: 'Syne', sans-serif !important;
     font-weight: 800 !important;
-    font-size: 1rem !important;
-    padding: 0.8rem 2.2rem !important;
+    font-size: 1.15rem !important;
+    padding: 0.9rem 2.4rem !important;
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
@@ -197,8 +197,8 @@ textarea:focus, .stTextInput input:focus {
     font-family: 'Nunito', sans-serif !important;
     font-weight: 700 !important;
     border-radius: 10px !important;
-    padding: 0.6rem 1.4rem !important;
-    font-size: 0.85rem !important;
+    padding: 0.7rem 1.6rem !important;
+    font-size: 1.05rem !important;
 }
 .stDownloadButton > button:hover {
     border-color: #ff3c78 !important;
@@ -210,7 +210,7 @@ textarea:focus, .stTextInput input:focus {
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
     border-radius: 16px;
-    padding: 1rem 1.4rem;
+    padding: 1.1rem 1.6rem;
     margin-bottom: 0.7rem;
     display: flex;
     align-items: center;
@@ -223,14 +223,14 @@ textarea:focus, .stTextInput input:focus {
 }
 .kw-rank {
     font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 1rem;
     color: #555;
-    min-width: 28px;
+    min-width: 36px;
 }
 .kw-name {
     flex: 1;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: #f0f0f0;
 }
 .kw-score-wrap {
@@ -241,7 +241,7 @@ textarea:focus, .stTextInput input:focus {
 }
 .kw-bar-bg {
     flex: 1;
-    height: 6px;
+    height: 8px;
     background: #2a2a2a;
     border-radius: 100px;
     overflow: hidden;
@@ -252,8 +252,8 @@ textarea:focus, .stTextInput input:focus {
 }
 .kw-score-val {
     font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-    min-width: 36px;
+    font-size: 1rem;
+    min-width: 40px;
     text-align: right;
 }
 
@@ -275,8 +275,8 @@ textarea:focus, .stTextInput input:focus {
     padding: 1rem 1.3rem;
     border-radius: 18px;
     margin-bottom: 0.8rem;
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 1.15rem;
+    line-height: 1.7;
     max-width: 90%;
 }
 .chat-bubble.user {
@@ -294,7 +294,7 @@ textarea:focus, .stTextInput input:focus {
 }
 .chat-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.85rem;
     color: #555;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -307,11 +307,11 @@ textarea:focus, .stTextInput input:focus {
     align-items: center;
     gap: 0.7rem;
     padding: 0.5rem 0;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     border-bottom: 1px solid #1f1f1f;
 }
-.guide-yes { color: #00e5b0; font-size: 1rem; }
-.guide-no  { color: #ff3c78; font-size: 1rem; }
+.guide-yes { color: #00e5b0; font-size: 1.1rem; }
+.guide-no  { color: #ff3c78; font-size: 1.1rem; }
 
 /* ── Spinner text ── */
 .stSpinner { color: #ff3c78 !important; }
@@ -325,6 +325,7 @@ textarea:focus, .stTextInput input:focus {
 div[data-testid="stHorizontalBlock"] label {
     color: #888 !important;
     font-weight: 600 !important;
+    font-size: 1.1rem !important;
 }
 
 /* ── Divider ── */
@@ -616,24 +617,24 @@ with right:
 
     # ── SCORE LEGEND ──
     if st.session_state.kws:
-        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Score Legend</p>', unsafe_allow_html=True)
+        st.markdown('<p style="font-family:monospace;font-size:1rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Score Legend</p>', unsafe_allow_html=True)
         st.markdown("""
         <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.2rem;">
-            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;">
-                <div style="width:32px;height:6px;border-radius:4px;background:linear-gradient(90deg,#ff3c78,#ff7043)"></div>
-                <span style="font-size:0.82rem;color:#aaa;">#1 — Top Relevance</span>
+            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
+                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#ff3c78,#ff7043)"></div>
+                <span style="font-size:1.05rem;color:#aaa;">#1 — Top Relevance</span>
             </div>
-            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;">
-                <div style="width:32px;height:6px;border-radius:4px;background:linear-gradient(90deg,#ffb700,#ffe600)"></div>
-                <span style="font-size:0.82rem;color:#aaa;">#3 — High Impact</span>
+            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
+                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#ffb700,#ffe600)"></div>
+                <span style="font-size:1.05rem;color:#aaa;">#3 — High Impact</span>
             </div>
-            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;">
-                <div style="width:32px;height:6px;border-radius:4px;background:linear-gradient(90deg,#00e5ff,#00bcd4)"></div>
-                <span style="font-size:0.82rem;color:#aaa;">#4–5 — Notable</span>
+            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
+                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#00e5ff,#00bcd4)"></div>
+                <span style="font-size:1.05rem;color:#aaa;">#4–5 — Notable</span>
             </div>
             <div style="display:flex;align-items:center;gap:0.7rem;">
-                <div style="width:32px;height:6px;border-radius:4px;background:linear-gradient(90deg,#a259ff,#7c4dff)"></div>
-                <span style="font-size:0.82rem;color:#aaa;">#6–10 — Supporting</span>
+                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#a259ff,#7c4dff)"></div>
+                <span style="font-size:1.05rem;color:#aaa;">#6–10 — Supporting</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -644,39 +645,39 @@ with right:
     st.markdown("""
 <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.4rem;position:relative;overflow:hidden;">
 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff3c78,#ffb700,#00e5ff,#a259ff)"></div>
-<p style="font-size:0.68rem;color:#00e5b0;letter-spacing:2px;text-transform:uppercase;margin:0 0 0.6rem 0;">&#10004; Works great with</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Public blogs &amp; articles</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Wikipedia pages</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Company websites</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Documentation portals</p>
-<p style="font-size:0.68rem;color:#ff3c78;letter-spacing:2px;text-transform:uppercase;margin:1rem 0 0.6rem 0;">&#10006; Doesn't support</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Login-required portals</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Paywalled content</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Bot-blocking sites</p>
-<p style="color:#ccc;font-size:0.9rem;margin:0.3rem 0;"><span style="color:#ff3c78;">&#9679;</span> PDF / image-only pages</p>
+<p style="font-size:0.9rem;color:#00e5b0;letter-spacing:2px;text-transform:uppercase;margin:0 0 0.6rem 0;">&#10004; Works great with</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Public blogs &amp; articles</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Wikipedia pages</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Company websites</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Documentation portals</p>
+<p style="font-size:0.9rem;color:#ff3c78;letter-spacing:2px;text-transform:uppercase;margin:1rem 0 0.6rem 0;">&#10006; Doesn't support</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Login-required portals</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Paywalled content</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Bot-blocking sites</p>
+<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;"><span style="color:#ff3c78;">&#9679;</span> PDF / image-only pages</p>
 </div>
 """, unsafe_allow_html=True)
 
     # ── STATS ──
     if st.session_state.kws:
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Quick Stats</p>', unsafe_allow_html=True)
+        st.markdown('<p style="font-family:monospace;font-size:1rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Quick Stats</p>', unsafe_allow_html=True)
         scores = [float(k.get("score", 0)) for k in st.session_state.kws]
         avg = sum(scores) / len(scores) if scores else 0
         top_kw = st.session_state.kws[0]["keyword"] if st.session_state.kws else "—"
         st.markdown(f"""
         <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;">
             <div>
-                <div style="font-size:0.7rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Top Keyword</div>
-                <div style="font-size:1.1rem;font-weight:800;color:#ff3c78;margin-top:0.2rem">{top_kw}</div>
+                <div style="font-size:0.85rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Top Keyword</div>
+                <div style="font-size:1.35rem;font-weight:800;color:#ff3c78;margin-top:0.2rem">{top_kw}</div>
             </div>
             <div>
-                <div style="font-size:0.7rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Avg Score</div>
-                <div style="font-size:1.1rem;font-weight:800;color:#ffb700;margin-top:0.2rem">{avg:.2f}</div>
+                <div style="font-size:0.85rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Avg Score</div>
+                <div style="font-size:1.35rem;font-weight:800;color:#ffb700;margin-top:0.2rem">{avg:.2f}</div>
             </div>
             <div>
-                <div style="font-size:0.7rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Total Keywords</div>
-                <div style="font-size:1.1rem;font-weight:800;color:#00e5ff;margin-top:0.2rem">{len(st.session_state.kws)}</div>
+                <div style="font-size:0.85rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Total Keywords</div>
+                <div style="font-size:1.35rem;font-weight:800;color:#00e5ff;margin-top:0.2rem">{len(st.session_state.kws)}</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
