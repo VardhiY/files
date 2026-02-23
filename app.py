@@ -32,6 +32,7 @@ st.markdown("""
     background: #0d0d0d;
     color: #f0f0f0;
     font-family: 'Nunito', sans-serif;
+    font-size: 1.15rem;
 }
 
 /* ── Animated background stripes ── */
@@ -81,7 +82,7 @@ st.markdown("""
 }
 .subtitle {
     font-family: 'DM Mono', monospace;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: #888;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -144,7 +145,7 @@ div[data-baseweb="tab"] {
     color: #888 !important;
     font-weight: 700 !important;
     font-family: 'Nunito', sans-serif !important;
-    font-size: 0.9rem !important;
+    font-size: 1rem !important;
     padding: 0.5rem 1.2rem !important;
 }
 div[aria-selected="true"] {
@@ -159,7 +160,7 @@ textarea, .stTextInput input {
     border-radius: 14px !important;
     color: #f0f0f0 !important;
     font-family: 'Nunito', sans-serif !important;
-    font-size: 1rem !important;
+    font-size: 1.15rem !important;
     padding: 1rem !important;
     transition: border-color 0.2s;
 }
@@ -229,7 +230,7 @@ textarea:focus, .stTextInput input:focus {
 .kw-name {
     flex: 1;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #f0f0f0;
 }
 .kw-score-wrap {
@@ -447,19 +448,79 @@ with left:
         url_input = st.text_input("", placeholder="https://example.com/article", label_visibility="collapsed")
         if st.button("⚡ Extract from URL", key="btn_url"):
             if url_input.startswith("http"):
-                try:
-                    req = urllib.request.Request(url_input, headers={'User-Agent': 'Mozilla/5.0'})
-                    with st.spinner("Fetching & analyzing..."):
-                        with urllib.request.urlopen(req, timeout=15) as resp:
-                            html = resp.read().decode('utf-8', errors='ignore')
-                        st.session_state.kws = extract_keywords(html)
-                        st.session_state.chat_history = []
-                except HTTPError as e:
-                    st.error(f"🚫 Access Restricted (HTTP {e.code}) — This page may require login or block bots.")
-                except URLError:
-                    st.error("🚫 Unable to reach the website.")
-                except Exception as e:
-                    st.error(f"Unexpected error: {e}")
+
+                # ── Block PDF / image-only URLs by extension ──
+                blocked_exts = ('.pdf', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp')
+                if url_input.lower().split('?')[0].endswith(blocked_exts):
+                    st.error("🚫 PDF & image-only pages are not supported. Please paste the text content manually instead.")
+
+                else:
+                    try:
+                        req = urllib.request.Request(url_input, headers={'User-Agent': 'Mozilla/5.0'})
+                        with st.spinner("Fetching & analyzing..."):
+                            with urllib.request.urlopen(req, timeout=15) as resp:
+                                content_type = resp.headers.get('Content-Type', '')
+                                # Block non-HTML responses (PDFs, images served dynamically)
+                                if 'text/html' not in content_type:
+                                    st.error(f"🚫 Unsupported content type ({content_type.split(';')[0].strip()}). Only HTML pages are supported.")
+                                    st.stop()
+                                html = resp.read().decode('utf-8', errors='ignore')
+
+                        # ── Strip tags to get plain text ──
+                        plain = re.sub(r'<style[^>]*>.*?</style>', ' ', html, flags=re.DOTALL)
+                        plain = re.sub(r'<script[^>]*>.*?</script>', ' ', plain, flags=re.DOTALL)
+                        plain = re.sub(r'<[^>]+>', ' ', plain)
+                        plain = re.sub(r'\s+', ' ', plain).strip()
+
+                        # ── Detect login-required pages ──
+                        login_signals = [
+                            'sign in to continue', 'log in to continue', 'please sign in',
+                            'please log in', 'login required', 'signin required',
+                            'create an account', 'forgot your password', 'enter your password',
+                            'enter your email', 'username and password', 'sign in with google',
+                            'continue with google', 'continue with facebook',
+                            'you must be logged in', 'members only', 'register to access'
+                        ]
+                        plain_lower = plain.lower()
+                        if any(sig in plain_lower for sig in login_signals):
+                            st.error("🚫 This page requires login. Only publicly accessible pages are supported.")
+
+                        # ── Detect paywalled pages ──
+                        elif any(sig in plain_lower for sig in [
+                            'subscribe to read', 'subscribe to continue', 'subscription required',
+                            'this article is for subscribers', 'unlock this article',
+                            'get full access', 'premium content', 'paid subscribers only',
+                            'buy a subscription', 'already a subscriber'
+                        ]):
+                            st.error("🚫 This page is behind a paywall. Only free, publicly accessible articles are supported.")
+
+                        # ── Detect bot-blocking / CAPTCHA pages ──
+                        elif any(sig in plain_lower for sig in [
+                            'captcha', 'are you a robot', 'verify you are human',
+                            'ddos protection', 'checking your browser', 'enable javascript',
+                            'access denied', 'robot check', 'automated access'
+                        ]):
+                            st.error("🚫 This site is blocking automated access. Try copying the text manually instead.")
+
+                        # ── Detect near-empty / no real content ──
+                        elif len(plain) < 200:
+                            st.error("🚫 Not enough readable text found on this page. It may be JavaScript-rendered or image-only.")
+
+                        else:
+                            st.session_state.kws = extract_keywords(plain)
+                            st.session_state.chat_history = []
+
+                    except HTTPError as e:
+                        if e.code in (401, 403):
+                            st.error(f"🚫 Access Denied (HTTP {e.code}) — This page requires login or blocks bots.")
+                        elif e.code == 402:
+                            st.error("🚫 Payment Required (HTTP 402) — This page is behind a paywall.")
+                        else:
+                            st.error(f"🚫 HTTP Error {e.code} — Unable to access this page.")
+                    except URLError:
+                        st.error("🚫 Unable to reach the website. Check the URL and try again.")
+                    except Exception as e:
+                        st.error(f"Unexpected error: {e}")
             else:
                 st.warning("Please enter a valid URL starting with http(s)://")
 
