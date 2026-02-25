@@ -38,22 +38,33 @@ st.markdown("""
 
 /* ── BASE ── */
 .stApp {
-    background: #0c0c10 !important;
-    color: #e8e8f0 !important;
+    background: #07050f !important;
+    color: #eeeeff !important;
     font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
 }
 
-/* ── Subtle ambient background ── */
+/* ── VIVID animated blob background ── */
 .stApp::before {
     content: '';
     position: fixed;
     inset: 0;
     background:
-        radial-gradient(ellipse 900px 700px at -5% 0%,   rgba(139,92,246,0.11) 0%, transparent 55%),
-        radial-gradient(ellipse 700px 600px at 105% 100%, rgba(236,72,153,0.09) 0%, transparent 55%),
-        radial-gradient(ellipse 600px 500px at 50%  110%, rgba(6,182,212,0.06)  0%, transparent 55%);
+        radial-gradient(ellipse 800px 700px at -10% -10%, rgba(139,92,246,0.55) 0%, transparent 55%),
+        radial-gradient(ellipse 700px 650px at 110%  20%, rgba(236,72,153,0.50) 0%, transparent 55%),
+        radial-gradient(ellipse 650px 600px at 100% 100%, rgba(251,146,60,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 600px 550px at  -5% 100%, rgba(6,182,212,0.35)  0%, transparent 55%),
+        radial-gradient(ellipse 500px 400px at  50%  50%, rgba(244,114,182,0.18) 0%, transparent 55%);
     pointer-events: none;
     z-index: 0;
+    animation: blobShift 18s ease-in-out infinite alternate;
+    filter: blur(30px);
+}
+@keyframes blobShift {
+    0%   { transform: scale(1)    translate(0px,   0px); }
+    33%  { transform: scale(1.04) translate(18px, -14px); }
+    66%  { transform: scale(0.97) translate(-12px, 18px); }
+    100% { transform: scale(1.02) translate(8px,   10px); }
 }
 
 .block-container {
@@ -95,7 +106,7 @@ st.markdown("""
 }
 .lx-logo-text {
     font-family: 'Sora', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #f0f0f8;
     letter-spacing: -0.3px;
@@ -108,21 +119,21 @@ st.markdown("""
 }
 .lx-nav-center {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.78rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.22);
-    border: 1px solid rgba(255,255,255,0.07);
-    padding: 0.28rem 0.9rem;
+    color: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0.32rem 1rem;
     border-radius: 100px;
 }
 .lx-status {
     display: flex;
     align-items: center;
     gap: 0.45rem;
-    font-size: 0.78rem;
+    font-size: 0.92rem;
     font-weight: 500;
-    color: rgba(255,255,255,0.38);
+    color: rgba(255,255,255,0.5);
 }
 .lx-status-dot {
     width: 7px; height: 7px;
@@ -144,11 +155,11 @@ st.markdown("""
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    background: rgba(139,92,246,0.09);
-    border: 1px solid rgba(139,92,246,0.18);
+    background: rgba(139,92,246,0.12);
+    border: 1px solid rgba(139,92,246,0.25);
     border-radius: 100px;
-    padding: 0.28rem 0.85rem;
-    font-size: 0.73rem;
+    padding: 0.35rem 1rem;
+    font-size: 0.88rem;
     font-weight: 500;
     color: #a78bfa;
     letter-spacing: 0.04em;
@@ -156,14 +167,14 @@ st.markdown("""
 }
 .lx-hero-tag::before {
     content: '';
-    width: 6px; height: 6px;
+    width: 7px; height: 7px;
     background: #8b5cf6;
     border-radius: 50%;
     flex-shrink: 0;
 }
 .lx-h1 {
     font-family: 'Sora', sans-serif;
-    font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+    font-size: clamp(3.2rem, 6.5vw, 5.5rem);
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -1.5px;
@@ -177,9 +188,9 @@ st.markdown("""
     background-clip: text;
 }
 .lx-hero-sub {
-    font-size: 0.97rem;
-    color: rgba(255,255,255,0.35);
-    max-width: 400px;
+    font-size: 1.12rem;
+    color: rgba(255,255,255,0.45);
+    max-width: 430px;
     margin: 0 auto;
     line-height: 1.72;
 }
@@ -188,11 +199,13 @@ st.markdown("""
    CARD WRAPPERS
 ══════════════════════════════════ */
 .lx-card {
-    background: #13131a;
-    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(10,8,20,0.65);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 18px;
     padding: 1.4rem 1.5rem 0.5rem;
     margin-bottom: 1.1rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 .lx-card-hdr {
     display: flex;
@@ -202,19 +215,19 @@ st.markdown("""
 }
 .lx-card-num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
+    font-size: 0.72rem;
     letter-spacing: 0.12em;
-    color: rgba(255,255,255,0.18);
-    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.07);
     border-radius: 5px;
-    padding: 0.12rem 0.38rem;
+    padding: 0.14rem 0.42rem;
 }
 .lx-card-ttl {
-    font-size: 0.68rem;
+    font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.4);
 }
 .lx-card-line { flex:1; height:1px; background:rgba(255,255,255,0.05); }
 
@@ -231,11 +244,11 @@ div[data-baseweb="tab-list"] {
 }
 div[data-baseweb="tab"] {
     border-radius: 8px !important;
-    color: rgba(255,255,255,0.32) !important;
+    color: rgba(255,255,255,0.38) !important;
     font-weight: 500 !important;
     font-family: 'Inter', sans-serif !important;
-    font-size: 0.85rem !important;
-    padding: 0.48rem 1.1rem !important;
+    font-size: 1rem !important;
+    padding: 0.52rem 1.2rem !important;
     transition: all 0.18s !important;
 }
 div[aria-selected="true"] {
@@ -250,15 +263,15 @@ div[data-baseweb="tab-panel"] { background: transparent !important; padding: 0 !
    INPUTS
 ══════════════════════════════════ */
 textarea, .stTextInput input {
-    background: #0c0c10 !important;
-    border: 1px solid rgba(255,255,255,0.09) !important;
+    background: rgba(0,0,0,0.35) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
     border-radius: 11px !important;
-    color: #e8e8f0 !important;
+    color: #eeeeff !important;
     font-family: 'Inter', sans-serif !important;
-    font-size: 0.9rem !important;
-    padding: 0.8rem 0.95rem !important;
+    font-size: 1.05rem !important;
+    padding: 0.9rem 1.05rem !important;
     transition: border-color 0.2s, box-shadow 0.2s !important;
-    line-height: 1.6 !important;
+    line-height: 1.65 !important;
     caret-color: #a78bfa !important;
 }
 textarea:focus, .stTextInput input:focus {
@@ -279,13 +292,13 @@ textarea::placeholder, .stTextInput input::placeholder { color: rgba(255,255,255
     color: #fff !important;
     font-family: 'Inter', sans-serif !important;
     font-weight: 600 !important;
-    font-size: 0.88rem !important;
-    padding: 0.7rem 1.5rem !important;
+    font-size: 1.05rem !important;
+    padding: 0.85rem 1.5rem !important;
     letter-spacing: 0.02em !important;
     cursor: pointer !important;
     transition: all 0.2s !important;
-    margin-top: 0.7rem !important;
-    box-shadow: 0 3px 12px rgba(109,40,217,0.28) !important;
+    margin-top: 0.75rem !important;
+    box-shadow: 0 3px 12px rgba(109,40,217,0.3) !important;
 }
 .stButton > button:hover {
     opacity: 0.9 !important;
@@ -336,15 +349,15 @@ textarea::placeholder, .stTextInput input::placeholder { color: rgba(255,255,255
 }
 .kw-num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.16);
-    min-width: 22px;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.2);
+    min-width: 28px;
 }
-.kw-word { flex:1; font-size: 0.9rem; font-weight: 500; color: #ddddf0; }
-.kw-bar-wrap { display:flex; align-items:center; gap:0.6rem; min-width:120px; }
-.kw-bar-bg { flex:1; height:3px; background:rgba(255,255,255,0.06); border-radius:100px; overflow:hidden; }
+.kw-word { flex:1; font-size: 1.05rem; font-weight: 500; color: #ddddf0; }
+.kw-bar-wrap { display:flex; align-items:center; gap:0.6rem; min-width:130px; }
+.kw-bar-bg { flex:1; height:4px; background:rgba(255,255,255,0.08); border-radius:100px; overflow:hidden; }
 .kw-bar-fill { height:100%; border-radius:100px; }
-.kw-sc { font-family:'JetBrains Mono',monospace; font-size:0.68rem; min-width:30px; text-align:right; font-weight:500; }
+.kw-sc { font-family:'JetBrains Mono',monospace; font-size:0.82rem; min-width:34px; text-align:right; font-weight:500; }
 
 .r0 .kw-bar-fill{background:#a78bfa;} .r0 .kw-sc{color:#a78bfa;}
 .r1 .kw-bar-fill{background:#f472b6;} .r1 .kw-sc{color:#f472b6;}
@@ -360,20 +373,20 @@ textarea::placeholder, .stTextInput input::placeholder { color: rgba(255,255,255
 ══════════════════════════════════ */
 .chat-from {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
+    font-size: 0.7rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.16);
-    margin-bottom: 0.2rem;
+    color: rgba(255,255,255,0.2);
+    margin-bottom: 0.22rem;
 }
-.chat-from.you { text-align:right; color:rgba(167,139,250,0.45); }
+.chat-from.you { text-align:right; color:rgba(167,139,250,0.5); }
 .chat-msg {
-    padding: 0.7rem 0.95rem;
-    border-radius: 13px;
-    font-size: 0.87rem;
-    line-height: 1.65;
-    max-width: 85%;
-    margin-bottom: 0.55rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: 14px;
+    font-size: 1rem;
+    line-height: 1.68;
+    max-width: 86%;
+    margin-bottom: 0.6rem;
 }
 .chat-msg.you {
     background: linear-gradient(135deg, #4c1d95, #9d174d);
@@ -416,21 +429,21 @@ div[data-testid="stForm"] .stButton > button:hover {
 /* ══════════════════════════════════
    SIDEBAR CARDS
 ══════════════════════════════════ */
-.sc { background:#13131a; border:1px solid rgba(255,255,255,0.07); border-radius:15px; padding:1.1rem; margin-bottom:0.9rem; }
-.sc-ttl { font-size:0.65rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.26); margin-bottom:0.9rem; display:flex; align-items:center; gap:0.45rem; }
-.sc-ttl::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.05); }
+.sc { background:rgba(10,8,20,0.72); border:1px solid rgba(255,255,255,0.09); border-radius:16px; padding:1.2rem; margin-bottom:0.9rem; backdrop-filter:blur(14px); }
+.sc-ttl { font-size:0.78rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.32); margin-bottom:0.9rem; display:flex; align-items:center; gap:0.45rem; }
+.sc-ttl::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
 
-.sg { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:0.6rem; }
-.si { background:#0c0c10; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:0.7rem; text-align:center; }
-.sv { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:700; line-height:1; margin-bottom:0.18rem; }
-.sl { font-size:0.58rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.2); }
-.tkb { background:#0c0c10; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:0.7rem 0.9rem; }
-.tkl { font-size:0.58rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-bottom:0.22rem; }
-.tkv { font-size:0.95rem; font-weight:600; color:#c4b5fd; }
+.sg { display:grid; grid-template-columns:1fr 1fr; gap:0.55rem; margin-bottom:0.65rem; }
+.si { background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.07); border-radius:11px; padding:0.8rem; text-align:center; }
+.sv { font-family:'Sora',sans-serif; font-size:1.55rem; font-weight:700; line-height:1; margin-bottom:0.2rem; }
+.sl { font-size:0.68rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.25); }
+.tkb { background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.07); border-radius:11px; padding:0.8rem 1rem; }
+.tkl { font-size:0.68rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:0.25rem; }
+.tkv { font-size:1.05rem; font-weight:600; color:#c4b5fd; }
 
 /* legend */
-.lr { display:flex; align-items:center; gap:0.7rem; margin-bottom:0.5rem; font-size:0.8rem; color:rgba(255,255,255,0.4); }
-.ld { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.lr { display:flex; align-items:center; gap:0.7rem; margin-bottom:0.55rem; font-size:0.9rem; color:rgba(255,255,255,0.45); }
+.ld { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
 
 /* ══════════════════════════════════
    MISC
@@ -739,52 +752,52 @@ with right:
     # GUIDELINES — 100% inline styles, no class dependencies
     # ══════════════════════════════════════════════════════
     st.markdown("""
-<div style="background:#13131a;border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:1.1rem;margin-bottom:0.9rem;">
+<div style="background:rgba(10,8,20,0.65);border:1px solid rgba(255,255,255,0.1);border-radius:15px;padding:1.2rem;margin-bottom:0.9rem;backdrop-filter:blur(16px);">
 
   <!-- header -->
-  <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.26);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.45rem;font-family:Inter,sans-serif;">
+  <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.45rem;font-family:Inter,sans-serif;">
     How It Works
-    <span style="flex:1;height:1px;background:rgba(255,255,255,0.05);display:inline-block;"></span>
+    <span style="flex:1;height:1px;background:rgba(255,255,255,0.07);display:inline-block;"></span>
   </div>
 
   <!-- SUPPORTED -->
-  <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#4ade80;margin-bottom:0.55rem;font-family:Inter,sans-serif;">✓ &nbsp;Supported Sources</div>
+  <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#4ade80;margin-bottom:0.55rem;font-family:Inter,sans-serif;">✓ &nbsp;Supported Sources</div>
 
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Public blogs &amp; articles</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.22);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">Public blogs &amp; articles</span>
   </div>
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Wikipedia pages</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.22);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">Wikipedia pages</span>
   </div>
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Company &amp; docs sites</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.22);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">Company &amp; docs sites</span>
   </div>
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Pasted raw text</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.22);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">Pasted raw text</span>
   </div>
 
   <!-- NOT SUPPORTED -->
-  <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin-top:0.85rem;margin-bottom:0.55rem;font-family:Inter,sans-serif;">✕ &nbsp;Not Supported</div>
+  <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin-top:0.9rem;margin-bottom:0.55rem;font-family:Inter,sans-serif;">✕ &nbsp;Not Supported</div>
 
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Login-gated pages</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">Login-gated pages</span>
   </div>
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Paywalled content</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">Paywalled content</span>
   </div>
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Bot-blocking / CAPTCHA</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">Bot-blocking / CAPTCHA</span>
   </div>
-  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;">
-    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
-    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">PDF / image-only pages</span>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.4rem 0;">
+    <span style="width:20px;height:20px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.92rem;color:rgba(255,255,255,0.52);font-family:Inter,sans-serif;">PDF / image-only pages</span>
   </div>
 
 </div>
