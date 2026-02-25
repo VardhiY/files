@@ -29,710 +29,538 @@ if not api_key:
 
 client = Groq(api_key=api_key)
 
-# ── FULL INTERFACE STYLING ─────────────────────────────
+# ── STYLING ─────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── ROOT / APP ── */
+/* ── BASE ── */
 .stApp {
-    background: #080612 !important;
-    color: #f1f0ff !important;
-    font-family: 'Space Grotesk', sans-serif !important;
+    background: #0c0c10 !important;
+    color: #e8e8f0 !important;
+    font-family: 'Inter', sans-serif !important;
 }
 
-/* ── Animated blob background ── */
+/* ── Subtle ambient background ── */
 .stApp::before {
     content: '';
     position: fixed;
     inset: 0;
     background:
-        radial-gradient(ellipse 700px 600px at -10% -10%, rgba(168,85,247,0.45) 0%, transparent 60%),
-        radial-gradient(ellipse 600px 500px at 110% 60%, rgba(255,60,172,0.4) 0%, transparent 60%),
-        radial-gradient(ellipse 500px 400px at 40% 110%, rgba(6,182,212,0.3) 0%, transparent 60%),
-        radial-gradient(ellipse 350px 350px at 55% 25%, rgba(255,107,53,0.2) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-    animation: blobDrift 20s ease-in-out infinite alternate;
-}
-@keyframes blobDrift {
-    0%   { filter: blur(60px) brightness(1);   transform: scale(1); }
-    50%  { filter: blur(70px) brightness(1.05); transform: scale(1.02) translate(10px, -8px); }
-    100% { filter: blur(65px) brightness(1);   transform: scale(0.98) translate(-8px, 12px); }
-}
-
-/* Grid overlay */
-.stApp::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-    background-size: 60px 60px;
+        radial-gradient(ellipse 900px 700px at -5% 0%,   rgba(139,92,246,0.11) 0%, transparent 55%),
+        radial-gradient(ellipse 700px 600px at 105% 100%, rgba(236,72,153,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 600px 500px at 50%  110%, rgba(6,182,212,0.06)  0%, transparent 55%);
     pointer-events: none;
     z-index: 0;
 }
 
 .block-container {
     padding-top: 0 !important;
-    padding-bottom: 4rem !important;
-    max-width: 1280px !important;
+    padding-bottom: 3rem !important;
+    max-width: 1300px !important;
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
-/* ── HIDE STREAMLIT CHROME ── */
+/* ── Hide Streamlit chrome ── */
 #MainMenu, footer, header { visibility: hidden; }
 .stDeployButton { display: none; }
 
-/* ── NAV BAR ── */
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
 .lx-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.4rem 0 1.4rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    margin-bottom: 3rem;
-    position: relative;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 2.5rem;
 }
-.lx-logo {
-    font-family: 'Clash Display', sans-serif;
-    font-size: 1.7rem;
+.lx-logo-wrap { display: flex; align-items: center; gap: 0.6rem; }
+.lx-logo-icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, #7c3aed, #db2777);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 14px rgba(124,58,237,0.4);
+}
+.lx-logo-text {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.2rem;
     font-weight: 700;
-    background: linear-gradient(90deg, #ff3cac, #ffb347, #06b6d4, #a855f7);
+    color: #f0f0f8;
+    letter-spacing: -0.3px;
+}
+.lx-logo-text span {
+    background: linear-gradient(90deg, #a78bfa, #f472b6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 300% auto;
-    animation: shimmer 4s linear infinite;
-    letter-spacing: -0.5px;
 }
-@keyframes shimmer {
-    0%   { background-position: 0% center; }
-    100% { background-position: 300% center; }
-}
-.lx-badge {
+.lx-nav-center {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.65rem;
-    letter-spacing: 3px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 0.3rem 1rem;
+    color: rgba(255,255,255,0.22);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 0.28rem 0.9rem;
     border-radius: 100px;
 }
-.lx-pill {
-    display: inline-flex;
+.lx-status {
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(135deg, rgba(168,85,247,0.18), rgba(255,60,172,0.18));
-    border: 1px solid rgba(168,85,247,0.28);
-    border-radius: 100px;
-    padding: 0.38rem 1.1rem;
-    font-size: 0.82rem;
+    gap: 0.45rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    color: #d8b4fe;
+    color: rgba(255,255,255,0.38);
 }
-.lx-dot {
+.lx-status-dot {
     width: 7px; height: 7px;
-    background: #a855f7;
+    background: #4ade80;
     border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-    display: inline-block;
+    box-shadow: 0 0 8px rgba(74,222,128,0.55);
+    animation: sDot 2.5s ease-in-out infinite;
 }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.45;transform:scale(0.75);} }
+@keyframes sDot { 0%,100%{opacity:1;} 50%{opacity:0.35;} }
 
-/* ── HERO ── */
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
 .lx-hero {
     text-align: center;
-    padding: 1rem 0 3.5rem;
+    padding: 0.5rem 0 3rem;
 }
-.lx-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    margin-bottom: 1.3rem;
-}
-.lx-title {
-    font-family: 'Clash Display', sans-serif;
-    font-size: clamp(4.5rem, 11vw, 8.5rem);
-    font-weight: 700;
-    line-height: 0.92;
-    letter-spacing: -4px;
-    margin-bottom: 1.3rem;
-}
-.lx-title .t1 {
-    display: block;
-    background: linear-gradient(135deg, #ffffff 20%, rgba(255,255,255,0.55));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.lx-title .t2 {
-    display: block;
-    background: linear-gradient(90deg, #ff3cac, #ff6b35, #ffb347, #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 300% auto;
-    animation: shimmer 5s linear infinite;
-}
-.lx-sub {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.38);
-    max-width: 460px;
-    margin: 0 auto;
-    line-height: 1.75;
-    font-weight: 300;
-}
-
-/* ── GLASS CARDS ── */
-.lx-card {
-    background: rgba(255,255,255,0.028);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 24px;
-    padding: 1.8rem;
-    margin-bottom: 1.4rem;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-.lx-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 20%; right: 20%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,60,172,0.7), rgba(168,85,247,0.7), transparent);
-    pointer-events: none;
-}
-.lx-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(168,85,247,0.04) 0%, transparent 50%, rgba(255,60,172,0.02) 100%);
-    pointer-events: none;
-}
-
-/* ── SECTION LABELS ── */
-.lx-sec {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #ff3cac;
-    margin-bottom: 1.2rem;
-    display: flex;
+.lx-hero-tag {
+    display: inline-flex;
     align-items: center;
-    gap: 0.7rem;
-}
-.lx-sec::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(255,60,172,0.25), transparent);
-}
-
-/* ── STREAMLIT TABS ── */
-div[data-baseweb="tab-list"] {
-    background: rgba(0,0,0,0.45) !important;
-    border-radius: 14px !important;
-    padding: 5px !important;
-    border: 1px solid rgba(255,255,255,0.07) !important;
-    gap: 3px !important;
-    margin-bottom: 1.3rem !important;
-}
-div[data-baseweb="tab"] {
-    border-radius: 10px !important;
-    color: rgba(255,255,255,0.38) !important;
-    font-weight: 600 !important;
-    font-family: 'Space Grotesk', sans-serif !important;
-    font-size: 0.95rem !important;
-    padding: 0.55rem 1.3rem !important;
-    transition: all 0.2s !important;
-}
-div[aria-selected="true"] {
-    background: linear-gradient(135deg, #a855f7, #ff3cac) !important;
-    color: white !important;
-    box-shadow: 0 4px 20px rgba(168,85,247,0.35) !important;
-}
-div[data-baseweb="tab-panel"] {
-    background: transparent !important;
-    padding: 0 !important;
-}
-
-/* ── INPUTS ── */
-textarea, .stTextInput input {
-    background: rgba(0,0,0,0.38) !important;
-    border: 1.5px solid rgba(255,255,255,0.08) !important;
-    border-radius: 16px !important;
-    color: #f1f0ff !important;
-    font-family: 'Space Grotesk', sans-serif !important;
-    font-size: 0.98rem !important;
-    padding: 1rem 1.2rem !important;
-    transition: border-color 0.25s, box-shadow 0.25s !important;
-    line-height: 1.65 !important;
-}
-textarea:focus, .stTextInput input:focus {
-    border-color: rgba(168,85,247,0.6) !important;
-    box-shadow: 0 0 0 4px rgba(168,85,247,0.1), 0 0 30px rgba(168,85,247,0.12) !important;
-    outline: none !important;
-}
-textarea::placeholder, .stTextInput input::placeholder {
-    color: rgba(255,255,255,0.18) !important;
-}
-
-/* ── BUTTONS ── */
-.stButton > button {
-    width: 100% !important;
-    background: linear-gradient(135deg, #a855f7, #ff3cac, #ff6b35) !important;
-    background-size: 200% auto !important;
-    border: none !important;
-    border-radius: 14px !important;
-    color: #fff !important;
-    font-family: 'Clash Display', sans-serif !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    padding: 0.9rem 2rem !important;
-    letter-spacing: 1px !important;
-    text-transform: uppercase !important;
-    cursor: pointer !important;
-    transition: all 0.3s !important;
-    margin-top: 0.8rem !important;
-}
-.stButton > button:hover {
-    background-position: right center !important;
-    box-shadow: 0 10px 40px rgba(168,85,247,0.45) !important;
-    transform: translateY(-2px) !important;
-}
-.stButton > button:active {
-    transform: translateY(0) !important;
-}
-
-/* ── DOWNLOAD BUTTONS ── */
-.stDownloadButton > button {
-    background: rgba(255,255,255,0.04) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-    color: rgba(255,255,255,0.55) !important;
-    font-family: 'Space Grotesk', sans-serif !important;
-    font-weight: 600 !important;
-    border-radius: 10px !important;
-    padding: 0.6rem 1.2rem !important;
-    font-size: 0.85rem !important;
-    transition: all 0.2s !important;
-}
-.stDownloadButton > button:hover {
-    border-color: #ff3cac !important;
-    color: #ff3cac !important;
-    background: rgba(255,60,172,0.07) !important;
-}
-
-/* ── KEYWORD CARDS ── */
-.kw-card {
-    background: rgba(0,0,0,0.28);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 14px;
-    padding: 0.9rem 1.2rem;
-    margin-bottom: 0.55rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-}
-.kw-card:hover {
-    border-color: rgba(255,255,255,0.14);
-    transform: translateX(5px);
-    background: rgba(255,255,255,0.035);
-}
-.kw-rank {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.2);
-    min-width: 30px;
-    font-weight: 300;
-}
-.kw-name {
-    flex: 1;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #f1f0ff;
-}
-.kw-score-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    min-width: 150px;
-}
-.kw-bar-bg {
-    flex: 1;
-    height: 5px;
-    background: rgba(255,255,255,0.07);
+    gap: 0.45rem;
+    background: rgba(139,92,246,0.09);
+    border: 1px solid rgba(139,92,246,0.18);
     border-radius: 100px;
-    overflow: hidden;
-}
-.kw-bar-fill {
-    height: 100%;
-    border-radius: 100px;
-}
-.kw-score-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    min-width: 36px;
-    text-align: right;
+    padding: 0.28rem 0.85rem;
+    font-size: 0.73rem;
     font-weight: 500;
+    color: #a78bfa;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.4rem;
+}
+.lx-hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #8b5cf6;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.lx-h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: #f0f0f8;
+    margin-bottom: 0.85rem;
+}
+.lx-h1 .grad {
+    background: linear-gradient(135deg, #a78bfa 0%, #f472b6 55%, #fb923c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.lx-hero-sub {
+    font-size: 0.97rem;
+    color: rgba(255,255,255,0.35);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.72;
 }
 
-/* ── RANK COLORS ── */
-.rank-1 .kw-bar-fill { background: linear-gradient(90deg,#ff3cac,#ff6b35); box-shadow: 0 0 8px rgba(255,60,172,0.5); }
-.rank-2 .kw-bar-fill { background: linear-gradient(90deg,#ff6b35,#ffb347); box-shadow: 0 0 8px rgba(255,107,53,0.5); }
-.rank-3 .kw-bar-fill { background: linear-gradient(90deg,#ffb347,#ffe600); box-shadow: 0 0 8px rgba(255,179,71,0.5); }
-.rank-4 .kw-bar-fill,
-.rank-5 .kw-bar-fill { background: linear-gradient(90deg,#06b6d4,#0ea5e9); box-shadow: 0 0 8px rgba(6,182,212,0.5); }
-.rank-other .kw-bar-fill { background: linear-gradient(90deg,#a855f7,#7c3aed); box-shadow: 0 0 8px rgba(168,85,247,0.5); }
-
-.rank-1 .kw-score-val   { color: #ff3cac; }
-.rank-2 .kw-score-val   { color: #ff6b35; }
-.rank-3 .kw-score-val   { color: #ffb347; }
-.rank-4 .kw-score-val,
-.rank-5 .kw-score-val   { color: #06b6d4; }
-.rank-other .kw-score-val { color: #a855f7; }
-
-/* ── CHAT BUBBLES ── */
-.chat-label {
+/* ══════════════════════════════════
+   CARD WRAPPERS
+══════════════════════════════════ */
+.lx-card {
+    background: #13131a;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 18px;
+    padding: 1.4rem 1.5rem 0.5rem;
+    margin-bottom: 1.1rem;
+}
+.lx-card-hdr {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+}
+.lx-card-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.58rem;
-    color: rgba(255,255,255,0.2);
-    letter-spacing: 3px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.05);
+    border-radius: 5px;
+    padding: 0.12rem 0.38rem;
+}
+.lx-card-ttl {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 0.28rem;
+    color: rgba(255,255,255,0.3);
 }
-.chat-label.user-label { text-align: right; color: rgba(168,85,247,0.55); }
+.lx-card-line { flex:1; height:1px; background:rgba(255,255,255,0.05); }
 
-.chat-bubble {
-    padding: 0.85rem 1.1rem;
-    border-radius: 16px;
-    margin-bottom: 0.75rem;
-    font-size: 0.92rem;
-    line-height: 1.65;
-    max-width: 88%;
+/* ══════════════════════════════════
+   TABS
+══════════════════════════════════ */
+div[data-baseweb="tab-list"] {
+    background: #0c0c10 !important;
+    border-radius: 11px !important;
+    padding: 4px !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    gap: 2px !important;
+    margin-bottom: 1.1rem !important;
 }
-.chat-bubble.user {
-    background: linear-gradient(135deg, #a855f7, #ff3cac);
-    color: white;
-    font-weight: 500;
-    margin-left: auto;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 4px 20px rgba(168,85,247,0.28);
+div[data-baseweb="tab"] {
+    border-radius: 8px !important;
+    color: rgba(255,255,255,0.32) !important;
+    font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.85rem !important;
+    padding: 0.48rem 1.1rem !important;
+    transition: all 0.18s !important;
 }
-.chat-bubble.ai {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.82);
-    border-bottom-left-radius: 4px;
+div[aria-selected="true"] {
+    background: #1e1e2e !important;
+    color: #e8e8f0 !important;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
 }
+div[data-baseweb="tab-panel"] { background: transparent !important; padding: 0 !important; }
 
-/* ── CHAT FORM ── */
-.stForm {
-    background: transparent !important;
+/* ══════════════════════════════════
+   INPUTS
+══════════════════════════════════ */
+textarea, .stTextInput input {
+    background: #0c0c10 !important;
+    border: 1px solid rgba(255,255,255,0.09) !important;
+    border-radius: 11px !important;
+    color: #e8e8f0 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.9rem !important;
+    padding: 0.8rem 0.95rem !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+    line-height: 1.6 !important;
+    caret-color: #a78bfa !important;
+}
+textarea:focus, .stTextInput input:focus {
+    border-color: rgba(139,92,246,0.48) !important;
+    box-shadow: 0 0 0 3px rgba(139,92,246,0.07) !important;
+    outline: none !important;
+}
+textarea::placeholder, .stTextInput input::placeholder { color: rgba(255,255,255,0.15) !important; }
+
+/* ══════════════════════════════════
+   PRIMARY BUTTON
+══════════════════════════════════ */
+.stButton > button {
+    width: 100% !important;
+    background: linear-gradient(135deg, #6d28d9, #be185d) !important;
     border: none !important;
-    padding: 0 !important;
+    border-radius: 10px !important;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    padding: 0.7rem 1.5rem !important;
+    letter-spacing: 0.02em !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    margin-top: 0.7rem !important;
+    box-shadow: 0 3px 12px rgba(109,40,217,0.28) !important;
 }
-.stForm > div {
-    background: transparent !important;
+.stButton > button:hover {
+    opacity: 0.9 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 7px 22px rgba(109,40,217,0.38) !important;
 }
+.stButton > button:active { transform: translateY(0) !important; opacity: 1 !important; }
+
+/* ══════════════════════════════════
+   DOWNLOAD BUTTONS
+══════════════════════════════════ */
+.stDownloadButton > button {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.09) !important;
+    color: rgba(255,255,255,0.45) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    border-radius: 9px !important;
+    padding: 0.48rem 0.95rem !important;
+    font-size: 0.8rem !important;
+    transition: all 0.18s !important;
+}
+.stDownloadButton > button:hover {
+    background: rgba(139,92,246,0.09) !important;
+    border-color: rgba(139,92,246,0.3) !important;
+    color: #a78bfa !important;
+}
+
+/* ══════════════════════════════════
+   KEYWORD ROWS
+══════════════════════════════════ */
+.kw-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 9px;
+    margin-bottom: 0.35rem;
+    background: rgba(255,255,255,0.018);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.18s, border-color 0.18s, transform 0.15s;
+    cursor: default;
+}
+.kw-row:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.09);
+    transform: translateX(3px);
+}
+.kw-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.16);
+    min-width: 22px;
+}
+.kw-word { flex:1; font-size: 0.9rem; font-weight: 500; color: #ddddf0; }
+.kw-bar-wrap { display:flex; align-items:center; gap:0.6rem; min-width:120px; }
+.kw-bar-bg { flex:1; height:3px; background:rgba(255,255,255,0.06); border-radius:100px; overflow:hidden; }
+.kw-bar-fill { height:100%; border-radius:100px; }
+.kw-sc { font-family:'JetBrains Mono',monospace; font-size:0.68rem; min-width:30px; text-align:right; font-weight:500; }
+
+.r0 .kw-bar-fill{background:#a78bfa;} .r0 .kw-sc{color:#a78bfa;}
+.r1 .kw-bar-fill{background:#f472b6;} .r1 .kw-sc{color:#f472b6;}
+.r2 .kw-bar-fill{background:#fb923c;} .r2 .kw-sc{color:#fb923c;}
+.r3 .kw-bar-fill{background:#34d399;} .r3 .kw-sc{color:#34d399;}
+.r4 .kw-bar-fill{background:#38bdf8;} .r4 .kw-sc{color:#38bdf8;}
+.r5 .kw-bar-fill,.r6 .kw-bar-fill,.r7 .kw-bar-fill,
+.r8 .kw-bar-fill,.r9 .kw-bar-fill{background:rgba(255,255,255,0.22);}
+.r5 .kw-sc,.r6 .kw-sc,.r7 .kw-sc,.r8 .kw-sc,.r9 .kw-sc{color:rgba(255,255,255,0.3);}
+
+/* ══════════════════════════════════
+   CHAT
+══════════════════════════════════ */
+.chat-from {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.16);
+    margin-bottom: 0.2rem;
+}
+.chat-from.you { text-align:right; color:rgba(167,139,250,0.45); }
+.chat-msg {
+    padding: 0.7rem 0.95rem;
+    border-radius: 13px;
+    font-size: 0.87rem;
+    line-height: 1.65;
+    max-width: 85%;
+    margin-bottom: 0.55rem;
+}
+.chat-msg.you {
+    background: linear-gradient(135deg, #4c1d95, #9d174d);
+    color: rgba(255,255,255,0.88);
+    margin-left: auto;
+    border-bottom-right-radius: 3px;
+}
+.chat-msg.ai {
+    background: #18181f;
+    border: 1px solid rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.68);
+    border-bottom-left-radius: 3px;
+}
+
+/* form reset */
 div[data-testid="stForm"] {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    padding: 0 !important;
 }
-
-/* Form submit button (Send) */
 div[data-testid="stForm"] .stButton > button {
-    background: linear-gradient(135deg, #a855f7, #ff3cac) !important;
-    padding: 0.75rem 1.2rem !important;
-    font-size: 1.1rem !important;
+    background: #18181f !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.5) !important;
+    box-shadow: none !important;
     margin-top: 0 !important;
-    border-radius: 12px !important;
+    font-size: 1rem !important;
+    padding: 0.68rem 1rem !important;
+    border-radius: 10px !important;
+}
+div[data-testid="stForm"] .stButton > button:hover {
+    background: rgba(139,92,246,0.12) !important;
+    border-color: rgba(139,92,246,0.28) !important;
+    color: #a78bfa !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
-/* ── SIDEBAR / RIGHT PANEL CARDS ── */
-.lx-side-card {
-    background: rgba(255,255,255,0.028);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px;
-    padding: 1.4rem;
-    margin-bottom: 1.2rem;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-.lx-side-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 15%; right: 15%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,60,172,0.6), rgba(168,85,247,0.6), transparent);
-}
+/* ══════════════════════════════════
+   SIDEBAR CARDS
+══════════════════════════════════ */
+.sc { background:#13131a; border:1px solid rgba(255,255,255,0.07); border-radius:15px; padding:1.1rem; margin-bottom:0.9rem; }
+.sc-ttl { font-size:0.65rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.26); margin-bottom:0.9rem; display:flex; align-items:center; gap:0.45rem; }
+.sc-ttl::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.05); }
 
-/* ── LEGEND ── */
-.legend-row {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 0.65rem;
-}
-.legend-dot {
-    width: 32px;
-    height: 6px;
-    border-radius: 100px;
-    flex-shrink: 0;
-}
+.sg { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:0.6rem; }
+.si { background:#0c0c10; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:0.7rem; text-align:center; }
+.sv { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:700; line-height:1; margin-bottom:0.18rem; }
+.sl { font-size:0.58rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.2); }
+.tkb { background:#0c0c10; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:0.7rem 0.9rem; }
+.tkl { font-size:0.58rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-bottom:0.22rem; }
+.tkv { font-size:0.95rem; font-weight:600; color:#c4b5fd; }
 
-/* ── GUIDE ITEMS ── */
-.guide-section-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 0.65rem;
-    margin-top: 0.5rem;
-}
-.guide-yes-title { color: #34d399; }
-.guide-no-title  { color: #ff3cac; }
+/* legend */
+.lr { display:flex; align-items:center; gap:0.7rem; margin-bottom:0.5rem; font-size:0.8rem; color:rgba(255,255,255,0.4); }
+.ld { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
-.guide-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.42rem 0;
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.52);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.guide-yes { color: #34d399; }
-.guide-no  { color: #ff3cac; }
-
-/* ── STATS ── */
-.stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.7rem;
-    margin-bottom: 0.9rem;
-}
-.stat-item {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 14px;
-    padding: 0.9rem;
-    text-align: center;
-}
-.stat-val {
-    font-family: 'Clash Display', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 0.25rem;
-}
-.stat-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.28);
-}
-.stat-top-kw {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 14px;
-    padding: 0.9rem 1rem;
-}
-.stat-top-kw .s-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.28);
-    margin-bottom: 0.3rem;
-}
-.stat-top-kw .s-val {
-    font-size: 1.05rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, #ff3cac, #ffb347);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* ── SPINNER ── */
-.stSpinner > div {
-    border-top-color: #ff3cac !important;
-}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
-
-/* ── ALERTS ── */
-.stAlert {
-    background: rgba(255,60,172,0.08) !important;
-    border: 1px solid rgba(255,60,172,0.25) !important;
-    border-radius: 12px !important;
-    color: rgba(255,200,220,0.9) !important;
-}
-
-/* ── COLUMNS GAP FIX ── */
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
-    background: transparent !important;
-}
+/* ══════════════════════════════════
+   MISC
+══════════════════════════════════ */
+.stSpinner > div { border-top-color: #8b5cf6 !important; }
+.stAlert { background:rgba(109,40,217,0.08) !important; border:1px solid rgba(109,40,217,0.2) !important; border-radius:9px !important; }
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { background:transparent !important; }
 </style>
 """, unsafe_allow_html=True)
 
 
 # ── HELPERS ──────────────────────────────────────────────────────────────────
-
-def score_to_color_class(idx):
-    if idx == 0:       return "rank-1"
-    if idx == 1:       return "rank-2"
-    if idx == 2:       return "rank-3"
-    if idx in (3, 4):  return "rank-4"
-    return "rank-other"
-
 def render_kw_cards(kws):
     html = ""
     for i, k in enumerate(kws):
-        rank_cls = score_to_color_class(i)
+        rc  = f"r{min(i,9)}"
         pct = int(float(k.get("score", 0)) * 100)
         html += f"""
-        <div class="kw-card {rank_cls}">
-            <span class="kw-rank">#{i+1:02d}</span>
-            <span class="kw-name">{k['keyword']}</span>
-            <div class="kw-score-wrap">
-                <div class="kw-bar-bg">
-                    <div class="kw-bar-fill" style="width:{pct}%"></div>
-                </div>
-                <span class="kw-score-val">{float(k.get('score', 0)):.2f}</span>
-            </div>
-        </div>"""
+<div class="kw-row {rc}">
+  <span class="kw-num">#{i+1:02d}</span>
+  <span class="kw-word">{k['keyword']}</span>
+  <div class="kw-bar-wrap">
+    <div class="kw-bar-bg"><div class="kw-bar-fill" style="width:{pct}%"></div></div>
+    <span class="kw-sc">{float(k.get('score',0)):.2f}</span>
+  </div>
+</div>"""
     return html
 
 def kws_to_csv(kws):
     buf = io.StringIO()
-    writer = csv.DictWriter(buf, fieldnames=["rank", "keyword", "score"])
-    writer.writeheader()
+    w   = csv.DictWriter(buf, fieldnames=["rank","keyword","score"])
+    w.writeheader()
     for i, k in enumerate(kws, 1):
-        writer.writerow({"rank": i, "keyword": k["keyword"], "score": k.get("score", "")})
+        w.writerow({"rank":i, "keyword":k["keyword"], "score":k.get("score","")})
     return buf.getvalue().encode()
 
 def kws_to_plain(kws):
-    return "\n".join([
-        f"{i+1}. {k['keyword']} ({float(k.get('score', 0)):.2f})"
-        for i, k in enumerate(kws)
-    ])
+    return "\n".join(f"{i+1}. {k['keyword']} ({float(k.get('score',0)):.2f})"
+                     for i, k in enumerate(kws))
 
 def extract_keywords(text):
     prompt = f"""Extract top 10 important keywords from the following text.
-Return ONLY a JSON array. No explanation. No markdown. Example format:
+Return ONLY a JSON array. No explanation. No markdown. Example:
 [{{"keyword":"example","score":0.95}}]
 
 TEXT:
 {text[:6000]}"""
-    response = client.chat.completions.create(
+    r = client.chat.completions.create(
         model="llama-3.1-8b-instant",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.2,
-        max_tokens=800
+        messages=[{"role":"user","content":prompt}],
+        temperature=0.2, max_tokens=800
     )
-    cleaned = re.sub(r'```json|```', '', response.choices[0].message.content.strip())
+    cleaned = re.sub(r'```json|```','', r.choices[0].message.content.strip())
     return json.loads(cleaned)
 
 def explain_keywords(kws, user_question=None):
-    kw_list = ", ".join([k["keyword"] for k in kws])
-    if user_question:
-        q = user_question
-    else:
-        q = f"Explain why these keywords are significant and what themes they reveal: {kw_list}"
-    response = client.chat.completions.create(
+    kw_list = ", ".join(k["keyword"] for k in kws)
+    q = user_question or f"Explain why these keywords are significant and what themes they reveal: {kw_list}"
+    r = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[
-            {
-                "role": "system",
-                "content": "You are LEXIS, an expert in text analysis and keyword intelligence. Be insightful, concise, and conversational."
-            },
-            {
-                "role": "user",
-                "content": f"The extracted keywords are: {kw_list}\n\n{q}"
-            }
+            {"role":"system","content":"You are LEXIS, an expert in text analysis and keyword intelligence. Be insightful, concise, and conversational."},
+            {"role":"user","content":f"The extracted keywords are: {kw_list}\n\n{q}"}
         ],
-        temperature=0.6,
-        max_tokens=600
+        temperature=0.6, max_tokens=600
     )
-    return response.choices[0].message.content.strip()
+    return r.choices[0].message.content.strip()
 
 
 # ── SESSION STATE ─────────────────────────────────────────────────────────────
-if "kws" not in st.session_state:
-    st.session_state.kws = []
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+if "kws"          not in st.session_state: st.session_state.kws = []
+if "chat_history" not in st.session_state: st.session_state.chat_history = []
 
 
-# ── NAV ───────────────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════
+# NAV
+# ══════════════════════════════════════════════════════════
 st.markdown("""
 <div class="lx-nav">
-    <div class="lx-logo">LEXIS AI</div>
-    <div class="lx-badge">⚡ Keyword Intelligence Engine</div>
-    <div class="lx-pill"><span class="lx-dot"></span> AI Online</div>
+  <div class="lx-logo-wrap">
+    <div class="lx-logo-icon">⚡</div>
+    <div class="lx-logo-text">LEXIS <span>AI</span></div>
+  </div>
+  <div class="lx-nav-center">Keyword Intelligence Engine</div>
+  <div class="lx-status"><div class="lx-status-dot"></div>AI Online</div>
 </div>
 """, unsafe_allow_html=True)
 
 
-# ── HERO ──────────────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════
+# HERO
+# ══════════════════════════════════════════════════════════
 st.markdown("""
 <div class="lx-hero">
-    <div class="lx-eyebrow">— Next-Gen Text Analysis —</div>
-    <h1 class="lx-title">
-        <span class="t1">KEYWORD</span>
-        <span class="t2">INTELLIGENCE</span>
-    </h1>
-    <p class="lx-sub">Extract, rank, and understand the most powerful keywords from any text or URL — powered by AI.</p>
+  <div class="lx-hero-tag">Powered by Llama 3.1 · Groq</div>
+  <h1 class="lx-h1">Extract what<br><span class="grad">actually matters</span></h1>
+  <p class="lx-hero-sub">Paste text or drop a URL — LEXIS surfaces the highest-signal keywords and explains why they matter.</p>
 </div>
 """, unsafe_allow_html=True)
 
 
-# ── MAIN LAYOUT ───────────────────────────────────────────────────────────────
-left, right = st.columns([2.5, 1.1], gap="large")
+# ══════════════════════════════════════════════════════════
+# LAYOUT
+# ══════════════════════════════════════════════════════════
+left, right = st.columns([2.4, 1.1], gap="large")
 
 
-# ════════════════════════════════════════════════════════
-# LEFT COLUMN
-# ════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
+# LEFT — INPUT
+# ══════════════════════════════════════════════════════════
 with left:
 
-    # ── INPUT CARD ──
-    st.markdown('<div class="lx-card">', unsafe_allow_html=True)
-    st.markdown('<div class="lx-sec">01 — Input Source</div>', unsafe_allow_html=True)
+    st.markdown("""
+<div class="lx-card">
+  <div class="lx-card-hdr">
+    <span class="lx-card-num">01</span>
+    <span class="lx-card-ttl">Input Source</span>
+    <span class="lx-card-line"></span>
+  </div>
+</div>""", unsafe_allow_html=True)
 
-    tab_text, tab_url = st.tabs(["📄  Text Input", "🌐  URL Input"])
+    tab_text, tab_url = st.tabs(["📄  Paste Text", "🌐  From URL"])
 
     with tab_text:
         text_input = st.text_area(
-            "",
-            height=200,
-            placeholder="Paste your article, blog post, or any content here…",
+            "", height=185,
+            placeholder="Paste your article, research paper, blog post, or any text content here…",
             label_visibility="collapsed"
         )
-        if st.button("⚡ Extract Keywords", key="btn_text"):
+        if st.button("⚡  Extract Keywords", key="btn_text"):
             if text_input.strip():
                 with st.spinner("Analyzing with AI…"):
                     try:
@@ -745,253 +573,219 @@ with left:
 
     with tab_url:
         url_input = st.text_input(
-            "",
-            placeholder="https://example.com/article",
+            "", placeholder="https://example.com/article",
             label_visibility="collapsed"
         )
-        if st.button("⚡ Extract from URL", key="btn_url"):
+        if st.button("⚡  Fetch & Extract", key="btn_url"):
             if url_input.startswith("http"):
-                blocked_exts = ('.pdf', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp')
+                blocked_exts = ('.pdf','.jpg','.jpeg','.png','.gif','.webp','.svg','.bmp')
                 if url_input.lower().split('?')[0].endswith(blocked_exts):
                     st.session_state.kws = []
                     st.session_state.chat_history = []
-                    st.error("🚫 PDF & image-only pages are not supported. Please paste the text content manually instead.")
+                    st.error("🚫 PDF & image-only pages are not supported. Paste the text manually instead.")
                 else:
                     try:
-                        req = urllib.request.Request(url_input, headers={'User-Agent': 'Mozilla/5.0'})
-                        with st.spinner("Fetching & analyzing…"):
+                        req = urllib.request.Request(url_input, headers={'User-Agent':'Mozilla/5.0'})
+                        with st.spinner("Fetching page…"):
                             with urllib.request.urlopen(req, timeout=15) as resp:
-                                content_type = resp.headers.get('Content-Type', '')
-                                if 'text/html' not in content_type:
+                                ct = resp.headers.get('Content-Type','')
+                                if 'text/html' not in ct:
                                     st.session_state.kws = []
                                     st.session_state.chat_history = []
-                                    st.error(f"🚫 Unsupported content type ({content_type.split(';')[0].strip()}). Only HTML pages are supported.")
+                                    st.error(f"🚫 Unsupported content type ({ct.split(';')[0].strip()}).")
                                     st.stop()
                                 html = resp.read().decode('utf-8', errors='ignore')
 
-                        plain = re.sub(r'<style[^>]*>.*?</style>', ' ', html, flags=re.DOTALL)
-                        plain = re.sub(r'<script[^>]*>.*?</script>', ' ', plain, flags=re.DOTALL)
-                        plain = re.sub(r'<[^>]+>', ' ', plain)
-                        plain = re.sub(r'\s+', ' ', plain).strip()
-                        plain_lower = plain.lower()
+                        plain = re.sub(r'<style[^>]*>.*?</style>',' ',html,flags=re.DOTALL)
+                        plain = re.sub(r'<script[^>]*>.*?</script>',' ',plain,flags=re.DOTALL)
+                        plain = re.sub(r'<[^>]+>',' ',plain)
+                        plain = re.sub(r'\s+',' ',plain).strip()
+                        pl    = plain.lower()
 
-                        login_signals = [
-                            'sign in to continue', 'log in to continue', 'please sign in',
-                            'please log in', 'login required', 'signin required',
-                            'create an account', 'forgot your password', 'enter your password',
-                            'enter your email', 'username and password', 'sign in with google',
-                            'continue with google', 'continue with facebook',
-                            'you must be logged in', 'members only', 'register to access'
-                        ]
-                        if any(sig in plain_lower for sig in login_signals):
-                            st.session_state.kws = []
-                            st.session_state.chat_history = []
-                            st.error("🚫 This page requires login. Only publicly accessible pages are supported.")
-
-                        elif any(sig in plain_lower for sig in [
-                            'subscribe to read', 'subscribe to continue', 'subscription required',
-                            'this article is for subscribers', 'unlock this article',
-                            'get full access', 'premium content', 'paid subscribers only',
-                            'buy a subscription', 'already a subscriber'
-                        ]):
-                            st.session_state.kws = []
-                            st.session_state.chat_history = []
-                            st.error("🚫 This page is behind a paywall. Only free, publicly accessible articles are supported.")
-
-                        elif any(sig in plain_lower for sig in [
-                            'captcha', 'are you a robot', 'verify you are human',
-                            'ddos protection', 'checking your browser', 'enable javascript',
-                            'access denied', 'robot check', 'automated access'
-                        ]):
-                            st.session_state.kws = []
-                            st.session_state.chat_history = []
-                            st.error("🚫 This site is blocking automated access. Try copying the text manually instead.")
-
+                        if any(s in pl for s in ['sign in to continue','log in to continue',
+                            'please sign in','please log in','login required','you must be logged in','members only']):
+                            st.session_state.kws=[]; st.session_state.chat_history=[]
+                            st.error("🚫 This page requires login.")
+                        elif any(s in pl for s in ['subscribe to read','subscription required',
+                            'this article is for subscribers','unlock this article','paid subscribers only']):
+                            st.session_state.kws=[]; st.session_state.chat_history=[]
+                            st.error("🚫 This page is behind a paywall.")
+                        elif any(s in pl for s in ['captcha','are you a robot','verify you are human',
+                            'ddos protection','access denied','robot check']):
+                            st.session_state.kws=[]; st.session_state.chat_history=[]
+                            st.error("🚫 This site blocks automated access. Copy the text manually.")
                         elif len(plain) < 200:
-                            st.session_state.kws = []
-                            st.session_state.chat_history = []
+                            st.session_state.kws=[]; st.session_state.chat_history=[]
                             st.error("🚫 Not enough readable text found on this page.")
-
                         else:
-                            st.session_state.kws = extract_keywords(plain)
-                            st.session_state.chat_history = []
+                            with st.spinner("Analyzing content…"):
+                                st.session_state.kws = extract_keywords(plain)
+                                st.session_state.chat_history = []
 
                     except HTTPError as e:
-                        st.session_state.kws = []
-                        st.session_state.chat_history = []
-                        if e.code in (401, 403):
-                            st.error(f"🚫 Access Denied (HTTP {e.code}) — This page requires login or blocks bots.")
-                        elif e.code == 402:
-                            st.error("🚫 Payment Required (HTTP 402) — This page is behind a paywall.")
-                        else:
-                            st.error(f"🚫 HTTP Error {e.code} — Unable to access this page.")
+                        st.session_state.kws=[]; st.session_state.chat_history=[]
+                        if e.code in (401,403): st.error(f"🚫 Access Denied (HTTP {e.code}).")
+                        elif e.code == 402:     st.error("🚫 Payment Required — page is paywalled.")
+                        else:                   st.error(f"🚫 HTTP Error {e.code}.")
                     except URLError:
-                        st.session_state.kws = []
-                        st.session_state.chat_history = []
-                        st.error("🚫 Unable to reach the website. Check the URL and try again.")
+                        st.session_state.kws=[]; st.session_state.chat_history=[]
+                        st.error("🚫 Unable to reach this URL.")
                     except Exception as e:
-                        st.session_state.kws = []
-                        st.session_state.chat_history = []
+                        st.session_state.kws=[]; st.session_state.chat_history=[]
                         st.error(f"Unexpected error: {e}")
             else:
-                st.warning("Please enter a valid URL starting with http(s)://")
-
-    st.markdown('</div>', unsafe_allow_html=True)
+                st.warning("Enter a valid URL starting with http(s)://")
 
     # ── RESULTS ──
     if st.session_state.kws:
 
-        st.markdown('<div class="lx-card">', unsafe_allow_html=True)
-        st.markdown('<div class="lx-sec">02 — Keyword Results</div>', unsafe_allow_html=True)
+        st.markdown("""
+<div class="lx-card" style="margin-top:0.3rem;">
+  <div class="lx-card-hdr">
+    <span class="lx-card-num">02</span>
+    <span class="lx-card-ttl">Keyword Results</span>
+    <span class="lx-card-line"></span>
+  </div>
+</div>""", unsafe_allow_html=True)
 
-        # Export buttons
-        col_dl1, col_dl2, col_spacer = st.columns([1, 1, 3])
+        col_dl1, col_dl2, col_sp = st.columns([1,1,4])
         with col_dl1:
-            st.download_button(
-                "⬇ CSV",
-                data=kws_to_csv(st.session_state.kws),
-                file_name="lexis_keywords.csv",
-                mime="text/csv"
-            )
+            st.download_button("⬇ CSV", data=kws_to_csv(st.session_state.kws),
+                               file_name="lexis_keywords.csv", mime="text/csv")
         with col_dl2:
-            st.download_button(
-                "⬇ TXT",
-                data=kws_to_plain(st.session_state.kws).encode(),
-                file_name="lexis_keywords.txt",
-                mime="text/plain"
-            )
+            st.download_button("⬇ TXT", data=kws_to_plain(st.session_state.kws).encode(),
+                               file_name="lexis_keywords.txt", mime="text/plain")
 
         st.markdown(render_kw_cards(st.session_state.kws), unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
 
         # ── CHAT ──
-        st.markdown('<div class="lx-card">', unsafe_allow_html=True)
-        st.markdown('<div class="lx-sec">03 — Ask LEXIS AI</div>', unsafe_allow_html=True)
+        st.markdown("""
+<div class="lx-card" style="margin-top:0.8rem;">
+  <div class="lx-card-hdr">
+    <span class="lx-card-num">03</span>
+    <span class="lx-card-ttl">Ask LEXIS AI</span>
+    <span class="lx-card-line"></span>
+  </div>
+</div>""", unsafe_allow_html=True)
 
-        # Initial auto-explanation
         if not st.session_state.chat_history:
             with st.spinner("LEXIS is analyzing your keywords…"):
                 initial = explain_keywords(st.session_state.kws)
-            st.session_state.chat_history.append({"role": "ai", "text": initial})
+            st.session_state.chat_history.append({"role":"ai","text":initial})
 
-        # Render chat history
         for msg in st.session_state.chat_history:
             if msg["role"] == "user":
-                st.markdown(f'''
-<div class="chat-label user-label">You</div>
-<div class="chat-bubble user">{msg["text"]}</div>
-''', unsafe_allow_html=True)
+                st.markdown(f'<div class="chat-from you">You</div><div class="chat-msg you">{msg["text"]}</div>',
+                            unsafe_allow_html=True)
             else:
-                st.markdown(f'''
-<div class="chat-label">LEXIS</div>
-<div class="chat-bubble ai">{msg["text"]}</div>
-''', unsafe_allow_html=True)
+                st.markdown(f'<div class="chat-from">LEXIS</div><div class="chat-msg ai">{msg["text"]}</div>',
+                            unsafe_allow_html=True)
 
-        # Chat input form
         with st.form("chat_form", clear_on_submit=True):
-            chat_cols = st.columns([5, 1])
-            with chat_cols[0]:
-                user_q = st.text_input(
-                    "",
-                    placeholder="Ask anything about these keywords…",
-                    label_visibility="collapsed"
-                )
-            with chat_cols[1]:
+            cc = st.columns([6,1])
+            with cc[0]:
+                user_q = st.text_input("", placeholder="Ask anything about these keywords…",
+                                       label_visibility="collapsed")
+            with cc[1]:
                 sent = st.form_submit_button("↑")
 
         if sent and user_q.strip():
-            st.session_state.chat_history.append({"role": "user", "text": user_q})
+            st.session_state.chat_history.append({"role":"user","text":user_q})
             with st.spinner("Thinking…"):
                 reply = explain_keywords(st.session_state.kws, user_question=user_q)
-            st.session_state.chat_history.append({"role": "ai", "text": reply})
+            st.session_state.chat_history.append({"role":"ai","text":reply})
             st.rerun()
 
-        st.markdown('</div>', unsafe_allow_html=True)
 
-
-# ════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
 # RIGHT COLUMN
-# ════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
 with right:
 
     # ── STATS ──
     if st.session_state.kws:
-        scores   = [float(k.get("score", 0)) for k in st.session_state.kws]
-        avg      = sum(scores) / len(scores) if scores else 0
-        top_kw   = st.session_state.kws[0]["keyword"] if st.session_state.kws else "—"
-        sc_range = max(scores) - min(scores) if scores else 0
+        scores   = [float(k.get("score",0)) for k in st.session_state.kws]
+        avg      = sum(scores)/len(scores)
+        top_kw   = st.session_state.kws[0]["keyword"]
+        sc_range = max(scores)-min(scores)
 
         st.markdown(f"""
-<div class="lx-side-card">
-    <div class="lx-sec">Quick Stats</div>
-    <div class="stat-grid">
-        <div class="stat-item">
-            <div class="stat-val" style="color:#ff3cac;">{max(scores):.2f}</div>
-            <div class="stat-label">Top Score</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-val" style="color:#ffb347;">{avg:.2f}</div>
-            <div class="stat-label">Avg Score</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-val" style="color:#06b6d4;">{len(st.session_state.kws)}</div>
-            <div class="stat-label">Keywords</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-val" style="background:linear-gradient(135deg,#a855f7,#ff3cac);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">{sc_range:.2f}</div>
-            <div class="stat-label">Range</div>
-        </div>
-    </div>
-    <div class="stat-top-kw">
-        <div class="s-label">Top Keyword</div>
-        <div class="s-val">{top_kw}</div>
-    </div>
+<div class="sc">
+  <div class="sc-ttl">Quick Stats</div>
+  <div class="sg">
+    <div class="si"><div class="sv" style="color:#a78bfa;">{max(scores):.2f}</div><div class="sl">Top Score</div></div>
+    <div class="si"><div class="sv" style="color:#f472b6;">{avg:.2f}</div><div class="sl">Average</div></div>
+    <div class="si"><div class="sv" style="color:#34d399;">{len(st.session_state.kws)}</div><div class="sl">Keywords</div></div>
+    <div class="si"><div class="sv" style="color:#38bdf8;">{sc_range:.2f}</div><div class="sl">Range</div></div>
+  </div>
+  <div class="tkb"><div class="tkl">Top Keyword</div><div class="tkv">{top_kw}</div></div>
 </div>
 """, unsafe_allow_html=True)
 
         # ── LEGEND ──
         st.markdown("""
-<div class="lx-side-card">
-    <div class="lx-sec">Score Legend</div>
-    <div class="legend-row">
-        <div class="legend-dot" style="background:linear-gradient(90deg,#ff3cac,#ff6b35);box-shadow:0 0 8px rgba(255,60,172,0.4);"></div>
-        <span>#1 — Top Relevance</span>
-    </div>
-    <div class="legend-row">
-        <div class="legend-dot" style="background:linear-gradient(90deg,#ff6b35,#ffb347);box-shadow:0 0 8px rgba(255,107,53,0.4);"></div>
-        <span>#2 — High Impact</span>
-    </div>
-    <div class="legend-row">
-        <div class="legend-dot" style="background:linear-gradient(90deg,#ffb347,#ffe600);box-shadow:0 0 8px rgba(255,179,71,0.4);"></div>
-        <span>#3 — Strong</span>
-    </div>
-    <div class="legend-row">
-        <div class="legend-dot" style="background:linear-gradient(90deg,#06b6d4,#0ea5e9);box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
-        <span>#4–5 — Notable</span>
-    </div>
-    <div class="legend-row">
-        <div class="legend-dot" style="background:linear-gradient(90deg,#a855f7,#7c3aed);box-shadow:0 0 8px rgba(168,85,247,0.4);"></div>
-        <span>#6–10 — Supporting</span>
-    </div>
+<div class="sc">
+  <div class="sc-ttl">Score Legend</div>
+  <div class="lr"><div class="ld" style="background:#a78bfa;"></div><span>#1 — Top Relevance</span></div>
+  <div class="lr"><div class="ld" style="background:#f472b6;"></div><span>#2 — High Impact</span></div>
+  <div class="lr"><div class="ld" style="background:#fb923c;"></div><span>#3 — Strong Signal</span></div>
+  <div class="lr"><div class="ld" style="background:#34d399;"></div><span>#4 — Notable</span></div>
+  <div class="lr"><div class="ld" style="background:#38bdf8;"></div><span>#5 — Notable</span></div>
+  <div class="lr" style="margin-bottom:0;"><div class="ld" style="background:rgba(255,255,255,0.22);"></div><span>#6–10 — Supporting</span></div>
 </div>
 """, unsafe_allow_html=True)
 
-    # ── GUIDELINES ──
+    # ══════════════════════════════════════════════════════
+    # GUIDELINES — 100% inline styles, no class dependencies
+    # ══════════════════════════════════════════════════════
     st.markdown("""
-<div class="lx-side-card">
-    <div class="lx-sec">Usage Guidelines</div>
+<div style="background:#13131a;border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:1.1rem;margin-bottom:0.9rem;">
 
-    <div class="guide-section-title guide-yes-title">✦ Works great with</div>
-    <div class="guide-item"><span class="guide-yes">✓</span> Public blogs &amp; articles</div>
-    <div class="guide-item"><span class="guide-yes">✓</span> Wikipedia pages</div>
-    <div class="guide-item"><span class="guide-yes">✓</span> Company websites</div>
-    <div class="guide-item"><span class="guide-yes">✓</span> Documentation portals</div>
-    <div class="guide-item"><span class="guide-yes">✓</span> Pasted raw text</div>
+  <!-- header -->
+  <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.26);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.45rem;font-family:Inter,sans-serif;">
+    How It Works
+    <span style="flex:1;height:1px;background:rgba(255,255,255,0.05);display:inline-block;"></span>
+  </div>
 
-    <div class="guide-section-title guide-no-title" style="margin-top:1rem;">✦ Doesn't support</div>
-    <div class="guide-item"><span class="guide-no">✗</span> Login-required portals</div>
-    <div class="guide-item"><span class="guide-no">✗</span> Paywalled content</div>
-    <div class="guide-item"><span class="guide-no">✗</span> Bot-blocking sites</div>
-    <div class="guide-item" style="border-bottom:none;"><span class="guide-no">✗</span> PDF / image-only pages</div>
+  <!-- SUPPORTED -->
+  <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#4ade80;margin-bottom:0.55rem;font-family:Inter,sans-serif;">✓ &nbsp;Supported Sources</div>
+
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Public blogs &amp; articles</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Wikipedia pages</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Company &amp; docs sites</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#4ade80;line-height:1;">✓</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Pasted raw text</span>
+  </div>
+
+  <!-- NOT SUPPORTED -->
+  <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin-top:0.85rem;margin-bottom:0.55rem;font-family:Inter,sans-serif;">✕ &nbsp;Not Supported</div>
+
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Login-gated pages</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Paywalled content</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">Bot-blocking / CAPTCHA</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0;">
+    <span style="width:17px;height:17px;border-radius:5px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.18);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;color:#f87171;line-height:1;">✕</span>
+    <span style="font-size:0.81rem;color:rgba(255,255,255,0.45);font-family:Inter,sans-serif;">PDF / image-only pages</span>
+  </div>
+
 </div>
 """, unsafe_allow_html=True)
