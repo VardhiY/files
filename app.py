@@ -15,7 +15,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ── LOAD API KEY (works on Render, Railway, and Streamlit Cloud) ───────────────────────
+# ── LOAD API KEY ───────────────────────
 api_key = os.environ.get("GROQ_API_KEY")
 if not api_key:
     try:
@@ -29,228 +29,351 @@ if not api_key:
 
 client = Groq(api_key=api_key)
 
-# ── BOLD COLORFUL STYLING ─────────────────────────────
+# ── FULL INTERFACE STYLING ─────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* ── ROOT / APP ── */
 .stApp {
-    background: #0d0d0d;
-    color: #f0f0f0;
-    font-family: 'Exo 2', sans-serif;
-    font-size: 1.35rem;
+    background: #080612 !important;
+    color: #f1f0ff !important;
+    font-family: 'Space Grotesk', sans-serif !important;
 }
 
-/* ── Animated background stripes ── */
+/* ── Animated blob background ── */
 .stApp::before {
     content: '';
     position: fixed;
     inset: 0;
     background:
-        repeating-linear-gradient(
-            -55deg,
-            transparent,
-            transparent 60px,
-            rgba(255,60,120,0.03) 60px,
-            rgba(255,60,120,0.03) 61px
-        );
+        radial-gradient(ellipse 700px 600px at -10% -10%, rgba(168,85,247,0.45) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 500px at 110% 60%, rgba(255,60,172,0.4) 0%, transparent 60%),
+        radial-gradient(ellipse 500px 400px at 40% 110%, rgba(6,182,212,0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 350px 350px at 55% 25%, rgba(255,107,53,0.2) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: blobDrift 20s ease-in-out infinite alternate;
+}
+@keyframes blobDrift {
+    0%   { filter: blur(60px) brightness(1);   transform: scale(1); }
+    50%  { filter: blur(70px) brightness(1.05); transform: scale(1.02) translate(10px, -8px); }
+    100% { filter: blur(65px) brightness(1);   transform: scale(0.98) translate(-8px, 12px); }
+}
+
+/* Grid overlay */
+.stApp::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 60px 60px;
     pointer-events: none;
     z-index: 0;
 }
 
 .block-container {
-    padding-top: 2rem;
+    padding-top: 0 !important;
+    padding-bottom: 4rem !important;
+    max-width: 1280px !important;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
-/* ── Header ── */
-.hero-wrap {
-    text-align: center;
-    margin-bottom: 2.5rem;
+/* ── HIDE STREAMLIT CHROME ── */
+#MainMenu, footer, header { visibility: hidden; }
+.stDeployButton { display: none; }
+
+/* ── NAV BAR ── */
+.lx-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 0 1.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 3rem;
+    position: relative;
 }
-.main-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 6rem;
-    font-weight: 800;
-    letter-spacing: -3px;
-    line-height: 1;
-    display: inline-block;
-    background: linear-gradient(90deg, #ff3c78, #ffb700, #00e5ff, #a259ff);
+.lx-logo {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ff3cac, #ffb347, #06b6d4, #a855f7);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
     background-size: 300% auto;
     animation: shimmer 4s linear infinite;
+    letter-spacing: -0.5px;
 }
 @keyframes shimmer {
     0%   { background-position: 0% center; }
     100% { background-position: 300% center; }
 }
-.subtitle {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.25rem;
-    color: #888;
+.lx-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-top: 0.5rem;
-}
-
-/* ── Pill badge ── */
-.badge {
-    display: inline-block;
+    color: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.08);
     padding: 0.3rem 1rem;
     border-radius: 100px;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+}
+.lx-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(168,85,247,0.18), rgba(255,60,172,0.18));
+    border: 1px solid rgba(168,85,247,0.28);
+    border-radius: 100px;
+    padding: 0.38rem 1.1rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #d8b4fe;
+}
+.lx-dot {
+    width: 7px; height: 7px;
+    background: #a855f7;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+    display: inline-block;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.45;transform:scale(0.75);} }
+
+/* ── HERO ── */
+.lx-hero {
+    text-align: center;
+    padding: 1rem 0 3.5rem;
+}
+.lx-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    margin-bottom: 1.2rem;
-    background: linear-gradient(90deg,#ff3c78,#ffb700);
-    color: #000;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 1.3rem;
+}
+.lx-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: clamp(4.5rem, 11vw, 8.5rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -4px;
+    margin-bottom: 1.3rem;
+}
+.lx-title .t1 {
+    display: block;
+    background: linear-gradient(135deg, #ffffff 20%, rgba(255,255,255,0.55));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.lx-title .t2 {
+    display: block;
+    background: linear-gradient(90deg, #ff3cac, #ff6b35, #ffb347, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% auto;
+    animation: shimmer 5s linear infinite;
+}
+.lx-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.38);
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.75;
+    font-weight: 300;
 }
 
-/* ── Panel cards ── */
-.panel {
-    background: #161616;
-    border: 1px solid #2a2a2a;
+/* ── GLASS CARDS ── */
+.lx-card {
+    background: rgba(255,255,255,0.028);
+    border: 1px solid rgba(255,255,255,0.07);
     border-radius: 24px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
+    padding: 1.8rem;
+    margin-bottom: 1.4rem;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
-.panel::before {
+.lx-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg,#ff3c78,#ffb700,#00e5ff,#a259ff);
+    top: 0; left: 20%; right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,60,172,0.7), rgba(168,85,247,0.7), transparent);
+    pointer-events: none;
+}
+.lx-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(168,85,247,0.04) 0%, transparent 50%, rgba(255,60,172,0.02) 100%);
+    pointer-events: none;
 }
 
-/* ── Section label ── */
-.section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 1rem;
-    color: #ff3c78;
-    letter-spacing: 3px;
+/* ── SECTION LABELS ── */
+.lx-sec {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    margin-bottom: 1rem;
-    font-weight: 500;
+    color: #ff3cac;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+.lx-sec::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,60,172,0.25), transparent);
 }
 
-/* ── Tabs ── */
+/* ── STREAMLIT TABS ── */
 div[data-baseweb="tab-list"] {
-    background: #111 !important;
+    background: rgba(0,0,0,0.45) !important;
     border-radius: 14px !important;
-    padding: 6px !important;
-    border: 1px solid #2a2a2a !important;
-    gap: 4px !important;
+    padding: 5px !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    gap: 3px !important;
+    margin-bottom: 1.3rem !important;
 }
 div[data-baseweb="tab"] {
     border-radius: 10px !important;
-    color: #888 !important;
-    font-weight: 700 !important;
-    font-family: 'Nunito', sans-serif !important;
-    font-size: 1.2rem !important;
-    padding: 0.5rem 1.4rem !important;
+    color: rgba(255,255,255,0.38) !important;
+    font-weight: 600 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 0.95rem !important;
+    padding: 0.55rem 1.3rem !important;
+    transition: all 0.2s !important;
 }
 div[aria-selected="true"] {
-    background: linear-gradient(90deg,#ff3c78,#a259ff) !important;
+    background: linear-gradient(135deg, #a855f7, #ff3cac) !important;
     color: white !important;
+    box-shadow: 0 4px 20px rgba(168,85,247,0.35) !important;
+}
+div[data-baseweb="tab-panel"] {
+    background: transparent !important;
+    padding: 0 !important;
 }
 
-/* ── Text areas / inputs ── */
+/* ── INPUTS ── */
 textarea, .stTextInput input {
-    background: #1a1a1a !important;
-    border: 1.5px solid #2e2e2e !important;
-    border-radius: 14px !important;
-    color: #f0f0f0 !important;
-    font-family: 'Nunito', sans-serif !important;
-    font-size: 1.3rem !important;
-    padding: 1rem !important;
-    transition: border-color 0.2s;
+    background: rgba(0,0,0,0.38) !important;
+    border: 1.5px solid rgba(255,255,255,0.08) !important;
+    border-radius: 16px !important;
+    color: #f1f0ff !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 0.98rem !important;
+    padding: 1rem 1.2rem !important;
+    transition: border-color 0.25s, box-shadow 0.25s !important;
+    line-height: 1.65 !important;
 }
 textarea:focus, .stTextInput input:focus {
-    border-color: #ff3c78 !important;
-    box-shadow: 0 0 0 3px rgba(255,60,120,0.15) !important;
+    border-color: rgba(168,85,247,0.6) !important;
+    box-shadow: 0 0 0 4px rgba(168,85,247,0.1), 0 0 30px rgba(168,85,247,0.12) !important;
+    outline: none !important;
+}
+textarea::placeholder, .stTextInput input::placeholder {
+    color: rgba(255,255,255,0.18) !important;
 }
 
-/* ── Buttons ── */
+/* ── BUTTONS ── */
 .stButton > button {
-    background: linear-gradient(90deg, #ff3c78, #a259ff) !important;
+    width: 100% !important;
+    background: linear-gradient(135deg, #a855f7, #ff3cac, #ff6b35) !important;
+    background-size: 200% auto !important;
     border: none !important;
     border-radius: 14px !important;
     color: #fff !important;
-    font-family: 'Syne', sans-serif !important;
-    font-weight: 800 !important;
-    font-size: 1.15rem !important;
-    padding: 0.9rem 2.4rem !important;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: 'Clash Display', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    padding: 0.9rem 2rem !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    margin-top: 0.8rem !important;
 }
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255,60,120,0.4) !important;
+    background-position: right center !important;
+    box-shadow: 0 10px 40px rgba(168,85,247,0.45) !important;
+    transform: translateY(-2px) !important;
+}
+.stButton > button:active {
+    transform: translateY(0) !important;
 }
 
-/* ── Download / secondary buttons ── */
+/* ── DOWNLOAD BUTTONS ── */
 .stDownloadButton > button {
-    background: #1f1f1f !important;
-    border: 1.5px solid #2e2e2e !important;
-    color: #ccc !important;
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 700 !important;
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    color: rgba(255,255,255,0.55) !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 600 !important;
     border-radius: 10px !important;
-    padding: 0.7rem 1.6rem !important;
-    font-size: 1.05rem !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.85rem !important;
+    transition: all 0.2s !important;
 }
 .stDownloadButton > button:hover {
-    border-color: #ff3c78 !important;
-    color: #ff3c78 !important;
+    border-color: #ff3cac !important;
+    color: #ff3cac !important;
+    background: rgba(255,60,172,0.07) !important;
 }
 
-/* ── Keyword table card ── */
+/* ── KEYWORD CARDS ── */
 .kw-card {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    border-radius: 16px;
-    padding: 1.1rem 1.6rem;
-    margin-bottom: 0.7rem;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 0.55rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: border-color 0.2s, transform 0.15s;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
 }
 .kw-card:hover {
-    border-color: #ff3c78;
-    transform: translateX(4px);
+    border-color: rgba(255,255,255,0.14);
+    transform: translateX(5px);
+    background: rgba(255,255,255,0.035);
 }
 .kw-rank {
-    font-family: 'DM Mono', monospace;
-    font-size: 1rem;
-    color: #555;
-    min-width: 36px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.2);
+    min-width: 30px;
+    font-weight: 300;
 }
 .kw-name {
     flex: 1;
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: #f0f0f0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #f1f0ff;
 }
 .kw-score-wrap {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    min-width: 160px;
+    gap: 0.75rem;
+    min-width: 150px;
 }
 .kw-bar-bg {
     flex: 1;
-    height: 8px;
-    background: #2a2a2a;
+    height: 5px;
+    background: rgba(255,255,255,0.07);
     border-radius: 100px;
     overflow: hidden;
 }
@@ -259,96 +382,230 @@ textarea:focus, .stTextInput input:focus {
     border-radius: 100px;
 }
 .kw-score-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 1rem;
-    min-width: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    min-width: 36px;
     text-align: right;
+    font-weight: 500;
 }
 
-/* ── Color stops by rank ── */
-.rank-1 .kw-bar-fill { background: linear-gradient(90deg,#ff3c78,#ff7043); }
-.rank-2 .kw-bar-fill { background: linear-gradient(90deg,#ff7043,#ffb700); }
-.rank-3 .kw-bar-fill { background: linear-gradient(90deg,#ffb700,#ffe600); }
-.rank-4 .kw-bar-fill, .rank-5 .kw-bar-fill { background: linear-gradient(90deg,#00e5ff,#00bcd4); }
-.rank-other .kw-bar-fill { background: linear-gradient(90deg,#a259ff,#7c4dff); }
+/* ── RANK COLORS ── */
+.rank-1 .kw-bar-fill { background: linear-gradient(90deg,#ff3cac,#ff6b35); box-shadow: 0 0 8px rgba(255,60,172,0.5); }
+.rank-2 .kw-bar-fill { background: linear-gradient(90deg,#ff6b35,#ffb347); box-shadow: 0 0 8px rgba(255,107,53,0.5); }
+.rank-3 .kw-bar-fill { background: linear-gradient(90deg,#ffb347,#ffe600); box-shadow: 0 0 8px rgba(255,179,71,0.5); }
+.rank-4 .kw-bar-fill,
+.rank-5 .kw-bar-fill { background: linear-gradient(90deg,#06b6d4,#0ea5e9); box-shadow: 0 0 8px rgba(6,182,212,0.5); }
+.rank-other .kw-bar-fill { background: linear-gradient(90deg,#a855f7,#7c3aed); box-shadow: 0 0 8px rgba(168,85,247,0.5); }
 
-.rank-1 .kw-score-val { color: #ff3c78; }
-.rank-2 .kw-score-val { color: #ff7043; }
-.rank-3 .kw-score-val { color: #ffb700; }
-.rank-4 .kw-score-val, .rank-5 .kw-score-val { color: #00e5ff; }
-.rank-other .kw-score-val { color: #a259ff; }
+.rank-1 .kw-score-val   { color: #ff3cac; }
+.rank-2 .kw-score-val   { color: #ff6b35; }
+.rank-3 .kw-score-val   { color: #ffb347; }
+.rank-4 .kw-score-val,
+.rank-5 .kw-score-val   { color: #06b6d4; }
+.rank-other .kw-score-val { color: #a855f7; }
 
-/* ── Chat messages ── */
+/* ── CHAT BUBBLES ── */
+.chat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.28rem;
+}
+.chat-label.user-label { text-align: right; color: rgba(168,85,247,0.55); }
+
 .chat-bubble {
-    padding: 1rem 1.3rem;
-    border-radius: 18px;
-    margin-bottom: 0.8rem;
-    font-size: 1.15rem;
-    line-height: 1.7;
-    max-width: 90%;
+    padding: 0.85rem 1.1rem;
+    border-radius: 16px;
+    margin-bottom: 0.75rem;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    max-width: 88%;
 }
 .chat-bubble.user {
-    background: linear-gradient(90deg,#ff3c78,#a259ff);
+    background: linear-gradient(135deg, #a855f7, #ff3cac);
     color: white;
-    font-weight: 600;
+    font-weight: 500;
     margin-left: auto;
     border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 20px rgba(168,85,247,0.28);
 }
 .chat-bubble.ai {
-    background: #1e1e1e;
-    border: 1px solid #2a2a2a;
-    color: #ddd;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.82);
     border-bottom-left-radius: 4px;
 }
-.chat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
-    color: #555;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
+
+/* ── CHAT FORM ── */
+.stForm {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+.stForm > div {
+    background: transparent !important;
+}
+div[data-testid="stForm"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-/* ── Guidelines ── */
+/* Form submit button (Send) */
+div[data-testid="stForm"] .stButton > button {
+    background: linear-gradient(135deg, #a855f7, #ff3cac) !important;
+    padding: 0.75rem 1.2rem !important;
+    font-size: 1.1rem !important;
+    margin-top: 0 !important;
+    border-radius: 12px !important;
+}
+
+/* ── SIDEBAR / RIGHT PANEL CARDS ── */
+.lx-side-card {
+    background: rgba(255,255,255,0.028);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 1.4rem;
+    margin-bottom: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+.lx-side-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 15%; right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,60,172,0.6), rgba(168,85,247,0.6), transparent);
+}
+
+/* ── LEGEND ── */
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.65rem;
+}
+.legend-dot {
+    width: 32px;
+    height: 6px;
+    border-radius: 100px;
+    flex-shrink: 0;
+}
+
+/* ── GUIDE ITEMS ── */
+.guide-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.65rem;
+    margin-top: 0.5rem;
+}
+.guide-yes-title { color: #34d399; }
+.guide-no-title  { color: #ff3cac; }
+
 .guide-item {
     display: flex;
     align-items: center;
+    gap: 0.6rem;
+    padding: 0.42rem 0;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.52);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.guide-yes { color: #34d399; }
+.guide-no  { color: #ff3cac; }
+
+/* ── STATS ── */
+.stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 0.7rem;
-    padding: 0.5rem 0;
-    font-size: 1.1rem;
-    border-bottom: 1px solid #1f1f1f;
+    margin-bottom: 0.9rem;
 }
-.guide-yes { color: #00e5b0; font-size: 1.1rem; }
-.guide-no  { color: #ff3c78; font-size: 1.1rem; }
-
-/* ── Spinner text ── */
-.stSpinner { color: #ff3c78 !important; }
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0d0d0d; }
-::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; }
-
-/* ── Radio ── */
-div[data-testid="stHorizontalBlock"] label {
-    color: #888 !important;
-    font-weight: 600 !important;
-    font-size: 1.1rem !important;
+.stat-item {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 0.9rem;
+    text-align: center;
+}
+.stat-val {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+.stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+}
+.stat-top-kw {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+}
+.stat-top-kw .s-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    margin-bottom: 0.3rem;
+}
+.stat-top-kw .s-val {
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ff3cac, #ffb347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-/* ── Divider ── */
-hr { border-color: #1f1f1f !important; }
+/* ── SPINNER ── */
+.stSpinner > div {
+    border-top-color: #ff3cac !important;
+}
 
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+
+/* ── ALERTS ── */
+.stAlert {
+    background: rgba(255,60,172,0.08) !important;
+    border: 1px solid rgba(255,60,172,0.25) !important;
+    border-radius: 12px !important;
+    color: rgba(255,200,220,0.9) !important;
+}
+
+/* ── COLUMNS GAP FIX ── */
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+    background: transparent !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# ── HELPERS ─────────────────────────────────────────────────────────────────
+
+# ── HELPERS ──────────────────────────────────────────────────────────────────
 
 def score_to_color_class(idx):
-    if idx == 0:   return "rank-1"
-    if idx == 1:   return "rank-2"
-    if idx == 2:   return "rank-3"
-    if idx in (3, 4): return "rank-4"
+    if idx == 0:       return "rank-1"
+    if idx == 1:       return "rank-2"
+    if idx == 2:       return "rank-3"
+    if idx in (3, 4):  return "rank-4"
     return "rank-other"
 
 def render_kw_cards(kws):
@@ -364,7 +621,7 @@ def render_kw_cards(kws):
                 <div class="kw-bar-bg">
                     <div class="kw-bar-fill" style="width:{pct}%"></div>
                 </div>
-                <span class="kw-score-val">{float(k.get('score',0)):.2f}</span>
+                <span class="kw-score-val">{float(k.get('score', 0)):.2f}</span>
             </div>
         </div>"""
     return html
@@ -378,8 +635,10 @@ def kws_to_csv(kws):
     return buf.getvalue().encode()
 
 def kws_to_plain(kws):
-    return "\n".join([f"{i+1}. {k['keyword']} ({float(k.get('score',0)):.2f})"
-                      for i, k in enumerate(kws)])
+    return "\n".join([
+        f"{i+1}. {k['keyword']} ({float(k.get('score', 0)):.2f})"
+        for i, k in enumerate(kws)
+    ])
 
 def extract_keywords(text):
     prompt = f"""Extract top 10 important keywords from the following text.
@@ -406,45 +665,76 @@ def explain_keywords(kws, user_question=None):
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[
-            {"role": "system", "content": "You are LEXIS, an expert in text analysis and keyword intelligence. Be insightful, concise, and conversational."},
-            {"role": "user",   "content": f"The extracted keywords are: {kw_list}\n\n{q}"}
+            {
+                "role": "system",
+                "content": "You are LEXIS, an expert in text analysis and keyword intelligence. Be insightful, concise, and conversational."
+            },
+            {
+                "role": "user",
+                "content": f"The extracted keywords are: {kw_list}\n\n{q}"
+            }
         ],
         temperature=0.6,
         max_tokens=600
     )
     return response.choices[0].message.content.strip()
 
-# ── SESSION STATE ────────────────────────────────────────────────────────────
+
+# ── SESSION STATE ─────────────────────────────────────────────────────────────
 if "kws" not in st.session_state:
     st.session_state.kws = []
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ── HEADER ──────────────────────────────────────────────────────────────────
+
+# ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("""
-<div class="hero-wrap">
-    <div class="main-title">LEXIS AI</div>
-    <div class="subtitle">⚡ Next-Gen Intelligent Keyword Engine ⚡</div>
+<div class="lx-nav">
+    <div class="lx-logo">LEXIS AI</div>
+    <div class="lx-badge">⚡ Keyword Intelligence Engine</div>
+    <div class="lx-pill"><span class="lx-dot"></span> AI Online</div>
 </div>
 """, unsafe_allow_html=True)
 
-# ── MAIN LAYOUT ──────────────────────────────────────────────────────────────
+
+# ── HERO ──────────────────────────────────────────────────────────────────────
+st.markdown("""
+<div class="lx-hero">
+    <div class="lx-eyebrow">— Next-Gen Text Analysis —</div>
+    <h1 class="lx-title">
+        <span class="t1">KEYWORD</span>
+        <span class="t2">INTELLIGENCE</span>
+    </h1>
+    <p class="lx-sub">Extract, rank, and understand the most powerful keywords from any text or URL — powered by AI.</p>
+</div>
+""", unsafe_allow_html=True)
+
+
+# ── MAIN LAYOUT ───────────────────────────────────────────────────────────────
 left, right = st.columns([2.5, 1.1], gap="large")
+
 
 # ════════════════════════════════════════════════════════
 # LEFT COLUMN
 # ════════════════════════════════════════════════════════
 with left:
 
-    # ── INPUT TABS ──
-    st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">01 — Input Source</p>', unsafe_allow_html=True)
+    # ── INPUT CARD ──
+    st.markdown('<div class="lx-card">', unsafe_allow_html=True)
+    st.markdown('<div class="lx-sec">01 — Input Source</div>', unsafe_allow_html=True)
+
     tab_text, tab_url = st.tabs(["📄  Text Input", "🌐  URL Input"])
 
     with tab_text:
-        text_input = st.text_area("", height=220, placeholder="Paste your article, blog post, or any content here...", label_visibility="collapsed")
+        text_input = st.text_area(
+            "",
+            height=200,
+            placeholder="Paste your article, blog post, or any content here…",
+            label_visibility="collapsed"
+        )
         if st.button("⚡ Extract Keywords", key="btn_text"):
             if text_input.strip():
-                with st.spinner("Analyzing with AI..."):
+                with st.spinner("Analyzing with AI…"):
                     try:
                         st.session_state.kws = extract_keywords(text_input)
                         st.session_state.chat_history = []
@@ -454,24 +744,24 @@ with left:
                 st.warning("Please paste some text first.")
 
     with tab_url:
-        url_input = st.text_input("", placeholder="https://example.com/article", label_visibility="collapsed")
+        url_input = st.text_input(
+            "",
+            placeholder="https://example.com/article",
+            label_visibility="collapsed"
+        )
         if st.button("⚡ Extract from URL", key="btn_url"):
             if url_input.startswith("http"):
-
-                # ── Block PDF / image-only URLs by extension ──
                 blocked_exts = ('.pdf', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp')
                 if url_input.lower().split('?')[0].endswith(blocked_exts):
                     st.session_state.kws = []
                     st.session_state.chat_history = []
                     st.error("🚫 PDF & image-only pages are not supported. Please paste the text content manually instead.")
-
                 else:
                     try:
                         req = urllib.request.Request(url_input, headers={'User-Agent': 'Mozilla/5.0'})
-                        with st.spinner("Fetching & analyzing..."):
+                        with st.spinner("Fetching & analyzing…"):
                             with urllib.request.urlopen(req, timeout=15) as resp:
                                 content_type = resp.headers.get('Content-Type', '')
-                                # Block non-HTML responses (PDFs, images served dynamically)
                                 if 'text/html' not in content_type:
                                     st.session_state.kws = []
                                     st.session_state.chat_history = []
@@ -479,13 +769,12 @@ with left:
                                     st.stop()
                                 html = resp.read().decode('utf-8', errors='ignore')
 
-                        # ── Strip tags to get plain text ──
                         plain = re.sub(r'<style[^>]*>.*?</style>', ' ', html, flags=re.DOTALL)
                         plain = re.sub(r'<script[^>]*>.*?</script>', ' ', plain, flags=re.DOTALL)
                         plain = re.sub(r'<[^>]+>', ' ', plain)
                         plain = re.sub(r'\s+', ' ', plain).strip()
+                        plain_lower = plain.lower()
 
-                        # ── Detect login-required pages ──
                         login_signals = [
                             'sign in to continue', 'log in to continue', 'please sign in',
                             'please log in', 'login required', 'signin required',
@@ -494,13 +783,11 @@ with left:
                             'continue with google', 'continue with facebook',
                             'you must be logged in', 'members only', 'register to access'
                         ]
-                        plain_lower = plain.lower()
                         if any(sig in plain_lower for sig in login_signals):
                             st.session_state.kws = []
                             st.session_state.chat_history = []
                             st.error("🚫 This page requires login. Only publicly accessible pages are supported.")
 
-                        # ── Detect paywalled pages ──
                         elif any(sig in plain_lower for sig in [
                             'subscribe to read', 'subscribe to continue', 'subscription required',
                             'this article is for subscribers', 'unlock this article',
@@ -511,7 +798,6 @@ with left:
                             st.session_state.chat_history = []
                             st.error("🚫 This page is behind a paywall. Only free, publicly accessible articles are supported.")
 
-                        # ── Detect bot-blocking / CAPTCHA pages ──
                         elif any(sig in plain_lower for sig in [
                             'captcha', 'are you a robot', 'verify you are human',
                             'ddos protection', 'checking your browser', 'enable javascript',
@@ -521,11 +807,10 @@ with left:
                             st.session_state.chat_history = []
                             st.error("🚫 This site is blocking automated access. Try copying the text manually instead.")
 
-                        # ── Detect near-empty / no real content ──
                         elif len(plain) < 200:
                             st.session_state.kws = []
                             st.session_state.chat_history = []
-                            st.error("🚫 Not enough readable text found on this page. It may be JavaScript-rendered or image-only.")
+                            st.error("🚫 Not enough readable text found on this page.")
 
                         else:
                             st.session_state.kws = extract_keywords(plain)
@@ -551,12 +836,15 @@ with left:
             else:
                 st.warning("Please enter a valid URL starting with http(s)://")
 
+    st.markdown('</div>', unsafe_allow_html=True)
+
     # ── RESULTS ──
     if st.session_state.kws:
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">02 — Keyword Results</p>', unsafe_allow_html=True)
 
-        # Export buttons row
+        st.markdown('<div class="lx-card">', unsafe_allow_html=True)
+        st.markdown('<div class="lx-sec">02 — Keyword Results</div>', unsafe_allow_html=True)
+
+        # Export buttons
         col_dl1, col_dl2, col_spacer = st.columns([1, 1, 3])
         with col_dl1:
             st.download_button(
@@ -573,49 +861,52 @@ with left:
                 mime="text/plain"
             )
 
-        # Keyword cards
         st.markdown(render_kw_cards(st.session_state.kws), unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
         # ── CHAT ──
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<p style="font-family:monospace;font-size:0.72rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">03 — Ask LEXIS AI</p>', unsafe_allow_html=True)
+        st.markdown('<div class="lx-card">', unsafe_allow_html=True)
+        st.markdown('<div class="lx-sec">03 — Ask LEXIS AI</div>', unsafe_allow_html=True)
 
         # Initial auto-explanation
         if not st.session_state.chat_history:
-            with st.spinner("LEXIS is analyzing your keywords..."):
+            with st.spinner("LEXIS is analyzing your keywords…"):
                 initial = explain_keywords(st.session_state.kws)
-            st.session_state.chat_history.append({
-                "role": "ai",
-                "text": initial
-            })
+            st.session_state.chat_history.append({"role": "ai", "text": initial})
 
         # Render chat history
         for msg in st.session_state.chat_history:
             if msg["role"] == "user":
                 st.markdown(f'''
-<div style="text-align:right;margin-bottom:0.2rem;font-size:0.65rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">You</div>
-<div style="background:linear-gradient(90deg,#ff3c78,#a259ff);color:white;font-weight:600;padding:1rem 1.3rem;border-radius:18px;border-bottom-right-radius:4px;margin-bottom:0.8rem;font-size:0.95rem;line-height:1.6;max-width:90%;margin-left:auto;">{msg["text"]}</div>
+<div class="chat-label user-label">You</div>
+<div class="chat-bubble user">{msg["text"]}</div>
 ''', unsafe_allow_html=True)
             else:
                 st.markdown(f'''
-<div style="margin-bottom:0.2rem;font-size:0.65rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">LEXIS</div>
-<div style="background:#1e1e1e;border:1px solid #2a2a2a;color:#ddd;padding:1rem 1.3rem;border-radius:18px;border-bottom-left-radius:4px;margin-bottom:0.8rem;font-size:0.95rem;line-height:1.6;max-width:90%;">{msg["text"]}</div>
+<div class="chat-label">LEXIS</div>
+<div class="chat-bubble ai">{msg["text"]}</div>
 ''', unsafe_allow_html=True)
 
-        # Chat input
+        # Chat input form
         with st.form("chat_form", clear_on_submit=True):
             chat_cols = st.columns([5, 1])
             with chat_cols[0]:
-                user_q = st.text_input("", placeholder="Ask anything about these keywords...", label_visibility="collapsed")
+                user_q = st.text_input(
+                    "",
+                    placeholder="Ask anything about these keywords…",
+                    label_visibility="collapsed"
+                )
             with chat_cols[1]:
-                sent = st.form_submit_button("Send")
+                sent = st.form_submit_button("↑")
 
         if sent and user_q.strip():
             st.session_state.chat_history.append({"role": "user", "text": user_q})
-            with st.spinner("Thinking..."):
+            with st.spinner("Thinking…"):
                 reply = explain_keywords(st.session_state.kws, user_question=user_q)
             st.session_state.chat_history.append({"role": "ai", "text": reply})
             st.rerun()
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ════════════════════════════════════════════════════════
@@ -623,71 +914,84 @@ with left:
 # ════════════════════════════════════════════════════════
 with right:
 
-    # ── SCORE LEGEND ──
+    # ── STATS ──
     if st.session_state.kws:
-        st.markdown('<p style="font-family:monospace;font-size:1rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Score Legend</p>', unsafe_allow_html=True)
-        st.markdown("""
-        <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.2rem;">
-            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
-                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#ff3c78,#ff7043)"></div>
-                <span style="font-size:1.05rem;color:#aaa;">#1 — Top Relevance</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
-                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#ffb700,#ffe600)"></div>
-                <span style="font-size:1.05rem;color:#aaa;">#3 — High Impact</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
-                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#00e5ff,#00bcd4)"></div>
-                <span style="font-size:1.05rem;color:#aaa;">#4–5 — Notable</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.7rem;">
-                <div style="width:36px;height:8px;border-radius:4px;background:linear-gradient(90deg,#a259ff,#7c4dff)"></div>
-                <span style="font-size:1.05rem;color:#aaa;">#6–10 — Supporting</span>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
+        scores   = [float(k.get("score", 0)) for k in st.session_state.kws]
+        avg      = sum(scores) / len(scores) if scores else 0
+        top_kw   = st.session_state.kws[0]["keyword"] if st.session_state.kws else "—"
+        sc_range = max(scores) - min(scores) if scores else 0
 
-    # ── GUIDELINES ──
-    st.markdown("**USAGE GUIDELINES**")
-    st.markdown("""
-<div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.4rem;position:relative;overflow:hidden;">
-<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff3c78,#ffb700,#00e5ff,#a259ff)"></div>
-<p style="font-size:0.9rem;color:#00e5b0;letter-spacing:2px;text-transform:uppercase;margin:0 0 0.6rem 0;">&#10004; Works great with</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Public blogs &amp; articles</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Wikipedia pages</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Company websites</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;padding-bottom:0.4rem;"><span style="color:#00e5b0;">&#9679;</span> Documentation portals</p>
-<p style="font-size:0.9rem;color:#ff3c78;letter-spacing:2px;text-transform:uppercase;margin:1rem 0 0.6rem 0;">&#10006; Doesn't support</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Login-required portals</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Paywalled content</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;border-bottom:1px solid #1f1f1f;padding-bottom:0.4rem;"><span style="color:#ff3c78;">&#9679;</span> Bot-blocking sites</p>
-<p style="color:#ccc;font-size:1.1rem;margin:0.3rem 0;"><span style="color:#ff3c78;">&#9679;</span> PDF / image-only pages</p>
+        st.markdown(f"""
+<div class="lx-side-card">
+    <div class="lx-sec">Quick Stats</div>
+    <div class="stat-grid">
+        <div class="stat-item">
+            <div class="stat-val" style="color:#ff3cac;">{max(scores):.2f}</div>
+            <div class="stat-label">Top Score</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val" style="color:#ffb347;">{avg:.2f}</div>
+            <div class="stat-label">Avg Score</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val" style="color:#06b6d4;">{len(st.session_state.kws)}</div>
+            <div class="stat-label">Keywords</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val" style="background:linear-gradient(135deg,#a855f7,#ff3cac);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">{sc_range:.2f}</div>
+            <div class="stat-label">Range</div>
+        </div>
+    </div>
+    <div class="stat-top-kw">
+        <div class="s-label">Top Keyword</div>
+        <div class="s-val">{top_kw}</div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
-    # ── STATS ──
-    if st.session_state.kws:
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<p style="font-family:monospace;font-size:1rem;color:#ff3c78;letter-spacing:3px;text-transform:uppercase;font-weight:500;">Quick Stats</p>', unsafe_allow_html=True)
-        scores = [float(k.get("score", 0)) for k in st.session_state.kws]
-        avg = sum(scores) / len(scores) if scores else 0
-        top_kw = st.session_state.kws[0]["keyword"] if st.session_state.kws else "—"
-        st.markdown(f"""
-        <div style="background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;">
-            <div>
-                <div style="font-size:0.85rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Top Keyword</div>
-                <div style="font-size:1.35rem;font-weight:800;color:#ff3c78;margin-top:0.2rem">{top_kw}</div>
-            </div>
-            <div>
-                <div style="font-size:0.85rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Avg Score</div>
-                <div style="font-size:1.35rem;font-weight:800;color:#ffb700;margin-top:0.2rem">{avg:.2f}</div>
-            </div>
-            <div>
-                <div style="font-size:0.85rem;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;">Total Keywords</div>
-                <div style="font-size:1.35rem;font-weight:800;color:#00e5ff;margin-top:0.2rem">{len(st.session_state.kws)}</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        # ── LEGEND ──
+        st.markdown("""
+<div class="lx-side-card">
+    <div class="lx-sec">Score Legend</div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:linear-gradient(90deg,#ff3cac,#ff6b35);box-shadow:0 0 8px rgba(255,60,172,0.4);"></div>
+        <span>#1 — Top Relevance</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:linear-gradient(90deg,#ff6b35,#ffb347);box-shadow:0 0 8px rgba(255,107,53,0.4);"></div>
+        <span>#2 — High Impact</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:linear-gradient(90deg,#ffb347,#ffe600);box-shadow:0 0 8px rgba(255,179,71,0.4);"></div>
+        <span>#3 — Strong</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:linear-gradient(90deg,#06b6d4,#0ea5e9);box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+        <span>#4–5 — Notable</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:linear-gradient(90deg,#a855f7,#7c3aed);box-shadow:0 0 8px rgba(168,85,247,0.4);"></div>
+        <span>#6–10 — Supporting</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
+    # ── GUIDELINES ──
+    st.markdown("""
+<div class="lx-side-card">
+    <div class="lx-sec">Usage Guidelines</div>
 
+    <div class="guide-section-title guide-yes-title">✦ Works great with</div>
+    <div class="guide-item"><span class="guide-yes">✓</span> Public blogs &amp; articles</div>
+    <div class="guide-item"><span class="guide-yes">✓</span> Wikipedia pages</div>
+    <div class="guide-item"><span class="guide-yes">✓</span> Company websites</div>
+    <div class="guide-item"><span class="guide-yes">✓</span> Documentation portals</div>
+    <div class="guide-item"><span class="guide-yes">✓</span> Pasted raw text</div>
+
+    <div class="guide-section-title guide-no-title" style="margin-top:1rem;">✦ Doesn't support</div>
+    <div class="guide-item"><span class="guide-no">✗</span> Login-required portals</div>
+    <div class="guide-item"><span class="guide-no">✗</span> Paywalled content</div>
+    <div class="guide-item"><span class="guide-no">✗</span> Bot-blocking sites</div>
+    <div class="guide-item" style="border-bottom:none;"><span class="guide-no">✗</span> PDF / image-only pages</div>
+</div>
+""", unsafe_allow_html=True)
