@@ -46,7 +46,6 @@ st.markdown("""
     font-size: 15px !important;
 }
 
-/* Soft gradient mesh background — matches screenshot */
 .stApp::before {
     content: '';
     position: fixed;
@@ -68,11 +67,9 @@ st.markdown("""
     z-index: 1;
 }
 
-/* ── Hide Streamlit chrome ── */
 #MainMenu, footer, header { visibility: hidden; }
 .stDeployButton { display: none; }
 
-/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -90,11 +87,7 @@ st.markdown("""
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(12px);
 }
-.lx-logo-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+.lx-logo-wrap { display: flex; align-items: center; gap: 0.5rem; }
 .lx-logo-icon {
     width: 30px; height: 30px;
     background: linear-gradient(135deg, #3b82f6, #06b6d4);
@@ -108,7 +101,6 @@ st.markdown("""
     font-size: 1.05rem;
     font-weight: 700;
     color: #1a2332;
-    letter-spacing: -0.2px;
 }
 .lx-nav-badge {
     font-family: 'DM Mono', monospace;
@@ -122,18 +114,12 @@ st.markdown("""
     border-radius: 100px;
 }
 .lx-status {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: #64748b;
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.78rem; font-weight: 500; color: #64748b;
 }
 .lx-status-dot {
-    width: 7px; height: 7px;
-    background: #22c55e;
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(34,197,94,0.6);
+    width: 7px; height: 7px; background: #22c55e;
+    border-radius: 50%; box-shadow: 0 0 6px rgba(34,197,94,0.6);
     animation: sDot 2.5s ease-in-out infinite;
 }
 @keyframes sDot { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
@@ -141,71 +127,45 @@ st.markdown("""
 /* ══════════════════════════════
    HERO
 ══════════════════════════════ */
-.lx-hero {
-    text-align: center;
-    padding: 3rem 0 2.5rem;
-}
+.lx-hero { text-align: center; padding: 3rem 0 2.5rem; }
 .lx-hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: rgba(255,255,255,0.85);
-    border: 1px solid #e2e8f0;
-    border-radius: 100px;
-    padding: 0.3rem 0.9rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #475569;
-    letter-spacing: 0.03em;
-    margin-bottom: 1.3rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(255,255,255,0.85); border: 1px solid #e2e8f0;
+    border-radius: 100px; padding: 0.3rem 0.9rem;
+    font-size: 0.78rem; font-weight: 600; color: #475569;
+    margin-bottom: 1.3rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 .lx-hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
+    content: ''; width: 6px; height: 6px;
     background: linear-gradient(135deg, #3b82f6, #06b6d4);
-    border-radius: 50%;
-    flex-shrink: 0;
+    border-radius: 50%; flex-shrink: 0;
 }
 .lx-h1 {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: clamp(2.4rem, 5vw, 3.8rem);
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -1px;
-    color: #0f172a;
-    margin-bottom: 0;
+    font-weight: 800; line-height: 1.12; letter-spacing: -1px;
+    color: #0f172a; margin-bottom: 0;
 }
 .lx-h1-accent {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: clamp(2.4rem, 5vw, 3.8rem);
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -1px;
+    font-weight: 800; line-height: 1.12; letter-spacing: -1px;
     background: linear-gradient(90deg, #3b82f6, #06b6d4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: block;
-    margin-bottom: 1rem;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; display: block; margin-bottom: 1rem;
 }
 .lx-hero-sub {
-    font-size: 1rem;
-    color: #64748b;
-    max-width: 420px;
-    margin: 0 auto;
-    line-height: 1.7;
-    font-weight: 400;
+    font-size: 1rem; color: #64748b;
+    max-width: 420px; margin: 0 auto; line-height: 1.7;
 }
 
 /* ══════════════════════════════
-   MAIN CARD  
+   MAIN CARD
 ══════════════════════════════ */
 .lx-card {
     background: rgba(255,255,255,0.82);
     border: 1px solid rgba(255,255,255,0.9);
-    border-radius: 16px;
-    padding: 1.5rem 1.5rem 1rem;
+    border-radius: 16px; padding: 1.5rem 1.5rem 1rem;
     margin-bottom: 1rem;
     box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
     backdrop-filter: blur(12px);
@@ -215,27 +175,18 @@ st.markdown("""
    TABS
 ══════════════════════════════ */
 div[data-baseweb="tab-list"] {
-    background: #f1f5f9 !important;
-    border-radius: 10px !important;
-    padding: 4px !important;
-    border: 1px solid #e2e8f0 !important;
-    gap: 2px !important;
-    margin-bottom: 1rem !important;
-    width: fit-content !important;
+    background: #f1f5f9 !important; border-radius: 10px !important;
+    padding: 4px !important; border: 1px solid #e2e8f0 !important;
+    gap: 2px !important; margin-bottom: 1rem !important; width: fit-content !important;
 }
 div[data-baseweb="tab"] {
-    border-radius: 7px !important;
-    color: #94a3b8 !important;
-    font-weight: 600 !important;
-    font-family: 'DM Sans', sans-serif !important;
-    font-size: 0.9rem !important;
-    padding: 0.42rem 1.1rem !important;
-    transition: all 0.18s !important;
+    border-radius: 7px !important; color: #94a3b8 !important;
+    font-weight: 600 !important; font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.9rem !important; padding: 0.42rem 1.1rem !important; transition: all 0.18s !important;
 }
 div[aria-selected="true"] {
     background: linear-gradient(135deg, #3b82f6, #06b6d4) !important;
-    color: white !important;
-    box-shadow: 0 2px 8px rgba(59,130,246,0.3) !important;
+    color: white !important; box-shadow: 0 2px 8px rgba(59,130,246,0.3) !important;
 }
 div[data-baseweb="tab-panel"] { background: transparent !important; padding: 0 !important; }
 
@@ -243,48 +194,33 @@ div[data-baseweb="tab-panel"] { background: transparent !important; padding: 0 !
    INPUTS
 ══════════════════════════════ */
 textarea, .stTextInput input {
-    background: #ffffff !important;
-    border: 1.5px solid #e2e8f0 !important;
-    border-radius: 10px !important;
-    color: #1a2332 !important;
-    font-family: 'DM Sans', sans-serif !important;
-    font-size: 0.97rem !important;
-    padding: 0.85rem 1rem !important;
-    transition: border-color 0.2s, box-shadow 0.2s !important;
-    line-height: 1.6 !important;
+    background: #ffffff !important; border: 1.5px solid #e2e8f0 !important;
+    border-radius: 10px !important; color: #1a2332 !important;
+    font-family: 'DM Sans', sans-serif !important; font-size: 0.97rem !important;
+    padding: 0.85rem 1rem !important; line-height: 1.6 !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04) inset !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 textarea:focus, .stTextInput input:focus {
     border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.1) !important;
-    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1) !important; outline: none !important;
 }
-textarea::placeholder, .stTextInput input::placeholder {
-    color: #94a3b8 !important;
-}
+textarea::placeholder, .stTextInput input::placeholder { color: #94a3b8 !important; }
 
 /* ══════════════════════════════
-   PRIMARY BUTTON — gradient teal→blue
+   PRIMARY BUTTON
 ══════════════════════════════ */
 .stButton > button {
     width: 100% !important;
     background: linear-gradient(90deg, #3b82f6, #06b6d4) !important;
-    border: none !important;
-    border-radius: 10px !important;
-    color: #fff !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 1rem !important;
-    padding: 0.8rem 1.5rem !important;
-    letter-spacing: 0.01em !important;
-    cursor: pointer !important;
-    transition: all 0.2s !important;
-    margin-top: 0.65rem !important;
+    border: none !important; border-radius: 10px !important; color: #fff !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important; font-weight: 700 !important;
+    font-size: 1rem !important; padding: 0.8rem 1.5rem !important;
+    margin-top: 0.65rem !important; cursor: pointer !important; transition: all 0.2s !important;
     box-shadow: 0 3px 12px rgba(59,130,246,0.28) !important;
 }
 .stButton > button:hover {
-    opacity: 0.92 !important;
-    transform: translateY(-1px) !important;
+    opacity: 0.92 !important; transform: translateY(-1px) !important;
     box-shadow: 0 6px 20px rgba(59,130,246,0.38) !important;
 }
 .stButton > button:active { transform: translateY(0) !important; }
@@ -293,59 +229,53 @@ textarea::placeholder, .stTextInput input::placeholder {
    DOWNLOAD BUTTONS
 ══════════════════════════════ */
 .stDownloadButton > button {
-    background: #ffffff !important;
-    border: 1.5px solid #e2e8f0 !important;
-    color: #475569 !important;
-    font-family: 'DM Sans', sans-serif !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-    padding: 0.45rem 0.9rem !important;
-    font-size: 0.82rem !important;
-    transition: all 0.18s !important;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05) !important;
+    background: #ffffff !important; border: 1.5px solid #e2e8f0 !important;
+    color: #475569 !important; font-family: 'DM Sans', sans-serif !important;
+    font-weight: 600 !important; border-radius: 8px !important;
+    padding: 0.45rem 0.9rem !important; font-size: 0.82rem !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05) !important; transition: all 0.18s !important;
 }
 .stDownloadButton > button:hover {
-    border-color: #3b82f6 !important;
-    color: #3b82f6 !important;
-    background: #eff6ff !important;
+    border-color: #3b82f6 !important; color: #3b82f6 !important; background: #eff6ff !important;
 }
 
 /* ══════════════════════════════
-   KEYWORD ROWS
+   KEYWORD ROWS — with accuracy
 ══════════════════════════════ */
 .kw-row {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 0.65rem 0.9rem;
-    border-radius: 9px;
-    margin-bottom: 0.35rem;
-    background: #ffffff;
-    border: 1px solid #f1f5f9;
-    transition: all 0.18s;
-    cursor: default;
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.62rem 0.9rem; border-radius: 9px; margin-bottom: 0.32rem;
+    background: #ffffff; border: 1px solid #f1f5f9;
+    transition: all 0.18s; cursor: default;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .kw-row:hover {
-    border-color: #bfdbfe;
-    background: #eff6ff;
-    transform: translateX(3px);
-    box-shadow: 0 2px 8px rgba(59,130,246,0.1);
+    border-color: #bfdbfe; background: #eff6ff;
+    transform: translateX(3px); box-shadow: 0 2px 8px rgba(59,130,246,0.1);
 }
-.kw-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: #94a3b8;
-    min-width: 26px;
-    font-weight: 400;
-}
-.kw-word { flex:1; font-size: 0.97rem; font-weight: 600; color: #1e293b; }
-.kw-bar-wrap { display:flex; align-items:center; gap:0.6rem; min-width:130px; }
-.kw-bar-bg { flex:1; height:5px; background:#e2e8f0; border-radius:100px; overflow:hidden; }
+.kw-num { font-family:'DM Mono',monospace; font-size:0.68rem; color:#94a3b8; min-width:24px; }
+.kw-word { flex:1; font-size:0.95rem; font-weight:600; color:#1e293b; }
+.kw-bar-wrap { display:flex; align-items:center; gap:0.5rem; min-width:110px; }
+.kw-bar-bg { flex:1; height:4px; background:#e2e8f0; border-radius:100px; overflow:hidden; }
 .kw-bar-fill { height:100%; border-radius:100px; }
-.kw-sc { font-family:'DM Mono',monospace; font-size:0.75rem; min-width:32px; text-align:right; font-weight:500; }
+.kw-sc { font-family:'DM Mono',monospace; font-size:0.72rem; min-width:28px; text-align:right; font-weight:500; }
 
-/* rank colours — blue palette */
+/* accuracy pill */
+.kw-acc {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    min-width: 48px;
+    text-align: center;
+    white-space: nowrap;
+}
+.kw-acc.high  { background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; }
+.kw-acc.mid   { background:#dbeafe; color:#1d4ed8; border:1px solid #bfdbfe; }
+.kw-acc.low   { background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; }
+
+/* rank bar colours */
 .r0 .kw-bar-fill{background:linear-gradient(90deg,#2563eb,#06b6d4);} .r0 .kw-sc{color:#2563eb;}
 .r1 .kw-bar-fill{background:linear-gradient(90deg,#3b82f6,#0ea5e9);} .r1 .kw-sc{color:#3b82f6;}
 .r2 .kw-bar-fill{background:linear-gradient(90deg,#0ea5e9,#06b6d4);} .r2 .kw-sc{color:#0ea5e9;}
@@ -355,152 +285,98 @@ textarea::placeholder, .stTextInput input::placeholder {
 .r8 .kw-bar-fill,.r9 .kw-bar-fill{background:#cbd5e1;}
 .r5 .kw-sc,.r6 .kw-sc,.r7 .kw-sc,.r8 .kw-sc,.r9 .kw-sc{color:#94a3b8;}
 
+/* ── accuracy summary bar ── */
+.acc-summary {
+    display: flex; align-items: center; gap: 1.2rem;
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    border-radius: 10px; padding: 0.65rem 1rem;
+    margin-bottom: 0.85rem;
+}
+.acc-stat { text-align: center; }
+.acc-stat-val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.15rem; font-weight: 800; line-height: 1;
+    margin-bottom: 0.1rem;
+}
+.acc-stat-lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #94a3b8;
+}
+.acc-divider { width: 1px; height: 30px; background: #e2e8f0; flex-shrink: 0; }
+
 /* ══════════════════════════════
    CHAT
 ══════════════════════════════ */
 .chat-from {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #94a3b8;
-    margin-bottom: 0.2rem;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: #94a3b8; margin-bottom: 0.2rem;
 }
 .chat-from.you { text-align:right; color:#3b82f6; }
 .chat-msg {
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
-    font-size: 0.93rem;
-    line-height: 1.65;
-    max-width: 85%;
-    margin-bottom: 0.55rem;
+    padding: 0.75rem 1rem; border-radius: 12px;
+    font-size: 0.93rem; line-height: 1.65; max-width: 85%; margin-bottom: 0.55rem;
 }
 .chat-msg.you {
-    background: linear-gradient(135deg, #2563eb, #0891b2);
-    color: #fff;
-    font-weight: 400;
-    margin-left: auto;
-    border-bottom-right-radius: 3px;
+    background: linear-gradient(135deg, #2563eb, #0891b2); color:#fff;
+    margin-left:auto; border-bottom-right-radius:3px;
     box-shadow: 0 3px 10px rgba(37,99,235,0.2);
 }
 .chat-msg.ai {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    color: #334155;
-    border-bottom-left-radius: 3px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    background:#ffffff; border:1px solid #e2e8f0; color:#334155;
+    border-bottom-left-radius:3px; box-shadow:0 1px 4px rgba(0,0,0,0.05);
 }
 
-/* chat form */
 div[data-testid="stForm"] {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
+    background:transparent !important; border:none !important;
+    box-shadow:none !important; padding:0 !important;
 }
 div[data-testid="stForm"] .stButton > button {
-    background: #f1f5f9 !important;
-    border: 1.5px solid #e2e8f0 !important;
-    color: #475569 !important;
-    box-shadow: none !important;
-    margin-top: 0 !important;
-    font-size: 1rem !important;
-    padding: 0.72rem 1rem !important;
-    border-radius: 9px !important;
-    font-family: 'DM Sans', sans-serif !important;
+    background:#f1f5f9 !important; border:1.5px solid #e2e8f0 !important;
+    color:#475569 !important; box-shadow:none !important; margin-top:0 !important;
+    font-size:1rem !important; padding:0.72rem 1rem !important;
+    border-radius:9px !important; font-family:'DM Sans',sans-serif !important;
 }
 div[data-testid="stForm"] .stButton > button:hover {
-    background: #eff6ff !important;
-    border-color: #3b82f6 !important;
-    color: #3b82f6 !important;
-    transform: none !important;
-    box-shadow: none !important;
+    background:#eff6ff !important; border-color:#3b82f6 !important;
+    color:#3b82f6 !important; transform:none !important; box-shadow:none !important;
 }
 
 /* ══════════════════════════════
    SIDEBAR CARDS
 ══════════════════════════════ */
 .sc {
-    background: rgba(255,255,255,0.85);
-    border: 1px solid rgba(255,255,255,0.9);
-    border-radius: 14px;
-    padding: 1.1rem 1.15rem;
-    margin-bottom: 0.85rem;
+    background: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 14px; padding: 1.1rem 1.15rem; margin-bottom: 0.85rem;
     box-shadow: 0 3px 16px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
     backdrop-filter: blur(10px);
 }
 .sc-ttl {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #475569;
-    margin-bottom: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.75rem;
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: #475569; margin-bottom: 0.85rem; display:flex; align-items:center; gap:0.45rem;
 }
 .sc-ttl::after { content:''; flex:1; height:1px; background:#e2e8f0; }
 
-/* stat grid */
 .sg { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:0.6rem; }
-.si {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.7rem 0.8rem;
-    text-align: center;
-}
-.sv {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 0.2rem;
-}
-.sl {
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #94a3b8;
-}
-.tkb {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.7rem 0.9rem;
-}
+.si { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.7rem 0.8rem; text-align:center; }
+.sv { font-family:'Plus Jakarta Sans',sans-serif; font-size:1.5rem; font-weight:800; line-height:1; margin-bottom:0.2rem; }
+.sl { font-size:0.6rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#94a3b8; }
+.tkb { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.7rem 0.9rem; }
 .tkl { font-size:0.6rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#94a3b8; margin-bottom:0.22rem; }
 .tkv { font-size:1.02rem; font-weight:700; color:#2563eb; }
 
-/* legend */
 .lr { display:flex; align-items:center; gap:0.7rem; margin-bottom:0.5rem; font-size:0.85rem; color:#475569; font-family:'DM Sans',sans-serif; }
 .ld { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
-/* section labels */
 .lx-sec-label {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #64748b;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.68rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #64748b; margin-bottom: 0.75rem; display:flex; align-items:center; gap:0.5rem;
 }
 .lx-sec-label::after { content:''; flex:1; height:1px; background:#e2e8f0; }
 
-/* alerts */
-.stAlert {
-    background: #eff6ff !important;
-    border: 1px solid #bfdbfe !important;
-    border-radius: 10px !important;
-    color: #1e40af !important;
-}
+.stAlert { background:#eff6ff !important; border:1px solid #bfdbfe !important; border-radius:10px !important; color:#1e40af !important; }
 .stSpinner > div { border-top-color: #3b82f6 !important; }
 div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { background:transparent !important; }
 </style>
@@ -508,33 +384,83 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { background:tr
 
 
 # ── HELPERS ──────────────────────────────────────────────────────────────────
+def score_to_accuracy(score):
+    """Convert 0-1 score to accuracy percentage with label"""
+    pct = round(score * 100, 1)
+    if score >= 0.75:
+        cls = "high"
+    elif score >= 0.45:
+        cls = "mid"
+    else:
+        cls = "low"
+    return pct, cls
+
 def render_kw_cards(kws):
     html = ""
     for i, k in enumerate(kws):
-        rc  = f"r{min(i,9)}"
-        pct = int(float(k.get("score", 0)) * 100)
+        rc    = f"r{min(i,9)}"
+        score = float(k.get("score", 0))
+        pct   = int(score * 100)
+        acc_pct, acc_cls = score_to_accuracy(score)
         html += f"""
 <div class="kw-row {rc}">
   <span class="kw-num">#{i+1:02d}</span>
   <span class="kw-word">{k['keyword']}</span>
   <div class="kw-bar-wrap">
     <div class="kw-bar-bg"><div class="kw-bar-fill" style="width:{pct}%"></div></div>
-    <span class="kw-sc">{float(k.get('score',0)):.2f}</span>
+    <span class="kw-sc">{score:.2f}</span>
   </div>
+  <span class="kw-acc {acc_cls}">{acc_pct}%</span>
 </div>"""
     return html
 
+def render_accuracy_summary(kws):
+    """Render accuracy metrics summary bar above results"""
+    scores   = [float(k.get("score", 0)) for k in kws]
+    avg_acc  = round(sum(scores) / len(scores) * 100, 1)
+    high_ct  = sum(1 for s in scores if s >= 0.75)
+    top_acc  = round(max(scores) * 100, 1)
+    # confidence formula: ratio of high-accuracy keywords
+    conf_pct = round((high_ct / len(scores)) * 100, 1)
+
+    return f"""
+<div class="acc-summary">
+  <div class="acc-stat">
+    <div class="acc-stat-val" style="color:#2563eb;">{top_acc}%</div>
+    <div class="acc-stat-lbl">Peak Accuracy</div>
+  </div>
+  <div class="acc-divider"></div>
+  <div class="acc-stat">
+    <div class="acc-stat-val" style="color:#0891b2;">{avg_acc}%</div>
+    <div class="acc-stat-lbl">Avg Accuracy</div>
+  </div>
+  <div class="acc-divider"></div>
+  <div class="acc-stat">
+    <div class="acc-stat-val" style="color:#16a34a;">{high_ct}/{len(scores)}</div>
+    <div class="acc-stat-lbl">High Confidence</div>
+  </div>
+  <div class="acc-divider"></div>
+  <div class="acc-stat">
+    <div class="acc-stat-val" style="color:#7c3aed;">{conf_pct}%</div>
+    <div class="acc-stat-lbl">Confidence Rate</div>
+  </div>
+</div>"""
+
 def kws_to_csv(kws):
     buf = io.StringIO()
-    w   = csv.DictWriter(buf, fieldnames=["rank","keyword","score"])
+    w   = csv.DictWriter(buf, fieldnames=["rank","keyword","score","accuracy_%"])
     w.writeheader()
     for i, k in enumerate(kws, 1):
-        w.writerow({"rank":i, "keyword":k["keyword"], "score":k.get("score","")})
+        sc  = float(k.get("score","0"))
+        acc = round(sc * 100, 1)
+        w.writerow({"rank":i, "keyword":k["keyword"], "score":f"{sc:.4f}", "accuracy_%":f"{acc}%"})
     return buf.getvalue().encode()
 
 def kws_to_plain(kws):
-    return "\n".join(f"{i+1}. {k['keyword']} ({float(k.get('score',0)):.2f})"
-                     for i, k in enumerate(kws))
+    return "\n".join(
+        f"{i+1}. {k['keyword']}  score={float(k.get('score',0)):.4f}  accuracy={round(float(k.get('score',0))*100,1)}%"
+        for i, k in enumerate(kws)
+    )
 
 def extract_keywords(text):
     prompt = f"""Extract top 10 important keywords from the following text.
@@ -584,7 +510,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
 # ══════════════════════════════════════════════════════════
 # HERO
 # ══════════════════════════════════════════════════════════
@@ -596,7 +521,6 @@ st.markdown("""
   <p class="lx-hero-sub">Paste any text or URL — LEXIS AI extracts the most relevant keywords, scores them, and provides intelligent analysis.</p>
 </div>
 """, unsafe_allow_html=True)
-
 
 # ══════════════════════════════════════════════════════════
 # LAYOUT
@@ -652,8 +576,8 @@ with left:
                                     st.session_state.kws=[]; st.session_state.chat_history=[]
                                     st.error(f"🚫 Unsupported content type ({ct.split(';')[0].strip()}).")
                                     st.stop()
-                                html = resp.read().decode('utf-8', errors='ignore')
-                        plain = re.sub(r'<style[^>]*>.*?</style>',' ',html,flags=re.DOTALL)
+                                html_content = resp.read().decode('utf-8', errors='ignore')
+                        plain = re.sub(r'<style[^>]*>.*?</style>',' ',html_content,flags=re.DOTALL)
                         plain = re.sub(r'<script[^>]*>.*?</script>',' ',plain,flags=re.DOTALL)
                         plain = re.sub(r'<[^>]+>',' ',plain)
                         plain = re.sub(r'\s+',' ',plain).strip()
@@ -699,6 +623,10 @@ with left:
         st.markdown('<div class="lx-card">', unsafe_allow_html=True)
         st.markdown('<div class="lx-sec-label">Keyword Results</div>', unsafe_allow_html=True)
 
+        # ── ACCURACY SUMMARY BAR ──
+        st.markdown(render_accuracy_summary(st.session_state.kws), unsafe_allow_html=True)
+
+        # ── DOWNLOAD BUTTONS ──
         col_dl1, col_dl2, col_sp = st.columns([1,1,4])
         with col_dl1:
             st.download_button("⬇ CSV", data=kws_to_csv(st.session_state.kws),
@@ -706,6 +634,15 @@ with left:
         with col_dl2:
             st.download_button("⬇ TXT", data=kws_to_plain(st.session_state.kws).encode(),
                                file_name="lexis_keywords.txt", mime="text/plain")
+
+        # ── COLUMN HEADERS ──
+        st.markdown("""
+<div style="display:flex;align-items:center;gap:0.75rem;padding:0.3rem 0.9rem;margin-bottom:0.2rem;">
+  <span style="min-width:24px;font-family:'DM Mono',monospace;font-size:0.6rem;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.08em;">#</span>
+  <span style="flex:1;font-family:'DM Mono',monospace;font-size:0.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;">Keyword</span>
+  <span style="min-width:110px;font-family:'DM Mono',monospace;font-size:0.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;text-align:right;">Score</span>
+  <span style="min-width:48px;font-family:'DM Mono',monospace;font-size:0.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;text-align:center;">Accuracy</span>
+</div>""", unsafe_allow_html=True)
 
         st.markdown(render_kw_cards(st.session_state.kws), unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
@@ -746,12 +683,66 @@ with left:
 
 
 # ══════════════════════════════════════════════════════════
-# RIGHT COLUMN
+# RIGHT COLUMN  — How It Works FIRST, then stats, then legend
 # ══════════════════════════════════════════════════════════
 with right:
 
-    # ── QUICK STATS ──
-    scores   = [float(k.get("score",0)) for k in st.session_state.kws] if st.session_state.kws else [0,0]
+    # ══ 1. HOW IT WORKS — ALWAYS ON TOP ══
+    st.markdown("""
+<div style="background:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.9);border-radius:14px;padding:1.1rem 1.15rem;margin-bottom:0.85rem;box-shadow:0 3px 16px rgba(0,0,0,0.06),0 1px 3px rgba(0,0,0,0.04);backdrop-filter:blur(10px);">
+
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#475569;margin-bottom:0.9rem;display:flex;align-items:center;gap:0.45rem;">
+    How It Works
+    <span style="flex:1;height:1px;background:#e2e8f0;display:inline-block;"></span>
+  </div>
+
+  <!-- SUPPORTED -->
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#16a34a;margin-bottom:0.45rem;">
+    ✓ &nbsp;Supported
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;border-bottom:1px solid #f8fafc;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#16a34a;flex-shrink:0;">✓</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">Public blogs &amp; articles</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;border-bottom:1px solid #f8fafc;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#16a34a;flex-shrink:0;">✓</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">Wikipedia pages</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;border-bottom:1px solid #f8fafc;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#16a34a;flex-shrink:0;">✓</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">Company &amp; docs sites</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;border-bottom:1px solid #e2e8f0;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#16a34a;flex-shrink:0;">✓</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">Pasted raw text</span>
+  </div>
+
+  <!-- NOT SUPPORTED -->
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#dc2626;margin-top:0.8rem;margin-bottom:0.45rem;">
+    ✕ &nbsp;Not Supported
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;border-bottom:1px solid #f8fafc;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#dc2626;flex-shrink:0;">✕</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">Login-gated pages</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;border-bottom:1px solid #f8fafc;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#dc2626;flex-shrink:0;">✕</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">Paywalled content</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;border-bottom:1px solid #f8fafc;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#dc2626;flex-shrink:0;">✕</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">Bot-blocking / CAPTCHA</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.32rem 0;">
+    <span style="width:17px;height:17px;border-radius:4px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.62rem;color:#dc2626;flex-shrink:0;">✕</span>
+    <span style="font-size:0.85rem;color:#475569;font-family:'DM Sans',sans-serif;">PDF / image-only pages</span>
+  </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+    # ══ 2. QUICK STATS ══
+    scores   = [float(k.get("score",0)) for k in st.session_state.kws] if st.session_state.kws else [0.0]
     avg      = sum(scores)/len(scores) if st.session_state.kws else 0.0
     top_kw   = st.session_state.kws[0]["keyword"] if st.session_state.kws else "—"
     sc_range = (max(scores)-min(scores)) if st.session_state.kws else 0.0
@@ -785,7 +776,7 @@ with right:
 </div>
 """, unsafe_allow_html=True)
 
-    # ── SCORE LEGEND ──
+    # ══ 3. SCORE LEGEND ══
     st.markdown("""
 <div class="sc">
   <div class="sc-ttl">Score Legend</div>
@@ -794,55 +785,5 @@ with right:
   <div class="lr"><div class="ld" style="background:#0ea5e9;"></div><span>0.50 – 0.69</span></div>
   <div class="lr"><div class="ld" style="background:#22d3ee;"></div><span>0.30 – 0.49</span></div>
   <div class="lr" style="margin-bottom:0;"><div class="ld" style="background:#cbd5e1;"></div><span>0.00 – 0.29</span></div>
-</div>
-""", unsafe_allow_html=True)
-
-    # ── HOW IT WORKS / GUIDELINES ── (100% inline styles)
-    st.markdown("""
-<div style="background:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.9);border-radius:14px;padding:1.1rem 1.15rem;margin-bottom:0.85rem;box-shadow:0 3px 16px rgba(0,0,0,0.06),0 1px 3px rgba(0,0,0,0.04);backdrop-filter:blur(10px);">
-
-  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#475569;margin-bottom:0.85rem;display:flex;align-items:center;gap:0.45rem;">
-    How It Works
-    <span style="flex:1;height:1px;background:#e2e8f0;display:inline-block;"></span>
-  </div>
-
-  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#16a34a;margin-bottom:0.5rem;">Supported</div>
-
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid #f1f5f9;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#16a34a;flex-shrink:0;">✓</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">Public blogs &amp; articles</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid #f1f5f9;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#16a34a;flex-shrink:0;">✓</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">Wikipedia pages</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid #f1f5f9;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#16a34a;flex-shrink:0;">✓</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">Company &amp; docs sites</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid #f1f5f9;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#dcfce7;border:1px solid #bbf7d0;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#16a34a;flex-shrink:0;">✓</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">Pasted raw text</span>
-  </div>
-
-  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#dc2626;margin-top:0.8rem;margin-bottom:0.5rem;">Not Supported</div>
-
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid #f1f5f9;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#dc2626;flex-shrink:0;">✕</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">Login-gated pages</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid #f1f5f9;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#dc2626;flex-shrink:0;">✕</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">Paywalled content</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;border-bottom:1px solid #f1f5f9;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#dc2626;flex-shrink:0;">✕</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">Bot-blocking / CAPTCHA</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;">
-    <span style="width:18px;height:18px;border-radius:5px;background:#fee2e2;border:1px solid #fecaca;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;color:#dc2626;flex-shrink:0;">✕</span>
-    <span style="font-size:0.88rem;color:#475569;font-family:'DM Sans',sans-serif;">PDF / image-only pages</span>
-  </div>
-
 </div>
 """, unsafe_allow_html=True)
